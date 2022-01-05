@@ -489,7 +489,7 @@ class Document(wx.EvtHandler):
                 shutil.copy(filename, backupFilename)
                 copied = True
 
-            fileObject = open(filename, 'w')
+            fileObject = open(filename, 'wb')
             self.SaveObject(fileObject)
             fileObject.close()
             fileObject = None
@@ -539,7 +539,7 @@ class Document(wx.EvtHandler):
         if not msgTitle:
             msgTitle = _("File Error")
 
-        fileObject = open(filename, 'r')
+        fileObject = open(filename, 'rb')
         try:
             self.LoadObject(fileObject)
             fileObject.close()
