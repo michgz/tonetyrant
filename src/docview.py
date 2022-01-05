@@ -1,3 +1,20 @@
+"""
+THIS FILE UPDATED AS PART OF THE TONETYRANT PROJECT
+
+Changes have been made to this file to get it working suitably with latest
+versions of Python and WxPython. It's not clear that these file have been
+maintained, and there were significant issues -- particularly around message
+handling. There are also clues that they were written for Python 2, not 3.
+
+The file here is no longer universally suitable for Document-View implementations,
+but rather is tuned for a specific project.
+"""
+
+
+
+
+
+
 #----------------------------------------------------------------------------
 # Name:         docview.py
 # Purpose:      Port of the wxWindows docview classes
@@ -472,7 +489,7 @@ class Document(wx.EvtHandler):
                 shutil.copy(filename, backupFilename)
                 copied = True
 
-            fileObject = file(filename, 'w')
+            fileObject = open(filename, 'w')
             self.SaveObject(fileObject)
             fileObject.close()
             fileObject = None
@@ -491,7 +508,7 @@ class Document(wx.EvtHandler):
             if backupFilename and copied:
                 os.remove(backupFilename)
 
-            wx.MessageBox("Could not save '%s'.  %s" % (FileNameFromPath(filename), sys.exc_value),
+            wx.MessageBox("Could not save '%s'.  %s" % (FileNameFromPath(filename), str(sys.exc_info()[1])),
                           msgTitle,
                           wx.OK | wx.ICON_EXCLAMATION,
                           self.GetDocumentWindow())
@@ -522,7 +539,7 @@ class Document(wx.EvtHandler):
         if not msgTitle:
             msgTitle = _("File Error")
 
-        fileObject = file(filename, 'r')
+        fileObject = open(filename, 'r')
         try:
             self.LoadObject(fileObject)
             fileObject.close()
@@ -535,7 +552,7 @@ class Document(wx.EvtHandler):
             if fileObject:
                 fileObject.close()  # file is still open, close it
 
-            wx.MessageBox("Could not open '%s'.  %s" % (FileNameFromPath(filename), sys.exc_value),
+            wx.MessageBox("Could not open '%s'.  %s" % (FileNameFromPath(filename), str(sys.exc_info()[1])),
                           msgTitle,
                           wx.OK | wx.ICON_EXCLAMATION,
                           self.GetDocumentWindow())
