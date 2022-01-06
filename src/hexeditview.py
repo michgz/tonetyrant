@@ -54,6 +54,9 @@ class HexEditView(wx.Control):
         self._y1 = 5
         self._y2 = 16
         
+        self._x3 = 8
+        self._x4 = 9
+        
         self._buffer = None
         
         self._header_offset = 32
@@ -140,64 +143,94 @@ class HexEditView(wx.Control):
       
         if not self._buffer:
             return
+            
+            
+        _doRegion1 = True   # x-values 0..X1
+        _doRegion2 = True   # x-values X1..X2
+        _doRegion3 = True   # x-values X2..
       
         _dc = wx.PaintDC(self)
         _dc.SetPen(wx.NullPen)
-        _dc.SetBrush(self._brush1)
-        _dc.DrawRectangle(0, 0, self._x1, self.Size[1])
-        _dc.SetBrush(self._brush2)
-        _dc.DrawRectangle(self._x1, 0, self._x2, self.Size[1])
-        _dc.SetBrush(self._brush3)
-        _dc.DrawRectangle(self._x2, 0, *self.Size)
+        if _doRegion1:
+            _dc.SetBrush(self._brush1)
+            _dc.DrawRectangle(0, 0, self._x1, self.Size[1])
+        if _doRegion2:
+            _dc.SetBrush(self._brush2)
+            _dc.DrawRectangle(self._x1, 0, self._x2, self.Size[1])
+        if _doRegion3:
+            _dc.SetBrush(self._brush3)
+            _dc.DrawRectangle(self._x2, 0, *self.Size)
         
-        _dc.SetFont(self._font1)
 
-        # First frame
-        i = 0
-        y = self._y1
-        while (i < len(self._buffer)):
-            j = 16
-            if i + j > len(self._buffer):
-                j = len(self._buffer) - i
-            s = ""
-            if i >= self._header_offset:
-                s = "{0:03X}".format(i - self._header_offset)
-                _dc.DrawText(s, 9, y)
-            i += j
-            y += self._y2
+        if _doRegion1:
+            _dc.SetFont(self._font1)
+
+            # First frame
+            i = 0
+            y = self._y1
+            while (i < len(self._buffer)):
+                j = 16
+                if i + j > len(self._buffer):
+                    j = len(self._buffer) - i
+                s = ""
+                if i >= self._header_offset:
+                    s = "{0:03X}".format(i - self._header_offset)
+                    _dc.DrawText(s, 9, y)
+                i += j
+                y += self._y2
 
 
-        _dc.SetFont(self._font2)
-        _dc.SetTextForeground(self._font_colour1 )
+        if _doRegion2:
+            _dc.SetFont(self._font2)
+            _dc.SetTextForeground(self._font_colour1 )
 
-        # Second frame
-        i = 0
-        y = self._y1
-        while (i < len(self._buffer)):
-            j = 16
-            if i + j > len(self._buffer):
-                j = len(self._buffer) - i
-            s = ""
-            k = 0
-            while (k < j):
-                s += "{0:02X} ".format(self._buffer[i + k])
-                k += 1
-                if (k == 8):
-                    s += " "
-            i += j
-            _dc.DrawText(s, self._x1 + 5, y)
-            y += self._y2
-        
-        m = self._caret_pos // 32
-        n = (self._caret_pos % 32) // 2
-        p = 3*n
-        if (n >= 8):
-            p += 1
-        if (self._caret_pos % 2 != 0):
-            p += 1
-        s = " "*p + u"\u0331"
-        _dc.DrawText(s, self._x1 + 5, self._y1 + m*self._y2)
+            # Second frame
+            i = 0
+            y = self._y1
+            while (i < len(self._buffer)):
+                k = 0
+                while i + k < len(self._buffer) and k < 16:
+                    s = "{0:02X}".format(self._buffer[i + k])
+                    _dc.DrawText(s, self._x1 + 5 + self._x3*(3*k + (1 if k >= 8 else 0)), y)
+                    k += 1
 
+                i += k
+                y += self._y2
+            
+            m = self._caret_pos // 32
+            n = (self._caret_pos % 32) // 2
+            p = 0
+            if (self._caret_pos % 2 != 0):
+                p += 1
+            s = " "*p + u"\u0331"
+            _dc.DrawText(s, self._x1 + 5 + self._x3*(3*n + (1 if n >= 8 else 0)), self._y1 + m*self._y2)
+
+
+        if _doRegion3:
+            _dc.SetFont(self._font2)
+            _dc.SetTextForeground(self._font_colour1 )
+
+            # Third frame
+            i = 0
+            y = self._y1
+            while (i < len(self._buffer)):
+                k = 0
+                while i + k < len(self._buffer) and k < 16:
+                    c = self._buffer[i + k]
+                    if c >= 0x20 and c <= 0x7E:
+                        s = chr(c)
+                    else:
+                        s = "."
+                    _dc.DrawText(s, self._x2 + 5 + self._x4*k, y)
+                    k += 1
+
+                i += k
+                y += self._y2
+            
+            m = self._caret_pos // 32
+            n = (self._caret_pos % 32) // 2
+            s = u"\u0331"
+            _dc.DrawText(s, self._x2 + 5 + self._x4*n, self._y1 + m*self._y2)
 
 
 

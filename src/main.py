@@ -18,6 +18,12 @@ def _(X):
 EDIT_SETTODEFAULT_ID = wx.NewIdRef()
 EDIT_SETTORANDOMISE_ID = wx.NewIdRef()
 
+MIDI_SETUP_ID = wx.NewIdRef()
+MIDI_DOWNLOAD_ID = wx.NewIdRef()
+MIDI_UPLOAD_ID = wx.NewIdRef()
+
+
+
 
 class DefaultDialog(wx.Dialog):
     """
@@ -25,7 +31,7 @@ class DefaultDialog(wx.Dialog):
     """
     def __init__(self, parent):
         self._includeWavetable = False
-        wx.Dialog.__init__(self, parent, -1, _("Set to defaults") + wx.GetApp().GetAppName(), style = wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, -1, _("Set to defaults"), style = wx.DEFAULT_DIALOG_STYLE)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -53,7 +59,7 @@ class RandomiseDialog(wx.Dialog):
     """
     def __init__(self, parent):
         self._includeWavetable = False
-        wx.Dialog.__init__(self, parent, -1, _("Set to random") + wx.GetApp().GetAppName(), style = wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, -1, _("Set to random"), style = wx.DEFAULT_DIALOG_STYLE)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -97,15 +103,6 @@ class ToneDocument(docview.Document):
     def __setitem__(self, slice, data):
         self._data[slice] = data
 
-
-
-    def Open(self):
-        """
-        A new function not supported by the parent class
-        """
-        _, path = self.SelectDocumentPath(None, 0, 0)
-        if path:
-            self.OnOpenDocument(path)
 
 
     def LoadObject(self, file):
@@ -183,6 +180,9 @@ class ToneDocumentTemplate:
         # TODO:
         return True
 
+    @staticmethod
+    def IsVisible():
+        return True
 
 
 """
@@ -241,11 +241,13 @@ class ToneDocumentManager(wx.EvtHandler):
             self._docs[0].SaveAs()
 
     def OnOpen(self):
-        if len(self._docs) >= 1:
-            self._docs[0].Open()
-        else:
-            self.OnNew()
-            self._docs[0].Open()
+        _, path = self.SelectDocumentPath( [ self._template ] , 0, 0)
+        if path:
+            if len(self._docs) >= 1:
+                self._docs[0].OnOpenDocument(path)
+            else:
+                self.OnNew()
+                self._docs[0].OnOpenDocument(path)
     
     def OnSetToDefault(self, include_wavetable=False):
         if len(self._docs) >= 1:
@@ -310,6 +312,62 @@ class ToneDocumentManager(wx.EvtHandler):
         # TODO:
         pass
 
+    def SelectDocumentPath(self, templates, flags, save):
+        """
+        Under Windows, pops up a file selector with a list of filters
+        corresponding to document templates. The wxDocTemplate corresponding
+        to the selected file's extension is returned.
+
+        On other platforms, if there is more than one document template a
+        choice list is popped up, followed by a file selector.
+
+        This function is used in :meth:`DocManager.CreateDocument`.
+        """
+        if wx.Platform == "__WXMSW__" or wx.Platform == "__WXGTK__" or wx.Platform == "__WXMAC__":
+            descr = ''
+            for temp in templates:
+                if temp.IsVisible():
+                    if len(descr) > 0:
+                        descr = descr + _('|')
+                    descr = descr + temp.GetDescription() + _(" (") + temp.GetFileFilter() + _(") |") + temp.GetFileFilter()  # spacing is important, make sure there is no space after the "|", it causes a bug on wx_gtk
+            descr = _("All|*.*|%s") % descr  # spacing is important, make sure there is no space after the "|", it causes a bug on wx_gtk
+        else:
+            descr = _("*.*")
+
+        dlg = wx.FileDialog(self.FindSuitableParent(),
+                               _("Select a File"),
+                               wildcard=descr,
+                               style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_CHANGE_DIR)
+        # dlg.CenterOnParent()  # wxBug: caused crash with wx.FileDialog
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+        else:
+            path = None
+        dlg.Destroy()
+
+        if path:
+            theTemplate = self.FindTemplateForPath(path)
+            return (theTemplate, path)
+
+        return (None, None)
+
+    def FindSuitableParent(self):
+        """
+        Returns a parent frame or dialog, either the frame with the current
+        focus or if there is no current focus the application's top frame.
+        """
+        parent = wx.GetApp().GetTopWindow()
+        focusWindow = wx.Window.FindFocus()
+        if focusWindow:
+            while focusWindow and not isinstance(focusWindow, wx.Dialog) and not isinstance(focusWindow, wx.Frame):
+                focusWindow = focusWindow.GetParent()
+            if focusWindow:
+                parent = focusWindow
+        return parent
+
+    def FindTemplateForPath(self, path):
+        return self._template
+
 class AboutDialog(wx.Dialog):
     """
     Opens an AboutDialog.
@@ -333,6 +391,35 @@ class AboutDialog(wx.Dialog):
         self.SetSizer(sizer)
         sizer.Fit(self)
 
+
+class HelpDialog(wx.Dialog):
+    """
+    Opens a HelpDialog.
+    """
+    
+    helpText = """Keyboard shortcuts:
+    
+    \u2190\u2191\u2192\u2193\t(Arrow keys) navigate around the tone file
+    PG.UP/PG.DN\tIncrease/decrease the parameter by some amount
+    HOME/END\tSet the parameter to its minimum/maximum recommended value. (Larger/
+    \t\tsmaller values might be possible but will probably give non-musical
+    \t\tresults."""
+    
+
+    def __init__(self, parent, image=None):
+        """
+        Initializes the help dialog.
+        """
+        wx.Dialog.__init__(self, parent, -1, _("Help"), style = wx.DEFAULT_DIALOG_STYLE)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(wx.StaticText(self, -1, HelpDialog.helpText), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        btn = wx.Button(self, wx.ID_OK)
+        sizer.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+
+        self.SetSizer(sizer)
+        sizer.Fit(self)
 
 
 """
@@ -387,12 +474,26 @@ class ToneParentFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnRandomise, id=EDIT_SETTORANDOMISE_ID)
         menuBar.Append(editMenu, _("&Edit"))
         
+        midiMenu = wx.Menu()
+        midiMenu.Append(MIDI_SETUP_ID, _("&Setup...\tCtrl+S"), _("Sets up the MIDI communications"))
+        midiMenu.AppendSeparator()
+        midiMenu.Append(MIDI_DOWNLOAD_ID, _("&Download...\tCtrl+D"), _("Downloads a tone from the keyboard"))
+        midiMenu.Append(MIDI_UPLOAD_ID, _("&Upload...\tCtrl+U"), _("Uploads a tone from the keyboard"))
+        # All items in this menu are disabled for now - functionality to be added in a future version
+        midiMenu.Enable(MIDI_SETUP_ID, False)
+        midiMenu.Enable(MIDI_DOWNLOAD_ID, False)
+        midiMenu.Enable(MIDI_UPLOAD_ID, False)
+        menuBar.Append(midiMenu, _("&MIDI"))
+        
         helpMenu = wx.Menu()
+        helpMenu.Append(wx.ID_HELP, _("&Help"), _("Displays help information"))
         helpMenu.Append(wx.ID_ABOUT, _("&About" + " " + wx.GetApp().GetAppName()), _("Displays program information, version number, and copyright"))
         menuBar.Append(helpMenu, _("&Help"))
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
         self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=wx.ID_ABOUT)  # Using ID_ABOUT to update the window menu, the window menu items are not triggering
+
+        self.Bind(wx.EVT_MENU, self.OnHelp, id=wx.ID_HELP)
 
         self.Bind(wx.EVT_MENU, self.OnExit, id=wx.ID_EXIT)
 
@@ -419,8 +520,20 @@ class ToneParentFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
+    def ShowHelp(self):
+        """
+        Show the HelpDialog
+        """
+        dlg = HelpDialog(wx.GetApp().GetTopWindow())
+        dlg.CenterOnParent()
+        dlg.ShowModal()
+        dlg.Destroy()
+
     def OnAbout(self, event):
         self.ShowAbout()
+
+    def OnHelp(self, event):
+        self.ShowHelp()
 
     def OnDefault(self, event):
         dlg = DefaultDialog(self)

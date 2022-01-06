@@ -558,7 +558,7 @@ class Document(wx.EvtHandler):
                           self.GetDocumentWindow())
             return False
 
-        self.SetDocumentModificationDate()
+        #self.SetDocumentModificationDate()  # TODO: is this out of order?
         self.SetFilename(filename, True)
         self.Modify(False)
         self.SetDocumentSaved(True)
