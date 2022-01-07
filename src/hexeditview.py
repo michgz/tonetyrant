@@ -26,11 +26,14 @@ class HexEditView(wx.Control):
     def __init__(self, parent, id=-1, pos=wx.DefaultPosition,
                  size=wx.DefaultSize, style=wx.CLIP_CHILDREN | wx.SUNKEN_BORDER):
         wx.Control.__init__(self, parent, id, pos, size, style)
+        self._edit_region = -1
         self.__config()
         
         self.Bind(wx.EVT_PAINT, self.OnPaint)
         self.Bind(wx.EVT_CHAR, self.OnChar)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnMouse)
+        
+        self._callback_window = None
 
 
     def __config(self):
@@ -69,6 +72,27 @@ class HexEditView(wx.Control):
       
         self._buffer = buff
         self._caret_pos = 0
+        self._edit_region = 2   # 2 or 3
+
+
+    def UpdateCaretPos(self, new_pos):
+      
+        if new_pos is None:
+            return False
+      
+        if new_pos >= 2*len(self._buffer):
+            return False
+        
+        if new_pos < 0:
+            return False
+            
+        if new_pos == self._caret_pos:
+            return False
+            
+        self._caret_pos = new_pos
+        if self._callback_window is not None:
+            self._callback_window.SetSelected(self._caret_pos // 2)
+        return True
 
 
     def PosToBuff(self, x, y):
@@ -83,14 +107,32 @@ class HexEditView(wx.Control):
         
         return 32*yy+xx
 
+    def PosToBuffReg3(self, x, y):
+      
+        if x < self._x2 + 5:
+            return None
+        
+        yy = y // self._y2
+        xx = int((x - (self._x2 + 5)) / self._x4)
+        
+        return 32*yy+2*xx
+
+
     def OnMouse(self, event):
       
         if event.EventType == 10026:#wx.EVT_LEFT_DOWN:
             
             offs = self.PosToBuff(event.GetX(), event.GetY())
             if offs is not None:
-                self._caret_pos = offs
-                self.Refresh()
+                if self.UpdateCaretPos(offs):
+                    self._edit_region = 2
+                    self.Refresh()
+            else:
+                offs = self.PosToBuffReg3(event.GetX(), event.GetY())
+                if offs is not None:
+                    if self.UpdateCaretPos(offs):
+                        self._edit_region = 3
+                        self.Refresh()
             
         event.Skip()
 
@@ -110,29 +152,43 @@ class HexEditView(wx.Control):
     def OnChar(self, event):
         _redraw = False
         if event.KeyCode in [ wx.WXK_LEFT, wx.WXK_NUMPAD_LEFT ]:
-            if self._caret_pos > 0:
-                self._caret_pos -= 1
-                _redraw = True
-        elif event.KeyCode in [ wx.WXK_RIGHT, wx.WXK_NUMPAD_RIGHT , wx.WXK_SPACE ]:
-            self._caret_pos += 1
-            _redraw = True
+            if self._edit_region == 3:
+                if self.UpdateCaretPos(self._caret_pos - 2):
+                    _redraw = True
+            else:
+                if self.UpdateCaretPos(self._caret_pos - 1):
+                    _redraw = True
+        elif event.KeyCode in [ wx.WXK_RIGHT, wx.WXK_NUMPAD_RIGHT ] or (event.KeyCode == wx.WXK_SPACE and self._edit_region != 3):
+            if self._edit_region == 3:
+                if self.UpdateCaretPos(self._caret_pos + 2):
+                   _redraw = True
+            else:
+                if self.UpdateCaretPos(self._caret_pos + 1):
+                   _redraw = True
         elif event.KeyCode in [ wx.WXK_UP, wx.WXK_NUMPAD_UP ]:
-            if self._caret_pos >= 32:
-                self._caret_pos -= 32
-                _redraw = True
+            if self.UpdateCaretPos(self._caret_pos - 32):
+               _redraw = True
         elif event.KeyCode in [ wx.WXK_DOWN, wx.WXK_NUMPAD_DOWN ]:
-            self._caret_pos += 32
-            _redraw = True
-        elif event.KeyCode in [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
-                               0x41, 0x42, 0x43, 0x44, 0x45, 0x46,
-                               0x61, 0x62, 0x63, 0x64, 0x65, 0x66 ]:
+            if self.UpdateCaretPos(self._caret_pos + 32):
+               _redraw = True
+        elif self._edit_region != 3 and event.KeyCode in [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
+                                                          0x41, 0x42, 0x43, 0x44, 0x45, 0x46,
+                                                          0x61, 0x62, 0x63, 0x64, 0x65, 0x66 ]:
                                  
 
             
-            cmd = HexEditCommand(self._buffer, self._caret_pos, self.Hex2Nibble(event.KeyCode))
+            cmd = HexEditCommand.ChangeNibble(self._buffer, self._caret_pos, self.Hex2Nibble(event.KeyCode))
             self._buffer.GetCommandProcessor().Submit(cmd)
-            self._caret_pos += 1
+            self.UpdateCaretPos(self._caret_pos + 1)
             _redraw = True
+        elif self._edit_region == 3 and event.KeyCode >= 0x20 and event.KeyCode <= 0x7E:
+
+            cmd = HexEditCommand.ChangeByte(self._buffer, self._caret_pos, event.KeyCode)
+            self._buffer.GetCommandProcessor().Submit(cmd)
+            self.UpdateCaretPos(self._caret_pos + 2)
+            _redraw = True
+
+        
         else:
             event.Skip()
                 
@@ -145,10 +201,31 @@ class HexEditView(wx.Control):
             return
             
             
-        _doRegion1 = True   # x-values 0..X1
-        _doRegion2 = True   # x-values X1..X2
-        _doRegion3 = True   # x-values X2..
-      
+        _doRegion1 = False   # x-values 0..X1
+        _doRegion2 = False   # x-values X1..X2
+        _doRegion3 = False   # x-values X2..
+
+
+        # We use a fairly simple re-draw conditioning. If any part of any region requires
+        # redraw, we just do the whole region
+
+        # get the update rect list
+        upd = wx.RegionIterator(self.GetUpdateRegion())
+
+        while upd.HaveRects():
+
+            rect = upd.GetRect()
+
+            if rect.Intersects( wx.Rect(0, 0, self._x1, self.GetSize().y) ):
+                _doRegion1 = True
+            if rect.Intersects( wx.Rect(self._x1, 0, self._x2 - self._x1, self.GetSize().y) ):
+                _doRegion2 = True
+            if rect.Intersects( wx.Rect(self._x2, 0, self.GetSize().x - self._x2, self.GetSize().y) ):
+                _doRegion3 = True
+
+            upd.Next()
+
+
         _dc = wx.PaintDC(self)
         _dc.SetPen(wx.NullPen)
         if _doRegion1:
@@ -202,7 +279,7 @@ class HexEditView(wx.Control):
             p = 0
             if (self._caret_pos % 2 != 0):
                 p += 1
-            s = " "*p + u"\u0331"
+            s = " "*p + u"\u2017"
             _dc.DrawText(s, self._x1 + 5 + self._x3*(3*n + (1 if n >= 8 else 0)), self._y1 + m*self._y2)
 
 
@@ -229,16 +306,23 @@ class HexEditView(wx.Control):
             
             m = self._caret_pos // 32
             n = (self._caret_pos % 32) // 2
-            s = u"\u0331"
+            s = u"\u2017"
             _dc.DrawText(s, self._x2 + 5 + self._x4*n, self._y1 + m*self._y2)
 
 
 
 
 class HexEditCommand(docview.Command):
-    def __init__(self, document, offset, new_nibble):
-        docview.Command.__init__(self, canUndo=True)
+    def __init__(self, canUndo=True):
+        docview.Command.__init__(self, canUndo=canUndo)
+        self._type = -1
         
+
+    @classmethod
+    def ChangeNibble(cls, document, offset, new_nibble):
+        self = cls(True)
+        
+        self._type = 1
         self._new_nibble = new_nibble
         self._document = document
         self._offset = offset
@@ -247,27 +331,53 @@ class HexEditCommand(docview.Command):
             self._old_nibble = ((document[offset//2]) & 0xF0) >> 4
         else:
             self._old_nibble = document[offset//2] & 0x0F
-            
+
+        return self
+
+
+    @classmethod
+    def ChangeByte(cls, document, offset, new_byte):
+        self = cls(True)
+        
+        self._type = 2
+        self._new_byte = new_byte
+        self._document = document
+        self._offset = offset
+       
+        self._old_byte = document[offset//2]
+
+        return self
+
+
     def Do(self):
-        if self._offset % 2 == 0:
-            x = self._document[self._offset//2] & 0x0F
-            x = x + (self._new_nibble << 4)
-            self._document[self._offset//2] = x
-        else:
-            x = self._document[self._offset//2] & 0xF0
-            x = x + (self._new_nibble << 0)
-            self._document[self._offset//2] = x
-        return True
+        if self._type == 1:  # Nibble
+            if self._offset % 2 == 0:
+                x = self._document[self._offset//2] & 0x0F
+                x = x + (self._new_nibble << 4)
+                self._document[self._offset//2] = x
+            else:
+                x = self._document[self._offset//2] & 0xF0
+                x = x + (self._new_nibble << 0)
+                self._document[self._offset//2] = x
+            return True
+        elif self._type == 2:   # Byte
+            self._document[self._offset//2] = self._new_byte
+            return True
+        return False
         
     def Undo(self):
-        if self._offset % 2 == 0:
-            x = self._document[self._offset//2] & 0x0F
-            x = x + (self._old_nibble << 4)
-            self._document[self._offset//2] = x
-        else:
-            x = self._document[self._offset//2] & 0xF0
-            x = x + (self._old_nibble << 0)
-            self._document[self._offset//2] = x
-        return True
-
+        if self._type == 1:  # Nibble
+            if self._offset % 2 == 0:
+                x = self._document[self._offset//2] & 0x0F
+                x = x + (self._old_nibble << 4)
+                self._document[self._offset//2] = x
+            else:
+                x = self._document[self._offset//2] & 0xF0
+                x = x + (self._old_nibble << 0)
+                self._document[self._offset//2] = x
+            return True
+        elif self._type == 2:   # Byte
+            self._document[self._offset//2] = self._old_byte
+            return True
+        return False
 

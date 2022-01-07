@@ -24,6 +24,240 @@ MIDI_UPLOAD_ID = wx.NewIdRef()
 
 
 
+P110_ID = wx.NewIdRef()
+P111_ID = wx.NewIdRef()
+P112_ID = wx.NewIdRef()
+
+
+P1_ID = wx.NewIdRef()
+P2_ID = wx.NewIdRef()
+
+P3_ID = wx.NewIdRef()
+P4_ID = wx.NewIdRef()
+P5_ID = wx.NewIdRef()
+
+
+P6B0_ID = wx.NewIdRef()
+P6B1_ID = wx.NewIdRef()
+P6B2_ID = wx.NewIdRef()
+P7B0_ID = wx.NewIdRef()
+P7B1_ID = wx.NewIdRef()
+P7B2_ID = wx.NewIdRef()
+
+
+class P1B6_Panel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=127,initial=100)
+        wx.StaticText(self, pos=wx.Point(105,5+5), label="Volume")
+    
+    def Update(self, offset):
+        pass
+    
+class P110_Panel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=127,initial=40)
+        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=127,initial=0)
+        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=0,max=127,initial=0)
+        
+        wx.StaticText(self, id=P110_ID, pos=wx.Point(105,5+5), label="Reverb send")
+        wx.StaticText(self, id=P111_ID, pos=wx.Point(105,45+5), label="Chorus send")
+        wx.StaticText(self, id=P112_ID, pos=wx.Point(105,85+5), label="Delay send")
+
+    def Update(self, offset):
+      
+        ALL = [(0x110, P110_ID, _("Reverb send")), (0x111, P111_ID, _("Chorus send")), (0x112, P112_ID, _("Delay send"))]
+        
+        for aa in ALL:
+            if offset == aa[0]:
+                self.FindWindowById(aa[1]).SetLabelMarkup("<b>" + aa[2] + "</b>")
+            else:
+                self.FindWindowById(aa[1]).SetLabelMarkup(aa[2])
+
+class P000_Panel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=255,initial=128)
+        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=255,initial=128)
+        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=0,max=255,initial=128)
+
+        ctl_4 = wx.SpinCtrl(self, pos=wx.Point(5, 135), min=0,max=1023,initial=256)
+        ctl_5 = wx.SpinCtrl(self, pos=wx.Point(5, 175), min=0,max=1023,initial=256)
+        ctl_6 = wx.SpinCtrl(self, pos=wx.Point(5, 215), min=0,max=1023,initial=256)
+
+        
+        wx.StaticText(self, id=P6B0_ID, pos=wx.Point(105,5+5), label="")
+        wx.StaticText(self, id=P6B1_ID, pos=wx.Point(105,45+5), label="")
+        wx.StaticText(self, id=P6B2_ID, pos=wx.Point(105,85+5), label="")
+
+        wx.StaticText(self, id=P7B0_ID, pos=wx.Point(105,135+5), label="")
+        wx.StaticText(self, id=P7B1_ID, pos=wx.Point(105,175+5), label="")
+        wx.StaticText(self, id=P7B2_ID, pos=wx.Point(105,215+5), label="")
+
+
+    def Update(self, offset):
+      
+        ALL = [(0x002, 0x003, P6B0_ID, _("Attack level")),
+               (0x006, 0x007, P6B1_ID, _("Hold level")),
+               (0x00A, 0x00B, P6B2_ID, _("Release level")),
+               (0x000, 0x001, P7B0_ID, _("unused time")),
+               (0x004, 0x005, P7B1_ID, _("Attack time")),
+               (0x008, 0x009, P7B2_ID, _("Release time")),
+              ]
+
+        
+        for aa in ALL:
+            if offset == aa[0] or offset == aa[1]:
+                self.FindWindowById(aa[2]).SetLabelMarkup("<b>" + aa[3] + "</b>")
+            else:
+                self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
+
+class P084_Panel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=-64,max=63,initial=0)
+        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=-64,max=63,initial=0)
+        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=-64,max=63,initial=63)
+
+
+        
+        wx.StaticText(self, id=P3_ID, pos=wx.Point(105,5+5), label="")
+        wx.StaticText(self, id=P4_ID, pos=wx.Point(105,45+5), label="")
+        wx.StaticText(self, id=P5_ID, pos=wx.Point(105,85+5), label="")
+
+
+
+    def Update(self, offset):
+      
+        ALL = [(0x084, P3_ID, _("")),
+               (0x085, P4_ID, _("Velocity to filter")),
+               (0x086, P5_ID, _("Velocity sense")),
+              ]
+
+        
+        for aa in ALL:
+            if offset == aa[0]:
+                self.FindWindowById(aa[1]).SetLabelMarkup("<b>" + aa[2] + "</b>")
+            else:
+                self.FindWindowById(aa[1]).SetLabelMarkup(aa[2])
+
+
+class P082_Panel(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        
+        ctl_1 = wx.ComboBox(self, pos=wx.Point(5, 5), choices=["0\tMelody","2\tDrum","4\tPiano","6\tVersatile"], style=wx.CB_READONLY)
+        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=899,initial=1)
+
+
+
+        
+        wx.StaticText(self, id=P1_ID, pos=wx.Point(125,5+5), label="")
+        wx.StaticText(self, id=P2_ID, pos=wx.Point(105,45+5), label="")
+
+
+
+    def Update(self, offset):
+      
+        ALL = [(0x087, -1, P1_ID, _("Type")),
+               (0x082, 0x083, P2_ID, _("Wavetable")),
+              ]
+
+        
+        for aa in ALL:
+            if offset == aa[0] or offset == aa[1]:
+                self.FindWindowById(aa[2]).SetLabelMarkup("<b>" + aa[3] + "</b>")
+            else:
+                self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
+
+
+
+
+
+
+class Cluster:
+    def __init__(self, name, offset_range, class_panel):
+        self._name = name
+        self._offset_range = offset_range
+        self._class_panel = class_panel
+
+clusters = [
+    Cluster(_("Pitch envelope (Sound A)"), range(0x000,0x00C), P000_Panel),
+    Cluster(_("Wavetable (Sound A)"), [0x82, 0x83, 0x87], P082_Panel),
+    Cluster(_("Velocity (Sound A)"), range(0x084,0x087), P084_Panel),
+    Cluster(_("Volume"), [0x1B6], P1B6_Panel),
+    Cluster(_("Effect Sends"), [0x110, 0x111, 0x112], P110_Panel),
+    ]
+
+
+
+class HintsDialog(wx.Dialog):
+    
+    
+    def __init__(self, parent):
+        self._parent = parent
+        wx.Dialog.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.DEFAULT_DIALOG_STYLE)
+        
+        _sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "")
+        
+        _sizer.SetMinSize( wx.Size(100, 100) )
+        self.SetSizer(_sizer)
+        _sizer.Fit(self)
+        self.Bind(wx.EVT_IDLE, self.OnIdle) # Want to adjust the starting position relative to the parent
+        
+        self._is_1B6 = False
+        self._current_cluster = ""
+        self._panel = None
+        self._sizer = _sizer
+        
+
+    def OnIdle(self, event):
+        self.SetPosition( wx.Point( self._parent.GetPosition().x + self._parent.GetSize().x + 5, self.GetPosition().y) )  # Move the window out of the way.
+        self.Unbind(wx.EVT_IDLE) # Only do this function once, right at the start. After that, can unbind
+        event.Skip()
+
+
+    def SetSelected(self, offset_in_file):
+        
+        if offset_in_file >= 0x20 and offset_in_file < 0x1E8 or True:
+            offset = offset_in_file - 0x20
+            
+            _enter = None
+            _exit = None
+            
+            for cc in clusters:
+                if offset in cc._offset_range and self._current_cluster != cc._name:
+                    # Entering this cluster
+                    _enter = cc
+                elif offset not in cc._offset_range and self._current_cluster == cc._name:
+                    # Exiting this cluster
+                    _exit = cc
+            
+            if _exit is not None:
+                self._sizer.Remove(0)
+                self._panel.Destroy()
+                self._panel = None
+                self._current_cluster = ""
+                self._sizer.GetStaticBox().SetLabelText("")
+            
+            if _enter is not None:
+                self._panel = _enter._class_panel(self)
+                self._sizer.Add(self._panel)
+                self._sizer.GetStaticBox().SetLabelText(_enter._name)
+                self._current_cluster = _enter._name
+            
+            if self._panel is not None:
+                self._panel.Update(offset)
+
+            if _exit is not None or _enter is not None:
+                self._sizer.Fit(self)
+                self.Layout()
+
 
 class DefaultDialog(wx.Dialog):
     """
@@ -460,8 +694,8 @@ class HelpDialog(wx.Dialog):
     \u2190\u2191\u2192\u2193\t(Arrow keys) navigate around the tone file
     PG.UP/PG.DN\tIncrease/decrease the parameter by some amount
     HOME/END\tSet the parameter to its minimum/maximum recommended value. (Larger/
-    \t\tsmaller values might be possible but will probably give non-musical
-    \t\tresults."""
+    \t\tsmaller values might be possible but will probably not sound very
+    \t\tmusical.)"""
     
 
     def __init__(self, parent, image=None):
@@ -664,6 +898,13 @@ def main():
     _view = hexeditview.HexEditView(_frame)
     _docManager.SetView(_view)
 
+
+    _hintsDlg = HintsDialog(_frame)
+    _hintsDlg.Show()  # Non-modal
+
+
+
+    _view._callback_window = _hintsDlg
 
     # Run the application
     _frame.Show(True)
