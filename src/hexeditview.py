@@ -49,7 +49,7 @@ class HexEditView(wx.Control):
         self._brush3 = wx.Brush( wx.ColourDatabase().FindColour("GREY") )
         
         self._x1 = 40
-        self._x2 = 480
+        self._x2 = 450
         
         self._y1 = 5
         self._y2 = 16

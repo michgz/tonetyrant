@@ -213,10 +213,14 @@ class ToneDocumentManager(wx.EvtHandler):
         """
         doc = self.GetCurrentDocument()
         event.Enable(doc is not None and doc.GetCommandProcessor() is not None and doc.GetCommandProcessor().CanUndo())
-        if doc and doc.GetCommandProcessor():
-            doc.GetCommandProcessor().SetMenuStrings()
-        else:
-            event.SetText(_("&Undo\tCtrl+Z"))
+
+    def OnUpdateRedo(self, event):
+        """
+        Updates the user interface for the Redo command.
+        """
+        doc = self.GetCurrentDocument()
+        event.Enable(doc is not None and doc.GetCommandProcessor() is not None and doc.GetCommandProcessor().CanRedo())
+
 
     def MakeDefaultName(self):
         return "Untitled.TON"
@@ -298,6 +302,7 @@ class ToneDocumentManager(wx.EvtHandler):
     def DoBindings(self, src):
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_NEW)
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_OPEN)
+        self.Bind(wx.EVT_MENU, self.OnFileClose, id=wx.ID_CLOSE)
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_SAVE)
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_SAVEAS)
     
@@ -305,8 +310,61 @@ class ToneDocumentManager(wx.EvtHandler):
         self.Bind(wx.EVT_MENU, self.OnMenu, id=EDIT_SETTORANDOMISE_ID)
 
         self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateUndo, id=wx.ID_UNDO)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateRedo, id=wx.ID_REDO)
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_UNDO)
         self.Bind(wx.EVT_MENU, self.OnMenu, id=wx.ID_REDO)
+
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateFileOpen, id=wx.ID_OPEN)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateFileClose, id=wx.ID_CLOSE)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateFileNew, id=wx.ID_NEW)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateFileSave, id=wx.ID_SAVE)
+        self.Bind(wx.EVT_UPDATE_UI, self.OnUpdateFileSaveAs, id=wx.ID_SAVEAS)
+
+    def OnFileClose(self, event):
+        """
+        Closes and deletes the currently active document.
+        """
+        doc = self.GetCurrentDocument()
+        if doc:
+            #doc.DeleteAllViews()
+            if doc in self._docs:
+                self._docs.remove(doc)
+
+    def OnUpdateFileOpen(self, event):
+        """
+        Updates the user interface for the File Open command.
+        """
+        event.Enable(True)
+
+
+    def OnUpdateFileClose(self, event):
+        """
+        Updates the user interface for the File Close command.
+        """
+        event.Enable(self.GetCurrentDocument() is not None)
+
+
+    def OnUpdateFileNew(self, event):
+        """
+        Updates the user interface for the File New command.
+        """
+        return True
+
+
+    def OnUpdateFileSave(self, event):
+        """
+        Updates the user interface for the File Save command.
+        """
+        doc = self.GetCurrentDocument()
+        event.Enable(doc is not None and doc.IsModified())
+
+
+    def OnUpdateFileSaveAs(self, event):
+        """
+        Updates the user interface for the File Save As command.
+        """
+        event.Enable(self.GetCurrentDocument() is not None and self.GetCurrentDocument().GetWriteable())
+
 
     def AddFileToHistory(self, filename):
         # TODO:
@@ -446,11 +504,18 @@ class ToneParentFrame(wx.Frame):
         fileMenu.Append(wx.ID_OPEN, _("&Open...\tCtrl+O"), _("Opens an existing document"))
         self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_OPEN)
         fileMenu.Append(wx.ID_CLOSE, _("&Close"), _("Closes the active document"))
+        self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_CLOSE)
+        self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=wx.ID_CLOSE)
+        fileMenu.Enable(wx.ID_CLOSE, False)
         fileMenu.AppendSeparator()
         fileMenu.Append(wx.ID_SAVE, _("&Save\tCtrl+S"), _("Saves the active document"))
         self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_SAVE)
+        self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=wx.ID_SAVE)
+        fileMenu.Enable(wx.ID_SAVE, False)
         fileMenu.Append(wx.ID_SAVEAS, _("Save &As..."), _("Saves the active document with a new name"))
         self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_SAVEAS)
+        self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=wx.ID_SAVEAS)
+        fileMenu.Enable(wx.ID_SAVEAS, False)
         fileMenu.AppendSeparator()
         if wx.Platform == '__WXMAC__':
             fileMenu.Append(wx.ID_EXIT, _("&Quit"), _("Closes this program"))
@@ -464,18 +529,24 @@ class ToneParentFrame(wx.Frame):
         editMenu.Append(wx.ID_UNDO, _("&Undo\tCtrl+Z"), _("Reverses the last action"))
         self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_UNDO)
         self.Bind(wx.EVT_UPDATE_UI, self.ProcessEvent2, id=wx.ID_UNDO)
+        editMenu.Enable(wx.ID_UNDO, False)
         editMenu.Append(wx.ID_REDO, _("&Redo\tCtrl+Y"), _("Reverses the last undo"))
         self.Bind(wx.EVT_MENU, self.ProcessEvent2, id=wx.ID_REDO)
         self.Bind(wx.EVT_UPDATE_UI, self.ProcessEvent2, id=wx.ID_REDO)
+        editMenu.Enable(wx.ID_REDO, False)
         editMenu.AppendSeparator()
         editMenu.Append(EDIT_SETTODEFAULT_ID, _("&Default...\tCtrl+D"), _("Sets to default values"))
         self.Bind(wx.EVT_MENU, self.OnDefault, id=EDIT_SETTODEFAULT_ID)
+        self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=EDIT_SETTODEFAULT_ID)
+        editMenu.Enable(EDIT_SETTODEFAULT_ID, False)
         editMenu.Append(EDIT_SETTORANDOMISE_ID, _("&Randomise...\tCtrl+R"), _("Sets to randomised values"))
         self.Bind(wx.EVT_MENU, self.OnRandomise, id=EDIT_SETTORANDOMISE_ID)
+        self.Bind(wx.EVT_UPDATE_UI, self.ProcessUpdateUIEvent, id=EDIT_SETTORANDOMISE_ID)
+        editMenu.Enable(EDIT_SETTORANDOMISE_ID, False)
         menuBar.Append(editMenu, _("&Edit"))
         
         midiMenu = wx.Menu()
-        midiMenu.Append(MIDI_SETUP_ID, _("&Setup...\tCtrl+S"), _("Sets up the MIDI communications"))
+        midiMenu.Append(MIDI_SETUP_ID, _("&Setup...\tCtrl+M"), _("Sets up the MIDI communications"))
         midiMenu.AppendSeparator()
         midiMenu.Append(MIDI_DOWNLOAD_ID, _("&Download...\tCtrl+D"), _("Downloads a tone from the keyboard"))
         midiMenu.Append(MIDI_UPLOAD_ID, _("&Upload...\tCtrl+U"), _("Uploads a tone from the keyboard"))
@@ -501,7 +572,7 @@ class ToneParentFrame(wx.Frame):
 
     def ProcessEvent2(self, event):
         if self._docManager is not None:
-            wx.PostEvent(self._docManager, event)
+            self._docManager.ProcessEvent(event)
 
 
     def SetDocManager(self, dm):
@@ -563,8 +634,11 @@ class ToneParentFrame(wx.Frame):
         self.Close()
 
     def ProcessUpdateUIEvent(self, event):
-        pass
-
+        Id = event.GetId()
+        if Id == EDIT_SETTODEFAULT_ID or Id == EDIT_SETTORANDOMISE_ID:
+            event.Enable(self._docManager.GetCurrentDocument() is not None)
+        elif Id == wx.ID_CLOSE or Id==wx.ID_SAVE or Id==wx.ID_SAVEAS:
+            self._docManager.ProcessEvent(event)
 
 
 """
@@ -586,7 +660,7 @@ def main():
     _docManager = ToneDocumentManager()
     _frame = ToneParentFrame(None,wx.ID_ANY,"Untitled.TON")
     _frame.SetDocManager(_docManager)
-    _frame.SetSize(wx.DefaultCoord, wx.DefaultCoord, 500, 600)
+    _frame.SetSize(wx.DefaultCoord, wx.DefaultCoord, 620, 580)
     _view = hexeditview.HexEditView(_frame)
     _docManager.SetView(_view)
 
