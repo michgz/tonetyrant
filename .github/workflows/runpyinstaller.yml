@@ -43,3 +43,8 @@ jobs:
         run: |
           echo Building
           pyinstaller main.spec
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ubuntu-executable-artifact
+          path: dist/main
+    
