@@ -3831,17 +3831,17 @@
         <parameter number="81" block="0">
             <bytes>
                 <offset>0x1A4</offset>
-                <count>2</count>
+                <count>1</count>
             </bytes>
             <bits>
-                <offset>1</offset>
-                <count>0</count>
+                <offset>2</offset>
+                <count>1</count>
             </bits>
             <absoluteLimits>
-                <min>1</min>
-                <max>0</max>
+                <min>0</min>
+                <max>1</max>
             </absoluteLimits>
-            <defaultValue>0</defaultValue>
+            <defaultValue>1</defaultValue>
         </parameter>
         <parameter number="82" block="0">
             <bytes>
@@ -3850,28 +3850,28 @@
             </bytes>
             <bits>
                 <offset>1</offset>
-                <count>0</count>
+                <count>1</count>
             </bits>
             <absoluteLimits>
-                <min>1</min>
-                <max>0</max>
+                <min>0</min>
+                <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="83" block="0">
             <bytes>
                 <offset>0x1A4</offset>
-                <count>0</count>
+                <count>1</count>
             </bytes>
             <bits>
-                <offset>1</offset>
-                <count>0</count>
+                <offset>0</offset>
+                <count>1</count>
             </bits>
             <absoluteLimits>
-                <min>1</min>
-                <max>0</max>
+                <min>0</min>
+                <max>1</max>
             </absoluteLimits>
-            <defaultValue>0</defaultValue>
+            <defaultValue>1</defaultValue>
         </parameter>
         <parameter number="84" block="0">
             <name>DSP chain name</name>
@@ -3886,94 +3886,94 @@
             <name>DSP effect 1</name>
             <bytes>
                 <offset>0x136</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>6</count>
+                <count>14</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
-                <max>64</max>
+                <max>0x3FFF</max>
             </absoluteLimits>
             <recommendedLimits>
                 <min>1</min>
                 <max>31</max>
                 <step>1</step>
             </recommendedLimits>
-            <defaultValue>0</defaultValue>
+            <defaultValue>0x3FFF</defaultValue>
         </parameter>
         <parameter number="85" block="1">
             <name>DSP effect 2</name>
             <bytes>
                 <offset>0x148</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>6</count>
+                <count>14</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
-                <max>64</max>
+                <max>0x3FFF</max>
             </absoluteLimits>
             <recommendedLimits>
                 <min>1</min>
                 <max>31</max>
                 <step>1</step>
             </recommendedLimits>
-            <defaultValue>63</defaultValue>
+            <defaultValue>0x3FFF</defaultValue>
         </parameter>
         <parameter number="85" block="2">
             <name>DSP effect 3</name>
             <bytes>
                 <offset>0x15A</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>6</count>
+                <count>14</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
-                <max>64</max>
+                <max>0x3FFF</max>
             </absoluteLimits>
             <recommendedLimits>
                 <min>1</min>
                 <max>31</max>
                 <step>1</step>
             </recommendedLimits>
-            <defaultValue>63</defaultValue>
+            <defaultValue>0x3FFF</defaultValue>
         </parameter>
         <parameter number="85" block="3">
             <name>DSP effect 4</name>
             <bytes>
                 <offset>0x16C</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>6</count>
+                <count>14</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
-                <max>64</max>
+                <max>0x3FFF</max>
             </absoluteLimits>
             <recommendedLimits>
                 <min>1</min>
                 <max>31</max>
                 <step>1</step>
             </recommendedLimits>
-            <defaultValue>63</defaultValue>
+            <defaultValue>0x3FFF</defaultValue>
         </parameter>
         <parameter number="86" block="0">
             <name>DSP bypass 1</name>
             <bytes>
                 <offset>0x136</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
-                <offset>6</offset>
+                <offset>14</offset>
                 <count>1</count>
             </bits>
             <absoluteLimits>
@@ -3986,49 +3986,49 @@
             <name>DSP bypass 2</name>
             <bytes>
                 <offset>0x148</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
-                <offset>6</offset>
+                <offset>14</offset>
                 <count>1</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
                 <max>1</max>
             </absoluteLimits>
-            <defaultValue>1</defaultValue>
+            <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="86" block="2">
             <name>DSP bypass 3</name>
             <bytes>
                 <offset>0x15A</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
-                <offset>6</offset>
+                <offset>14</offset>
                 <count>1</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
                 <max>1</max>
             </absoluteLimits>
-            <defaultValue>1</defaultValue>
+            <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="86" block="3">
             <name>DSP bypass 4</name>
             <bytes>
                 <offset>0x16C</offset>
-                <count>1</count>
+                <count>2</count>
             </bytes>
             <bits>
-                <offset>6</offset>
+                <offset>14</offset>
                 <count>1</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
                 <max>1</max>
             </absoluteLimits>
-            <defaultValue>1</defaultValue>
+            <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="87" block="0">
             <name>DSP parameters 1</name>
@@ -4459,14 +4459,14 @@
                 <count>1</count>
             </bytes>
             <bits>
-                <offset>0</offset>
+                <offset>4</offset>
                 <count>1</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
                 <max>1</max>
             </absoluteLimits>
-            <defaultValue>1</defaultValue>
+            <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="115" block="0">
             <name>Sound B used for double-stop</name>
