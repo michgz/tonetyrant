@@ -9,6 +9,10 @@ sys.path.append("src")
 import hexeditview
 import docview
 
+import dataclasses
+import parameters
+import random
+import struct
 
 
 def _(X):
@@ -195,6 +199,29 @@ clusters = [
     ]
 
 
+class ExtParam(parameters.Param):
+    def __init__(self, init_vals):
+        parameters.Param.__init__(self, **dataclasses.asdict(init_vals))
+        
+    def SetRandom(self, dd):
+        if self.bitCount > 0 and self.bitOffset >= 0:
+            X, = struct.unpack_from("<I", dd, self.byteOffset+0x20)
+            MASK = ((1 << self.bitCount) - 1) << self.bitOffset
+            Y = random.randint(*self.recommendedLimits)
+            X = (X & ~MASK) + (Y << self.bitOffset)
+            struct.pack_into("<I", dd, self.byteOffset+0x20, X)
+
+    def SetDefault(self, dd):
+        if self.bitCount > 0 and self.bitOffset >= 0:
+            X, = struct.unpack_from("<I", dd, self.byteOffset+0x20)
+            MASK = ((1 << self.bitCount) - 1) << self.bitOffset
+            Y = self.defaultValue
+            X = (X & ~MASK) + (Y << self.bitOffset)
+            struct.pack_into("<I", dd, self.byteOffset+0x20, X)
+
+
+
+
 
 class HintsDialog(wx.Dialog):
     
@@ -321,9 +348,33 @@ class ToneDocument(docview.Document):
     """
     The main document class
     """
+    
+    
+    # A "default" data array to use as a starting point.
+    CALSINE =  \
+      b"CT-X3000\x00\x00\x00\x00\x00\x00\x00\x00TONH\x00\x00\x00\x00\xfe:R\x1a\xc8\x01\x00\x00"                              \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
+      b"\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                    \
+      b"\x00\x00\x00@@@@HH@@@@@@@@@@@\xff\x00                \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"   \
+      b"\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00"  \
+      b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00d"  \
+      b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x04\x00\x00\x00\x00\x01"            \
+      b"\x00\xc00\x08\x00\xc00\x08\x00\x85\x08CalSine         d\x7f\x02\x02\x02\x7f\x02\x7f\x02\x7f\x00\x00\x7f\x02\x02\x00\x00\x00EODA"
+
+    
+    
+    
     def __init__(self):
         docview.Document.__init__(self)
-        self._data = bytearray( b'\x00' * 0x1E8 )
+        self._data = bytearray( self.CALSINE )
 
     """
     Three functions to make the class behave a lot like a byte-string/byte array:
@@ -370,13 +421,19 @@ class ToneDocument(docview.Document):
     """
     def SetDocumentDefault(self, include_wavetable=False):
 
-        for p in Parameters:
-            p.SetDefault(self._data)
+        for p in parameters.Params:
+            if p.number not in [0, 84] \
+                        and (include_wavetable or p.number not in [115, 41, 1, 2, 21, 22]):
+                ExtParam(p).SetDefault(self._data)
         self.Modify(True)
 
 
     def SetDocumentRandomise(self, include_wavetable=False):
-        # ...
+
+        for p in parameters.Params:
+            if p.number not in [0, 84, 45, 46, 200] \
+                        and (include_wavetable or p.number not in [115, 41, 1, 2, 21, 22]):
+                ExtParam(p).SetRandom(self._data)
         self.Modify(True)
 
 
@@ -782,8 +839,8 @@ class ToneParentFrame(wx.Frame):
         midiMenu = wx.Menu()
         midiMenu.Append(MIDI_SETUP_ID, _("&Setup...\tCtrl+M"), _("Sets up the MIDI communications"))
         midiMenu.AppendSeparator()
-        midiMenu.Append(MIDI_DOWNLOAD_ID, _("&Download...\tCtrl+D"), _("Downloads a tone from the keyboard"))
-        midiMenu.Append(MIDI_UPLOAD_ID, _("&Upload...\tCtrl+U"), _("Uploads a tone from the keyboard"))
+        midiMenu.Append(MIDI_DOWNLOAD_ID, _("&Download...\tF2"), _("Downloads a tone from the keyboard"))
+        midiMenu.Append(MIDI_UPLOAD_ID, _("&Upload...\tF3"), _("Uploads a tone from the keyboard"))
         # All items in this menu are disabled for now - functionality to be added in a future version
         midiMenu.Enable(MIDI_SETUP_ID, False)
         midiMenu.Enable(MIDI_DOWNLOAD_ID, False)

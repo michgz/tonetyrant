@@ -4263,6 +4263,10 @@
                 <offset>0</offset>
                 <count>32</count>
             </bits>
+            <recommendedLimits>
+                <min>0</min>
+                <max>899</max>
+            </recommendedLimits>
             <defaultValue>0</defaultValue>
             <help>Number of the DSP chain. This is not used for anything and can be set to any value</help>
         </parameter>
@@ -4275,6 +4279,10 @@
                 <offset>0</offset>
                 <count>32</count>
             </bits>
+            <recommendedLimits>
+                <min>0</min>
+                <max>1</max>
+            </recommendedLimits>
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="102" block="0">
@@ -4342,6 +4350,10 @@
                 <offset>0</offset>
                 <count>32</count>
             </bits>
+            <recommendedLimits>
+                <min>0</min>
+                <max>1</max>
+            </recommendedLimits>
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="107" block="0">
