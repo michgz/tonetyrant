@@ -29,4 +29,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
+          pip install wxpython
+          pip install pyinstaller
           pyinstaller main.spec
