@@ -29,6 +29,6 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          pip install wxpython
+          pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-20.04 wxPython --no-cache-dir
           pip install pyinstaller
           pyinstaller main.spec
