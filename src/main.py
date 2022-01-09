@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import wx
+import wx.adv
 import sys
 import logging
 import os
@@ -14,6 +15,7 @@ import parameters
 import random
 import struct
 
+__version__ = "1.0.0"
 
 def _(X):
     return X
@@ -874,13 +876,27 @@ class ToneParentFrame(wx.Frame):
         """
         Show the AboutDialog
         """
-        if self._image:
-            dlg = AboutDialog(wx.GetApp().GetTopWindow(), self._image)
-        else:
-            dlg = AboutDialog(wx.GetApp().GetTopWindow())
-        dlg.CenterOnParent()
-        dlg.ShowModal()
-        dlg.Destroy()
+        #if self._image:
+        #    dlg = AboutDialog(wx.GetApp().GetTopWindow(), self._image)
+        #else:
+        #    dlg = AboutDialog(wx.GetApp().GetTopWindow())
+        #dlg.CenterOnParent()
+        #dlg.ShowModal()
+        #dlg.Destroy()
+        
+        aboutInfo = wx.adv.AboutDialogInfo()
+        aboutInfo.SetName("Tone Tyrant for Casio")
+        aboutInfo.SetVersion(__version__)
+        aboutInfo.SetDescription("Tone editor for Casio CT-X keyboards and others.")
+        aboutInfo.SetCopyright("(C) 2022")
+        aboutInfo.SetWebSite("https://github.com/michgz/tonetyrant")
+        aboutInfo.AddDeveloper("michgz")
+        aboutInfo.SetIcon(wx.Icon("tyrant-64x64.ico"))
+        
+        wx.adv.AboutBox(aboutInfo)
+        
+        
+        
 
     def ShowHelp(self):
         """
