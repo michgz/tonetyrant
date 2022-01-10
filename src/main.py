@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import wx
-import wx.adv
 import sys
 import logging
 import os
@@ -16,6 +15,8 @@ import random
 import struct
 
 __version__ = "1.0.0"
+from midi_comms import MidiComms
+
 
 def _(X):
     return X
@@ -60,28 +61,50 @@ class P1B6_Panel(wx.Panel):
     
     def Update(self, offset):
         pass
+        
+    def ReadValues(self, doc_):
+        pass
     
 class P110_Panel(wx.Panel):
+  
+    ALL = [(57, 0x111, _("Reverb send")), (56, 0x110, _("Chorus send")), (58, 0x112, _("Delay send"))]
+  
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
         
-        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=127,initial=40)
-        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=127,initial=0)
-        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=0,max=127,initial=0)
+        for i, AA in enumerate(self.ALL):
+            wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=127,initial=40 if AA[0]==57 else 0, name="C_P{0}".format(AA[0]))
         
-        wx.StaticText(self, id=P110_ID, pos=wx.Point(105,5+5), label="Reverb send")
-        wx.StaticText(self, id=P111_ID, pos=wx.Point(105,45+5), label="Chorus send")
-        wx.StaticText(self, id=P112_ID, pos=wx.Point(105,85+5), label="Delay send")
+        self.Bind(wx.EVT_SPINCTRL, self.OnValueChanged)
+        
+        for i, AA in enumerate(self.ALL):
+            wx.StaticText(self, pos=wx.Point(105,10+i*40), label=AA[2], name="L_P{0}".format(AA[0]))
 
     def Update(self, offset):
       
-        ALL = [(0x110, P110_ID, _("Reverb send")), (0x111, P111_ID, _("Chorus send")), (0x112, P112_ID, _("Delay send"))]
-        
-        for aa in ALL:
-            if offset == aa[0]:
-                self.FindWindowById(aa[1]).SetLabelMarkup("<b>" + aa[2] + "</b>")
+        for AA in self.ALL:
+            if offset == AA[1]:
+                self.FindWindowByName("L_P{0}".format(AA[0])).SetLabelMarkup("<b>" + AA[2] + "</b>")
             else:
-                self.FindWindowById(aa[1]).SetLabelMarkup(aa[2])
+                self.FindWindowByName("L_P{0}".format(AA[0])).SetLabelMarkup(AA[2])
+
+    def ReadValues(self, doc_):
+        
+        self.FindWindowByName("C_P56").SetValue(doc_[0x110 + 0x20])
+        self.FindWindowByName("C_P57").SetValue(doc_[0x111 + 0x20])
+        self.FindWindowByName("C_P58").SetValue(doc_[0x112 + 0x20])
+        
+        
+    def OnValueChanged(self, event):
+        w = self.FindWindowById(event.Id)
+        if w.Name[0:3] == "C_P":
+            p_num = int(w.Name[3:])
+            self.Parent._view.SetParamTo(p_num, event.GetPosition())
+        else:
+            raise Exception
+        
+
+
 
 class P000_Panel(wx.Panel):
     def __init__(self, parent):
@@ -122,6 +145,10 @@ class P000_Panel(wx.Panel):
             else:
                 self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
 
+    def ReadValues(self, doc_):
+        pass
+
+
 class P084_Panel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
@@ -152,6 +179,9 @@ class P084_Panel(wx.Panel):
             else:
                 self.FindWindowById(aa[1]).SetLabelMarkup(aa[2])
 
+    def ReadValues(self, doc_):
+        pass
+
 
 class P082_Panel(wx.Panel):
     def __init__(self, parent):
@@ -180,6 +210,9 @@ class P082_Panel(wx.Panel):
                 self.FindWindowById(aa[2]).SetLabelMarkup("<b>" + aa[3] + "</b>")
             else:
                 self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
+
+    def ReadValues(self, doc_):
+        pass
 
 
 
@@ -223,14 +256,24 @@ class ExtParam(parameters.Param):
 
 
 
+def Increase(offset, X):
+    pass
+    
+    
+def ParamFromOffset(offset):
+    for PP in parameters.Params:
+        if PP.byteOffset == offset:
+            return PP
+    
 
 
-class HintsDialog(wx.Dialog):
+
+class HintsDialog(wx.Frame):
     
     
     def __init__(self, parent):
         self._parent = parent
-        wx.Dialog.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.DEFAULT_DIALOG_STYLE)
+        wx.Frame.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.FRAME_TOOL_WINDOW | wx.FRAME_FLOAT_ON_PARENT)
         
         _sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "")
         
@@ -243,10 +286,12 @@ class HintsDialog(wx.Dialog):
         self._current_cluster = ""
         self._panel = None
         self._sizer = _sizer
+        self._view = None
+        self._current_offset = None
         
 
     def OnIdle(self, event):
-        self.SetPosition( wx.Point( self._parent.GetPosition().x + self._parent.GetSize().x + 5, self.GetPosition().y) )  # Move the window out of the way.
+        self.SetPosition( wx.Point( self._parent.GetPosition().x + self._parent.GetSize().x + 5, self._parent.GetPosition().y + 100) )  # Move the window out of the way.
         self.Unbind(wx.EVT_IDLE) # Only do this function once, right at the start. After that, can unbind
         event.Skip()
 
@@ -258,6 +303,8 @@ class HintsDialog(wx.Dialog):
             
             _enter = None
             _exit = None
+            
+            self._current_offset = offset
             
             for cc in clusters:
                 if offset in cc._offset_range and self._current_cluster != cc._name:
@@ -287,11 +334,33 @@ class HintsDialog(wx.Dialog):
                 self._sizer.Fit(self)
                 self.Layout()
 
+    def UpdateValues(self, doc_):
+        if self._panel is not None:
+            self._panel.ReadValues(doc_)
+
+    def UpDown(self, doc_, up: bool):
+        """
+        Process a "increase" or "decrease" key stroke.
+        """
+        
+        if self._current_offset == 0x110:
+            w = self._panel.FindWindowByName("C_P110")
+            p = ParamFromOffset(0x110)
+            Increase(p, doc_)
+
+            
+            
+        
+        
+
 
 class DefaultDialog(wx.Dialog):
     """
     A dialog for the user to request setting all parameters to defaults
     """
+    
+    include_wavetable_saved_value = False
+    
     def __init__(self, parent):
         self._includeWavetable = False
         wx.Dialog.__init__(self, parent, -1, _("Set to defaults"), style = wx.DEFAULT_DIALOG_STYLE)
@@ -302,6 +371,7 @@ class DefaultDialog(wx.Dialog):
         sizer.Add(lbl_1, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
 
         cbox_1 = wx.CheckBox(self, wx.ID_ANY, _("Include wavetable"), name="IncludeWavetable")
+        cbox_1.SetValue(DefaultDialog.include_wavetable_saved_value)
         sizer.Add(cbox_1, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
 
         btn_1 = wx.Button(self, wx.ID_OK)
@@ -314,12 +384,18 @@ class DefaultDialog(wx.Dialog):
 
     def GetResult(self):
         w = self.FindWindowByName("IncludeWavetable")
-        return w.GetValue()
+        res = w.GetValue()
+        DefaultDialog.include_wavetable_saved_value = res
+        return res
+
 
 class RandomiseDialog(wx.Dialog):
     """
     A dialog for the user to request setting all parameters to random values
     """
+    
+    include_wavetable_saved_value = False
+    
     def __init__(self, parent):
         self._includeWavetable = False
         wx.Dialog.__init__(self, parent, -1, _("Set to random"), style = wx.DEFAULT_DIALOG_STYLE)
@@ -328,8 +404,9 @@ class RandomiseDialog(wx.Dialog):
 
         lbl_1 = wx.StaticText(self, wx.ID_ANY, _("Set all values in the tone to random values. This will overwrite all current data."))
         sizer.Add(lbl_1, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
-
         cbox_1 = wx.CheckBox(self, wx.ID_ANY, _("Include wavetable"), name="IncludeWavetable")
+        cbox_1.SetValue(RandomiseDialog.include_wavetable_saved_value)
+        
         sizer.Add(cbox_1, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
 
         btn_1 = wx.Button(self, wx.ID_OK)
@@ -342,8 +419,9 @@ class RandomiseDialog(wx.Dialog):
 
     def GetResult(self):
         w = self.FindWindowByName("IncludeWavetable")
-        return w.GetValue()
-
+        res = w.GetValue()
+        RandomiseDialog.include_wavetable_saved_value = res
+        return res
 
 
 class ToneDocument(docview.Document):
@@ -433,10 +511,28 @@ class ToneDocument(docview.Document):
     def SetDocumentRandomise(self, include_wavetable=False):
 
         for p in parameters.Params:
-            if p.number not in [0, 84, 45, 46, 200] \
+            """
+            Exclude some parameters:
+                 - Volumes are excluded, since their behaviour is known and not interesting
+                 - String parameters are excluded
+                 - Param 109 seems to have a permanent effect, so exclude it to avoid
+                     that happening.
+            """
+            if p.number not in [0, 84, 45, 46, 109, 200] \
                         and (include_wavetable or p.number not in [115, 41, 1, 2, 21, 22]):
                 ExtParam(p).SetRandom(self._data)
         self.Modify(True)
+
+
+    def SetParamTo(self, p_num, p_val):
+        if p_num == 56:
+            self[0x110+0x20] = p_val
+        elif p_num == 57:
+            self[0x111+0x20] = p_val
+        elif p_num == 58:
+            self[0x112+0x20] = p_val
+            
+
 
 
 
@@ -782,6 +878,7 @@ class ToneParentFrame(wx.Frame):
         wx.Frame.__init__(self, parent, id, title)
         self._fileMenu = None  
         self._image = None
+        self._midi = MidiComms()
         menuBar = self.CreateDefaultMenuBar(sdi=True)
         self.SetMenuBar(menuBar)  # wxBug: Need to do this in SDI to mimic MDI... because have to set the menubar at the very end or the automatic MDI "window" menu doesn't get put in the right place when the services add new menus to the menubar
 
@@ -844,9 +941,12 @@ class ToneParentFrame(wx.Frame):
         midiMenu.Append(MIDI_DOWNLOAD_ID, _("&Download...\tF2"), _("Downloads a tone from the keyboard"))
         midiMenu.Append(MIDI_UPLOAD_ID, _("&Upload...\tF3"), _("Uploads a tone from the keyboard"))
         # All items in this menu are disabled for now - functionality to be added in a future version
-        midiMenu.Enable(MIDI_SETUP_ID, False)
-        midiMenu.Enable(MIDI_DOWNLOAD_ID, False)
-        midiMenu.Enable(MIDI_UPLOAD_ID, False)
+        midiMenu.Enable(MIDI_SETUP_ID, self._midi.AllowMidi())
+        self.Bind(wx.EVT_MENU, self.OnMidiSetup, id=MIDI_SETUP_ID)
+        midiMenu.Enable(MIDI_DOWNLOAD_ID, self._midi.AllowMidi())
+        self.Bind(wx.EVT_MENU, self.OnMidiDownload, id=MIDI_DOWNLOAD_ID)
+        midiMenu.Enable(MIDI_UPLOAD_ID, self._midi.AllowMidi())
+        self.Bind(wx.EVT_MENU, self.OnMidiUpload, id=MIDI_UPLOAD_ID)
         menuBar.Append(midiMenu, _("&MIDI"))
         
         helpMenu = wx.Menu()
@@ -867,6 +967,14 @@ class ToneParentFrame(wx.Frame):
         if self._docManager is not None:
             self._docManager.ProcessEvent(event)
 
+    def OnMidiSetup(self, event):
+        self._midi.ShowMidiSetup(self)
+
+    def OnMidiUpload(self, event):
+        self._midi.ShowMidiUpload(self, self._docManager._docs[0])
+
+    def OnMidiDownload(self, event):
+        self._midi.ShowMidiDownload(self, self._docManager._docs[0])
 
     def SetDocManager(self, dm):
         self._docManager = dm
@@ -876,27 +984,13 @@ class ToneParentFrame(wx.Frame):
         """
         Show the AboutDialog
         """
-        #if self._image:
-        #    dlg = AboutDialog(wx.GetApp().GetTopWindow(), self._image)
-        #else:
-        #    dlg = AboutDialog(wx.GetApp().GetTopWindow())
-        #dlg.CenterOnParent()
-        #dlg.ShowModal()
-        #dlg.Destroy()
-        
-        aboutInfo = wx.adv.AboutDialogInfo()
-        aboutInfo.SetName("Tone Tyrant for Casio")
-        aboutInfo.SetVersion(__version__)
-        aboutInfo.SetDescription("Tone editor for Casio CT-X keyboards and others.")
-        aboutInfo.SetCopyright("(C) 2022")
-        aboutInfo.SetWebSite("https://github.com/michgz/tonetyrant")
-        aboutInfo.AddDeveloper("michgz")
-        aboutInfo.SetIcon(wx.Icon("tyrant-64x64.ico"))
-        
-        wx.adv.AboutBox(aboutInfo)
-        
-        
-        
+        if self._image:
+            dlg = AboutDialog(wx.GetApp().GetTopWindow(), self._image)
+        else:
+            dlg = AboutDialog(wx.GetApp().GetTopWindow())
+        dlg.CenterOnParent()
+        dlg.ShowModal()
+        dlg.Destroy()
 
     def ShowHelp(self):
         """
@@ -978,6 +1072,7 @@ def main():
 
 
     _view._callback_window = _hintsDlg
+    _hintsDlg._view = _view
 
     # Run the application
     _frame.Show(True)

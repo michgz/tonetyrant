@@ -92,6 +92,7 @@ class HexEditView(wx.Control):
         self._caret_pos = new_pos
         if self._callback_window is not None:
             self._callback_window.SetSelected(self._caret_pos // 2)
+            self._callback_window.UpdateValues(self._buffer)
         return True
 
 
@@ -194,6 +195,12 @@ class HexEditView(wx.Control):
                 
         if _redraw:
             self.Refresh()
+
+
+    def SetParamTo(self, p_num, p_val):
+        self._buffer.SetParamTo(p_num, p_val)
+        self.Refresh()
+        
 
     def OnPaint(self, event):
       
