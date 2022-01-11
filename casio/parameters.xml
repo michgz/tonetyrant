@@ -5,6 +5,7 @@
     <parameters>
         <parameter number="0" block="0">
             <name>Name</name>
+            <cluster>Name</cluster>
             <bytes>
                 <offset>0x1A6</offset>
                 <count>12</count>
@@ -14,6 +15,7 @@
         </parameter>
         <parameter number="1" block="0">
             <name>Timbre</name>
+            <cluster>Wavetable (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x87</offset>
@@ -37,6 +39,7 @@
         </parameter>
         <parameter number="2" block="0">
             <name>Wavetable</name>
+            <cluster>Wavetable (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x82</offset>
@@ -1523,6 +1526,7 @@
         </parameter>
         <parameter number="21" block="0">
             <name>Timbre</name>
+            <cluster>Wavetable (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x10F</offset>
@@ -1546,6 +1550,7 @@
         </parameter>
         <parameter number="22" block="0">
             <name>Wavetable</name>
+            <cluster>Wavetable (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x10A</offset>
@@ -3097,6 +3102,7 @@
         </parameter>
         <parameter number="45" block="0">
             <name>Volume</name>
+            <cluster>Volume</cluster>
             <bytes>
                 <offset>0x1B6</offset>
                 <count>1</count>
@@ -3316,6 +3322,7 @@
         </parameter>
         <parameter number="56" block="0">
             <name>Chorus send</name>
+            <cluster>Effects</cluster>
             <bytes>
                 <offset>0x110</offset>
                 <count>1</count>
@@ -3337,6 +3344,7 @@
         </parameter>
         <parameter number="57" block="0">
             <name>Reverb send</name>
+            <cluster>Effects</cluster>
             <bytes>
                 <offset>0x111</offset>
                 <count>1</count>
@@ -3358,6 +3366,7 @@
         </parameter>
         <parameter number="58" block="0">
             <name>Delay send</name>
+            <cluster>Effects</cluster>
             <bytes>
                 <offset>0x112</offset>
                 <count>1</count>
@@ -4519,7 +4528,8 @@
             <help>0 Off\n1 On\n2 Legato</help>
         </parameter>
         <parameter number="117" block="0">
-            <name>Filter 1 type</name>
+            <name>Type</name>
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19C</offset>
                 <count>1</count>
@@ -4540,7 +4550,8 @@
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="117" block="1">
-            <name>Filter 2 type</name>
+            <name>Type</name>
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A0</offset>
                 <count>1</count>
@@ -4561,7 +4572,8 @@
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="118" block="0">
-            <name>Filter 1 parameter 1</name>
+            <name>Parameter 1</name>
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19C</offset>
                 <count>2</count>
@@ -4582,7 +4594,8 @@
             <defaultValue>12</defaultValue>
         </parameter>
         <parameter number="118" block="1">
-            <name>Filter 2 parameter 1</name>
+            <name>Parameter 1</name>
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A0</offset>
                 <count>2</count>
@@ -4603,7 +4616,8 @@
             <defaultValue>12</defaultValue>
         </parameter>
         <parameter number="119" block="0">
-            <name>Filter 1 parameter 2</name>
+            <name>Parameter 2</name>
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19D</offset>
                 <count>1</count>
@@ -4624,7 +4638,8 @@
             <defaultValue>12</defaultValue>
         </parameter>
         <parameter number="119" block="1">
-            <name>Filter 2 parameter 2</name>
+            <name>Parameter 2</name>
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A1</offset>
                 <count>1</count>
@@ -4645,7 +4660,8 @@
             <defaultValue>12</defaultValue>
         </parameter>
         <parameter number="120" block="0">
-            <name>Filter 1 parameter 3</name>
+            <name>Parameter 3</name>
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -4666,7 +4682,8 @@
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="120" block="1">
-            <name>Filter 2 parameter 3</name>
+            <name>Parameter 3</name>
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
@@ -4687,6 +4704,7 @@
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="121" block="0">
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -4702,6 +4720,7 @@
             <defaultValue>1</defaultValue>
         </parameter>
         <parameter number="121" block="1">
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
@@ -4717,6 +4736,7 @@
             <defaultValue>1</defaultValue>
         </parameter>
         <parameter number="122" block="0">
+            <cluster>Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -4732,6 +4752,7 @@
             <defaultValue>0</defaultValue>
         </parameter>
         <parameter number="122" block="1">
+            <cluster>Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
@@ -4748,6 +4769,7 @@
         </parameter>
         <parameter number="200" block="0">
             <name>Volume 3 (keyboard)</name>
+            <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C2</offset>
                 <count>1</count>
@@ -4769,6 +4791,7 @@
         </parameter>
         <parameter number="201" block="0">
             <name>Key-follow 3 (keyboard)</name>
+            <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C3</offset>
                 <count>1</count>
@@ -4790,6 +4813,7 @@
         </parameter>
         <parameter number="202" block="0">
             <name>Key-follow 4 (keyboard)</name>
+            <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C4</offset>
                 <count>1</count>

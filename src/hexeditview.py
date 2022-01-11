@@ -11,13 +11,19 @@ import os
 import sys
 import time
 import logging
+import parameters
 
 from dataclasses import dataclass
 
 import docview
 
 
-
+class CtrlVals:
+    INCREASE = 1
+    DECREASE = 2
+    MINIMUM = 3
+    MAXIMUM = 4
+    
 
 class HexEditView(wx.Control):
 
@@ -172,6 +178,18 @@ class HexEditView(wx.Control):
         elif event.KeyCode in [ wx.WXK_DOWN, wx.WXK_NUMPAD_DOWN ]:
             if self.UpdateCaretPos(self._caret_pos + 32):
                _redraw = True
+        elif event.KeyCode in [ wx.WXK_PAGEUP, wx.WXK_PAGEDOWN, wx.WXK_END, wx.WXK_HOME, 
+                 wx.WXK_NUMPAD_PAGEUP, wx.WXK_NUMPAD_PAGEDOWN, wx.WXK_NUMPAD_END, wx.WXK_NUMPAD_BEGIN ]:
+            
+            if event.KeyCode in [ wx.WXK_PAGEUP, wx.WXK_NUMPAD_PAGEUP ]:
+                self._callback_window.UpDown(CtrlVals.INCREASE)
+            elif event.KeyCode in [ wx.WXK_PAGEDOWN, wx.WXK_NUMPAD_PAGEDOWN ]:
+                self._callback_window.UpDown(CtrlVals.DECREASE)
+            elif event.KeyCode in [ wx.WXK_END, wx.WXK_NUMPAD_END ]:
+                self._callback_window.UpDown(CtrlVals.MINIMUM)
+            elif event.KeyCode in [ wx.WXK_HOME, wx.WXK_NUMPAD_BEGIN ]:
+                self._callback_window.UpDown(CtrlVals.MAXIMUM)
+
         elif self._edit_region != 3 and event.KeyCode in [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
                                                           0x41, 0x42, 0x43, 0x44, 0x45, 0x46,
                                                           0x61, 0x62, 0x63, 0x64, 0x65, 0x66 ]:
@@ -197,10 +215,32 @@ class HexEditView(wx.Control):
             self.Refresh()
 
 
-    def SetParamTo(self, p_num, p_val):
-        self._buffer.SetParamTo(p_num, p_val)
+    def SetParamTo(self, P : parameters.Param, p_val):
+        self._buffer.SetParamTo(P, p_val)
         self.Refresh()
         
+        
+        
+    def GetParamFrom(self, P : parameters.Param):
+        return self._buffer.GetParamFrom(P)
+
+
+    def DoRandomise(self, include_wavetable : bool):
+        old_vals = self._buffer[0x20:-4]
+        self._buffer.SetDocumentRandomise(include_wavetable)
+        new_vals = self._buffer[0x20:-4]
+        cmd = HexEditCommand.CompletelyChange(self._buffer, old_vals, new_vals)
+        self._buffer.GetCommandProcessor().Submit(cmd)
+        self.Refresh()
+
+    def DoDefaults(self, include_wavetable:bool):
+        old_vals = self._buffer[0x20:-4]
+        self._buffer.SetDocumentDefault(include_wavetable)
+        new_vals = self._buffer[0x20:-4]
+        cmd = HexEditCommand.CompletelyChange(self._buffer, old_vals, new_vals)
+        self._buffer.GetCommandProcessor().Submit(cmd)
+        self.Refresh()
+
 
     def OnPaint(self, event):
       
@@ -356,6 +396,17 @@ class HexEditCommand(docview.Command):
         return self
 
 
+    @classmethod
+    def CompletelyChange(cls, document, old_vals, new_vals):
+        self = cls(True)
+        self._type = 3
+        self._document = document
+        self._old_vals = old_vals
+        self._new_vals = new_vals
+        
+        return self
+
+
     def Do(self):
         if self._type == 1:  # Nibble
             if self._offset % 2 == 0:
@@ -369,6 +420,9 @@ class HexEditCommand(docview.Command):
             return True
         elif self._type == 2:   # Byte
             self._document[self._offset//2] = self._new_byte
+            return True
+        elif self._type == 3:   # Complete buffer overwrite
+            self._document[0x20:-4] = self._new_vals
             return True
         return False
         
@@ -385,6 +439,9 @@ class HexEditCommand(docview.Command):
             return True
         elif self._type == 2:   # Byte
             self._document[self._offset//2] = self._old_byte
+            return True
+        elif self._type == 3:   # Complete buffer overwrite
+            self._document[0x20:-4] = self._old_vals
             return True
         return False
 

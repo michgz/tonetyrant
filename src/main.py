@@ -31,207 +31,234 @@ MIDI_UPLOAD_ID = wx.NewIdRef()
 
 
 
-P110_ID = wx.NewIdRef()
-P111_ID = wx.NewIdRef()
-P112_ID = wx.NewIdRef()
+
+class ViewType:
+    SPIN = 0
+    CHECK = 1
+    CUSTOM_FILTERTYPE = 2
+    CUSTOM_WAVETABLETIMBRE = 3
+    CUSTOM_TONENAME = 4
 
 
-P1_ID = wx.NewIdRef()
-P2_ID = wx.NewIdRef()
-
-P3_ID = wx.NewIdRef()
-P4_ID = wx.NewIdRef()
-P5_ID = wx.NewIdRef()
-
-
-P6B0_ID = wx.NewIdRef()
-P6B1_ID = wx.NewIdRef()
-P6B2_ID = wx.NewIdRef()
-P7B0_ID = wx.NewIdRef()
-P7B1_ID = wx.NewIdRef()
-P7B2_ID = wx.NewIdRef()
+@dataclasses.dataclass
+class ParamView:
+    type_: ViewType
+    param: parameters.Param
+    offset: int
+    id_: int
 
 
-class P1B6_Panel(wx.Panel):
-    def __init__(self, parent):
+
+
+
+
+class CustomListBox_FilterType(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0\t" + _("All-pass"),
+            "1\t" + _("Low-pass"),
+            "2\t" + _("High-pass"),
+            "3\t" + _("Wide band-pass"),
+            "4\t" + _("Bass shelf"),
+            "5\t" + _("Treble shelf"),
+            "6\t" + _("Band boost/cut"),
+            "7\t" + _("Notch"),
+            "8\t" + _("All-pass")  ]  )
+
+
+
+class CustomListBox_WavetableTimbre(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0\t" + _("Melody"),
+            "2\t" + _("Drum"),
+            "4\t" + _("Piano"),
+            "6\t" + _("Versatile")  ]  )
+
+
+class CustomText_ToneName(wx.TextCtrl):
+
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, id, value=value, pos=pos, style=0, name=name)
+
+
+
+
+class HintsPanelGeneric(wx.Panel):
+  
+  
+    def __init__(self, parent, PVList):
         wx.Panel.__init__(self, parent)
         
-        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=127,initial=100)
-        wx.StaticText(self, pos=wx.Point(105,5+5), label="Volume")
-    
-    def Update(self, offset):
-        pass
+        self.NAMES = []
+        self.PARAMS = PVList
+        self.TYPES = []
         
-    def ReadValues(self, doc_):
-        pass
-    
-class P110_Panel(wx.Panel):
-  
-    ALL = [(57, 0x111, _("Reverb send")), (56, 0x110, _("Chorus send")), (58, 0x112, _("Delay send"))]
-  
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+        LABEL_X = 105
+        for i, PV in enumerate(PVList):
+            # Type 2, 3 are quite wide, need more room
+            if PV.type_ == 2 or PV.type_ == 3 or PV.type_ == 4:
+                LABEL_X = 175
         
-        for i, AA in enumerate(self.ALL):
-            wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=127,initial=40 if AA[0]==57 else 0, name="C_P{0}".format(AA[0]))
-        
-        self.Bind(wx.EVT_SPINCTRL, self.OnValueChanged)
-        
-        for i, AA in enumerate(self.ALL):
-            wx.StaticText(self, pos=wx.Point(105,10+i*40), label=AA[2], name="L_P{0}".format(AA[0]))
-
-    def Update(self, offset):
-      
-        for AA in self.ALL:
-            if offset == AA[1]:
-                self.FindWindowByName("L_P{0}".format(AA[0])).SetLabelMarkup("<b>" + AA[2] + "</b>")
+        for i, PV in enumerate(PVList):
+          
+            if PV.type_ == 1:
+                wx.CheckBox(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 2:
+                CustomListBox_FilterType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 3:
+                CustomListBox_WavetableTimbre(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 4:
+                CustomText_ToneName(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
             else:
-                self.FindWindowByName("L_P{0}".format(AA[0])).SetLabelMarkup(AA[2])
+                wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
+          
+            name_ = PV.param.name
+            wx.StaticText(self, pos=wx.Point(LABEL_X,10+i*40), label=name_, name="L_P{0}".format(PV.id_))
+            self.NAMES.append(name_)
+            self.TYPES.append(PV.type_)
+          
+
+        self.Bind(wx.EVT_SPINCTRL, self.OnValueChanged)
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheckChanged)
+        self.Bind(wx.EVT_COMBOBOX, self.OnComboBoxSelected)
+        self.Bind(wx.EVT_TEXT, self.OnTextChanged)
+
+
+    def Update(self, sel_id_):
+      
+        for k, PP in enumerate(self.PARAMS):
+            if sel_id_ == PP.id_:
+                self.FindWindowByName("L_P{0}".format(PP.id_)).SetLabelMarkup("<b>" + self.NAMES[k] + "</b>")
+            else:
+                self.FindWindowByName("L_P{0}".format(PP.id_)).SetLabelMarkup(self.NAMES[k])
 
     def ReadValues(self, doc_):
-        
-        self.FindWindowByName("C_P56").SetValue(doc_[0x110 + 0x20])
-        self.FindWindowByName("C_P57").SetValue(doc_[0x111 + 0x20])
-        self.FindWindowByName("C_P58").SetValue(doc_[0x112 + 0x20])
+
+        for k, PV in enumerate(self.PARAMS):
+            W_ = self.FindWindowByName("C_P{0}".format(PV.id_))
+            V_ = self.Parent._buffer.GetParamFrom(PV.param)
+            
+            if PV.type_ == 4:
+                W_.SetValue(V_)
+            else:
+                
+                if PV.type_ == 3:
+                    V_ = V_ // 2
+                
+                if PV.type_ == 2 or PV.type_ == 3:
+                    W_.SetSelection(V_)
+                else:
+                    W_.SetValue(V_)
         
         
     def OnValueChanged(self, event):
         w = self.FindWindowById(event.Id)
         if w.Name[0:3] == "C_P":
-            p_num = int(w.Name[3:])
-            self.Parent._view.SetParamTo(p_num, event.GetPosition())
+            p_idx = int(w.Name[3:])
+            for PV in self.PARAMS:
+                if PV.id_ == p_idx:
+                    self.Parent._buffer.SetParamTo(PV.param, event.GetPosition())
+                    break
         else:
             raise Exception
-        
 
 
+    def OnCheckChanged(self, event):
+        w = self.FindWindowById(event.Id)
+        if w.Name[0:3] == "C_P":
+            p_idx = int(w.Name[3:])
+            for PV in self.PARAMS:
+                if PV.id_ == p_idx:
+                    self.Parent._buffer.SetParamTo(PV.param, event.GetInt())
+                    break
+        else:
+            raise Exception
 
-class P000_Panel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        
-        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=0,max=255,initial=128)
-        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=255,initial=128)
-        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=0,max=255,initial=128)
+    def OnTextChanged(self, event):
+        w = self.FindWindowById(event.Id)
+        if w.Name[0:3] == "C_P":
+            p_idx = int(w.Name[3:])
+            for PV in self.PARAMS:
+                if PV.id_ == p_idx:
+                    self.Parent._buffer.SetParamTo(PV.param, event.GetString())
+                    break
+        else:
+            raise Exception
 
-        ctl_4 = wx.SpinCtrl(self, pos=wx.Point(5, 135), min=0,max=1023,initial=256)
-        ctl_5 = wx.SpinCtrl(self, pos=wx.Point(5, 175), min=0,max=1023,initial=256)
-        ctl_6 = wx.SpinCtrl(self, pos=wx.Point(5, 215), min=0,max=1023,initial=256)
+    def OnComboBoxSelected(self, event):
+        w = self.FindWindowById(event.Id)
+        if w.Name[0:3] == "C_P":
+            p_idx = int(w.Name[3:])
+            for PV in self.PARAMS:
+                if PV.id_ == p_idx:
+                    V_ = event.GetSelection()
+                    if PV.type_ == 3:
+                        V_ = 2*V_
+                    self.Parent._buffer.SetParamTo(PV.param, V_)
+                    break
+        else:
+            raise Exception
 
-        
-        wx.StaticText(self, id=P6B0_ID, pos=wx.Point(105,5+5), label="")
-        wx.StaticText(self, id=P6B1_ID, pos=wx.Point(105,45+5), label="")
-        wx.StaticText(self, id=P6B2_ID, pos=wx.Point(105,85+5), label="")
-
-        wx.StaticText(self, id=P7B0_ID, pos=wx.Point(105,135+5), label="")
-        wx.StaticText(self, id=P7B1_ID, pos=wx.Point(105,175+5), label="")
-        wx.StaticText(self, id=P7B2_ID, pos=wx.Point(105,215+5), label="")
-
-
-    def Update(self, offset):
-      
-        ALL = [(0x002, 0x003, P6B0_ID, _("Attack level")),
-               (0x006, 0x007, P6B1_ID, _("Hold level")),
-               (0x00A, 0x00B, P6B2_ID, _("Release level")),
-               (0x000, 0x001, P7B0_ID, _("unused time")),
-               (0x004, 0x005, P7B1_ID, _("Attack time")),
-               (0x008, 0x009, P7B2_ID, _("Release time")),
-              ]
-
-        
-        for aa in ALL:
-            if offset == aa[0] or offset == aa[1]:
-                self.FindWindowById(aa[2]).SetLabelMarkup("<b>" + aa[3] + "</b>")
-            else:
-                self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
-
-    def ReadValues(self, doc_):
-        pass
-
-
-class P084_Panel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        
-        ctl_1 = wx.SpinCtrl(self, pos=wx.Point(5, 5), min=-64,max=63,initial=0)
-        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=-64,max=63,initial=0)
-        ctl_3 = wx.SpinCtrl(self, pos=wx.Point(5, 85), min=-64,max=63,initial=63)
+    def SetNewVal(self, PV : ParamView, val):
+        W_ = self.FindWindowByName("C_P{0}".format(PV.id_))
+        if PV.type_ == 1:
+            W_.SetValue(bool(val))
+        elif PV.type_ == 2:
+            W_.SetSelection(val)
+        elif PV.type_ == 3:
+            W_.SetSelection(val // 2)
+        else:
+            W_.SetValue(val)
 
 
-        
-        wx.StaticText(self, id=P3_ID, pos=wx.Point(105,5+5), label="")
-        wx.StaticText(self, id=P4_ID, pos=wx.Point(105,45+5), label="")
-        wx.StaticText(self, id=P5_ID, pos=wx.Point(105,85+5), label="")
+    def DoControlVal(self, offset, ctrl_val):
+        for k, P_idx in enumerate(self.PARAMS):
+            PP = parameters.Params[P_idx]
+            if offset == PP.byteOffset:
+                if self.TYPES[k] == 1:  # Checkbox
+                    W_ = self.FindWindowByName("C_P{0}".format(P_idx))
+                    Curr = int(W_.GetValue())
+                    Min = 0
+                    Max = 1
+                    X = Curr
+                    if ctrl_val == hexeditview.CtrlVals.DECREASE or ctrl_val == hexeditview.CtrlVals.MINIMUM:
+                        X = Min
+                    elif ctrl_val == hexeditview.CtrlVals.INCREASE or ctrl_val == hexeditview.CtrlVals.MAXIMUM:
+                        X = Max
+                    if X != Curr:
+                        W_.SetValue(bool(X))
+                        # Setting the value doesn't raise an Event, so we must do the function
+                        # of OnValueChanged
+                        self.Parent._view.SetParamTo(PP, X)
+                else:    # Spin Control
+                    W_ = self.FindWindowByName("C_P{0}".format(P_idx))
+                    Curr = W_.GetValue()
+                    Min = W_.GetMin()
+                    Max = W_.GetMax()
+                    Step = 10  # TODO:
+                    X = Curr
+                    if ctrl_val == hexeditview.CtrlVals.INCREASE:
+                        X = Curr + Step
+                        if X > Max:
+                            X = Max
+                    elif ctrl_val == hexeditview.CtrlVals.DECREASE:
+                        X = Curr - Step
+                        if X < Min:
+                            X = Min
+                    elif ctrl_val == hexeditview.CtrlVals.MINIMUM:
+                        X = Min
+                    elif ctrl_val == hexeditview.CtrlVals.MAXIMUM:
+                        X = Max
+                    if X != Curr:
+                        W_.SetValue(X)
+                        # Setting the value doesn't raise an Event, so we must do the function
+                        # of OnValueChanged
+                        self.Parent._view.SetParamTo(PP, X)
 
 
-
-    def Update(self, offset):
-      
-        ALL = [(0x084, P3_ID, _("")),
-               (0x085, P4_ID, _("Velocity to filter")),
-               (0x086, P5_ID, _("Velocity sense")),
-              ]
-
-        
-        for aa in ALL:
-            if offset == aa[0]:
-                self.FindWindowById(aa[1]).SetLabelMarkup("<b>" + aa[2] + "</b>")
-            else:
-                self.FindWindowById(aa[1]).SetLabelMarkup(aa[2])
-
-    def ReadValues(self, doc_):
-        pass
-
-
-class P082_Panel(wx.Panel):
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
-        
-        ctl_1 = wx.ComboBox(self, pos=wx.Point(5, 5), choices=["0\tMelody","2\tDrum","4\tPiano","6\tVersatile"], style=wx.CB_READONLY)
-        ctl_2 = wx.SpinCtrl(self, pos=wx.Point(5, 45), min=0,max=899,initial=1)
-
-
-
-        
-        wx.StaticText(self, id=P1_ID, pos=wx.Point(125,5+5), label="")
-        wx.StaticText(self, id=P2_ID, pos=wx.Point(105,45+5), label="")
-
-
-
-    def Update(self, offset):
-      
-        ALL = [(0x087, -1, P1_ID, _("Type")),
-               (0x082, 0x083, P2_ID, _("Wavetable")),
-              ]
-
-        
-        for aa in ALL:
-            if offset == aa[0] or offset == aa[1]:
-                self.FindWindowById(aa[2]).SetLabelMarkup("<b>" + aa[3] + "</b>")
-            else:
-                self.FindWindowById(aa[2]).SetLabelMarkup(aa[3])
-
-    def ReadValues(self, doc_):
-        pass
-
-
-
-
-
-
-class Cluster:
-    def __init__(self, name, offset_range, class_panel):
-        self._name = name
-        self._offset_range = offset_range
-        self._class_panel = class_panel
-
-clusters = [
-    Cluster(_("Pitch envelope (Sound A)"), range(0x000,0x00C), P000_Panel),
-    Cluster(_("Wavetable (Sound A)"), [0x82, 0x83, 0x87], P082_Panel),
-    Cluster(_("Velocity (Sound A)"), range(0x084,0x087), P084_Panel),
-    Cluster(_("Volume"), [0x1B6], P1B6_Panel),
-    Cluster(_("Effect Sends"), [0x110, 0x111, 0x112], P110_Panel),
-    ]
 
 
 class ExtParam(parameters.Param):
@@ -256,22 +283,183 @@ class ExtParam(parameters.Param):
 
 
 
-def Increase(offset, X):
-    pass
-    
-    
-def ParamFromOffset(offset):
-    for PP in parameters.Params:
-        if PP.byteOffset == offset:
-            return PP
-    
+
+
+class HintsView(wx.EvtHandler):
+  
+    def __init__(self):
+        wx.EvtHandler.__init__(self)
+        self._buffer = None
+        
+        # Process the parameters list to draw out the clusters.
+        CLUSTERS_ = {}
+        
+        for PP in parameters.Params:
+            if PP.cluster != "":
+                if PP.cluster in CLUSTERS_:
+                    CLUSTERS_[PP.cluster].append( (PP.number, PP.block0)  )
+                else:
+                    CLUSTERS_.update({PP.cluster: [ (PP.number, PP.block0) ]})
+            
+        self.CLUSTERS = CLUSTERS_
+        self._current_cluster = None
+        self._current_offset = None
+        
+        
+        # Process offsets only once clusters are done (so the ordering is fixed)
+        OFFSETS_ = {}
+        
+        for PP in parameters.Params:
+            if PP.cluster != "":
+                if PP.byteOffset not in OFFSETS_:
+                    for k, CC in enumerate(self.CLUSTERS):
+                        if CC == PP.cluster:
+                            OFFSETS_.update({PP.byteOffset: k})
+                            
+        self.OFFSETS = OFFSETS_
+        self._paramviewlist = None
+
+    def SetDocument(self, buff):
+      
+        self._buffer = buff
+        self._current_cluster = None
+        self._current_offset = None
+        self._paramviewlist = None
+        
+
+    @staticmethod
+    def MakeParamViewList(numlist):
+      
+        LIST_ = []
+        OFFSETS_ = set() # want to ensure uniqueness
+      
+        for (num, block0) in numlist:
+          
+            for k, PP in enumerate(parameters.Params):
+                if PP.number == num and PP.block0 == block0:
+                    type_ = 0
+                    if PP.bitCount == 1:
+                        type_ = 1
+                    if PP.number == 117:
+                        type_ = 2
+                    elif PP.number == 1:
+                        type_ = 3
+                    elif PP.number == 21:
+                        type_ = 3
+                    elif PP.number == 0:
+                        type_ = 4
+                    offset_ = PP.byteOffset
+                    if offset_ in OFFSETS_:
+                        offset_ = None
+                    else:
+                        OFFSETS_.add(offset_)
+                    LIST_.append( ParamView(type_= type_ , param=PP, offset=offset_, id_=k) )
+        return LIST_
+
+
+    def SetSelected(self, offset_in_file):
+        if offset_in_file >= 0x20 and offset_in_file < 0x1E8 or True:
+            offset = offset_in_file - 0x20
+            
+            _enter = None
+            _exit = None
+            
+            
+            _enter = self.OFFSETS.get(offset, None)
+            if self._current_cluster is not None:
+                if _enter == self._current_cluster:
+                    _enter = None   # Not actually entering
+                else:
+                    _exit = self._current_cluster
+                
+            
+            self._current_offset = offset
+
+            
+            if _exit is not None:
+                self._sizer.Remove(0)
+                self._panel.Destroy()
+                self._panel = None
+                self._paramviewlist = None
+                self._current_cluster = None
+                self._sizer.GetStaticBox().SetLabelText("")
+            
+            if _enter is not None:
+                
+                self._paramviewlist = self.MakeParamViewList(list(self.CLUSTERS.items())[_enter][1])
+
+                
+                self._panel = HintsPanelGeneric(self, self._paramviewlist)
+                self._sizer.Add(self._panel)
+                self._sizer.GetStaticBox().SetLabelText(list(self.CLUSTERS.keys())[_enter])
+                self._current_cluster = _enter
+            
+            if self._paramviewlist is not None:
+                sel_id = None
+                for PV in self._paramviewlist:
+                    if PV.offset == offset:
+                        sel_id = PV.id_
+                        break
+                if self._panel is not None:
+                    self._panel.Update(sel_id)
+
+            if _exit is not None or _enter is not None:
+                self._sizer.Fit(self)
+                self.Layout()
 
 
 
-class HintsDialog(wx.Frame):
+    @staticmethod
+    def SuggestStep(PV : ParamView):
+        if PV.type_ == 1:
+            return 1
+        else:
+            return 10
+
+
+
+    def UpdateValues(self, doc_):
+        raise NotImplemented
+
+    def UpDown(self, ctrl_val: hexeditview.CtrlVals):
+        """
+        Process a "increase" or "decrease" key stroke.
+        """
+        
+        if self._paramviewlist is not None and self._current_offset is not None:
+            for PV in self._paramviewlist:
+                if PV.offset == self._current_offset:
+                    
+                    CURR = self._buffer.GetParamFrom(PV.param)
+                    STEP = self.SuggestStep(PV)
+                    
+                    X = None
+                    
+                    if ctrl_val == hexeditview.CtrlVals.MINIMUM:
+                        X = PV.param.recommendedLimits[0]
+                    elif ctrl_val == hexeditview.CtrlVals.MAXIMUM:
+                        X = PV.param.recommendedLimits[1]
+                    elif ctrl_val == hexeditview.CtrlVals.INCREASE:
+                        X = CURR + STEP
+                        if X > PV.param.recommendedLimits[1]:
+                            X = PV.param.recommendedLimits[1]
+                    elif ctrl_val == hexeditview.CtrlVals.DECREASE:
+                        X = CURR - STEP
+                        if X < PV.param.recommendedLimits[0]:
+                            X = PV.param.recommendedLimits[0]
+                    
+                    if X is not None and X != CURR:
+                        if self._panel is not None:
+                            self._panel.SetNewVal(PV, X)
+                        self._buffer.SetParamTo(PV.param, X)
+                        # TODO: update all views.
+
+
+class HintsDialog(wx.Frame, HintsView):
     
     
     def __init__(self, parent):
+        HintsView.__init__(self)
         self._parent = parent
         wx.Frame.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.FRAME_TOOL_WINDOW | wx.FRAME_FLOAT_ON_PARENT)
         
@@ -281,13 +469,13 @@ class HintsDialog(wx.Frame):
         self.SetSizer(_sizer)
         _sizer.Fit(self)
         self.Bind(wx.EVT_IDLE, self.OnIdle) # Want to adjust the starting position relative to the parent
+        #self.Bind(wx.EVT_CHAR, self.OnChar)
         
         self._is_1B6 = False
-        self._current_cluster = ""
         self._panel = None
         self._sizer = _sizer
         self._view = None
-        self._current_offset = None
+
         
 
     def OnIdle(self, event):
@@ -296,62 +484,24 @@ class HintsDialog(wx.Frame):
         event.Skip()
 
 
-    def SetSelected(self, offset_in_file):
-        
-        if offset_in_file >= 0x20 and offset_in_file < 0x1E8 or True:
-            offset = offset_in_file - 0x20
-            
-            _enter = None
-            _exit = None
-            
-            self._current_offset = offset
-            
-            for cc in clusters:
-                if offset in cc._offset_range and self._current_cluster != cc._name:
-                    # Entering this cluster
-                    _enter = cc
-                elif offset not in cc._offset_range and self._current_cluster == cc._name:
-                    # Exiting this cluster
-                    _exit = cc
-            
-            if _exit is not None:
-                self._sizer.Remove(0)
-                self._panel.Destroy()
-                self._panel = None
-                self._current_cluster = ""
-                self._sizer.GetStaticBox().SetLabelText("")
-            
-            if _enter is not None:
-                self._panel = _enter._class_panel(self)
-                self._sizer.Add(self._panel)
-                self._sizer.GetStaticBox().SetLabelText(_enter._name)
-                self._current_cluster = _enter._name
-            
-            if self._panel is not None:
-                self._panel.Update(offset)
 
-            if _exit is not None or _enter is not None:
-                self._sizer.Fit(self)
-                self.Layout()
 
     def UpdateValues(self, doc_):
         if self._panel is not None:
             self._panel.ReadValues(doc_)
 
-    def UpDown(self, doc_, up: bool):
-        """
-        Process a "increase" or "decrease" key stroke.
-        """
-        
-        if self._current_offset == 0x110:
-            w = self._panel.FindWindowByName("C_P110")
-            p = ParamFromOffset(0x110)
-            Increase(p, doc_)
 
-            
-            
-        
-        
+    #def OnChar(self, event):
+    #    if True:
+    #        if event.KeyCode in [wx.WXK_PAGEUP,  wx.WXK_NUMPAD_PAGEUP ]:
+    #            self._panel.DoControlVal(self._current_offset, CtrlVals.INCREASE)
+    #        elif event.KeyCode in [wx.WXK_PAGEDOWN,  wx.WXK_NUMPAD_PAGEDOWN ]:
+    #            self._panel.DoControlVal(self._current_offset, CtrlVals.DECREASE)
+    #        if event.KeyCode in [wx.WXK_END,  wx.WXK_NUMPAD_END ]:
+    #            self._panel.DoControlVal(self._current_offset, CtrlVals.MINIMUM)
+    #        elif event.KeyCode in [wx.WXK_HOME,  wx.WXK_NUMPAD_BEGIN ]:
+    #            self._panel.DoControlVal(self._current_offset, CtrlVals.MAXIMUM)
+
 
 
 class DefaultDialog(wx.Dialog):
@@ -524,14 +674,44 @@ class ToneDocument(docview.Document):
         self.Modify(True)
 
 
-    def SetParamTo(self, p_num, p_val):
-        if p_num == 56:
-            self[0x110+0x20] = p_val
-        elif p_num == 57:
-            self[0x111+0x20] = p_val
-        elif p_num == 58:
-            self[0x112+0x20] = p_val
+    def SetParamTo(self, P : parameters.Param, p_val):
+      
+      
+        if P.number == 0:
+            STR_ = p_val.ljust(12, " ")[:12]
+            offset_ = P.byteOffset + 0x20
+            self._data[offset_:offset_+12] = STR_.encode('ascii')
+            return
+      
+        if p_val >= (1 << P.bitCount):
+            raise Exception("Trying to set value {0} to a field with only {1} bits".format(p_val, P.bitCount))
             
+        X, = struct.unpack_from("<I", self._data, P.byteOffset + 0x20)
+        
+        MASK = ((1 << P.bitCount) - 1) << P.bitOffset
+        
+        X = X & ~MASK
+        X = X | (p_val << P.bitOffset)
+        
+        struct.pack_into("<I", self._data, P.byteOffset + 0x20, X)
+        
+
+
+
+    def GetParamFrom(self, P : parameters.Param):
+      
+        if P.number == 0:
+            offset_ = P.byteOffset + 0x20
+            STR_ = self._data[offset_:offset_+12].decode('ascii')
+            return STR_
+      
+      
+        X, = struct.unpack_from("<I", self._data, P.byteOffset + 0x20)
+        
+        X = X >> (P.bitOffset)
+        X = X & ((1 << P.bitCount) - 1)
+        
+        return X
 
 
 
@@ -585,6 +765,7 @@ class ToneDocumentManager(wx.EvtHandler):
         self._fileHistory = None
         self._lastDirectory = ""
         self._view = None
+        self._view2 = None
         self._template = ToneDocumentTemplate(self)
 
     def GetCurrentDocument(self):
@@ -617,6 +798,9 @@ class ToneDocumentManager(wx.EvtHandler):
     def SetView(self, view):
         self._view = view
 
+    def SetView2(self, view):
+        self._view2 = view
+
     def OnNew(self):
         _new_doc = ToneDocument()
         self._docs = [ _new_doc ]
@@ -624,6 +808,7 @@ class ToneDocumentManager(wx.EvtHandler):
         _new_doc.OnNewDocument()
         _new_doc.SetCommandProcessor(_new_doc.OnCreateCommandProcessor())
         self._view.SetDocument(_new_doc)
+        self._view2.SetDocument(_new_doc)
         
     def OnSave(self):
         if len(self._docs) >= 1:
@@ -643,12 +828,10 @@ class ToneDocumentManager(wx.EvtHandler):
                 self._docs[0].OnOpenDocument(path)
     
     def OnSetToDefault(self, include_wavetable=False):
-        if len(self._docs) >= 1:
-            self._docs[0].SetDocumentDefault(include_wavetable)
+        self._view.DoDefaults(include_wavetable)
       
     def OnSetToRandomise(self, include_wavetable=False):
-        if len(self._docs) >= 1:
-            self._docs[0].SetDocumentRandomise(include_wavetable)
+        self._view.DoRandomise(include_wavetable)
    
     def OnUndo(self):
         """
@@ -827,10 +1010,14 @@ class AboutDialog(wx.Dialog):
         wx.Dialog.__init__(self, parent, -1, _("About ") + wx.GetApp().GetAppName(), style = wx.DEFAULT_DIALOG_STYLE)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        if image:
-            imageItem = wx.StaticBitmap(self, -1, image.ConvertToBitmap(), (0,0), (image.GetWidth(), image.GetHeight()))
-            sizer.Add(imageItem, 0, wx.ALIGN_CENTER|wx.ALL, 0)
+        
+        _icon = wx.StaticBitmap(self, wx.ID_ANY)
+        _icon.SetIcon(wx.Icon("tyrant-64x64.ico"))
+        sizer.Add(_icon, wx.ALIGN_LEFT)
+
         sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName()), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer.Add(wx.StaticText(self, -1, _(u"\u00A9 2022")), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer.Add(wx.StaticText(self, -1, "https://github.com/michgz/ToneTyrant"), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
         btn = wx.Button(self, wx.ID_OK)
         sizer.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -859,14 +1046,27 @@ class HelpDialog(wx.Dialog):
         """
         wx.Dialog.__init__(self, parent, -1, _("Help"), style = wx.DEFAULT_DIALOG_STYLE)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(wx.StaticText(self, -1, HelpDialog.helpText), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer_1 = wx.BoxSizer(wx.VERTICAL)
+        sizer_1.Add(wx.StaticText(self, -1, _("Keyboard shortcuts:")), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        
+        sizer_2 = wx.FlexGridSizer(cols=2, gap=wx.Size(5, 5))
+        
+        sizer_2.Add(wx.StaticText(self, -1, u"\u2190\u2191\u2192\u2193"))
+        sizer_2.Add(wx.StaticText(self, -1, "(Arrow keys) navigate around the tone file"))
+        sizer_2.Add(wx.StaticText(self, -1, "PG.UP/PG.DN"))
+        sizer_2.Add(wx.StaticText(self, -1, "Increase/decrease the parameter by some amount"))
+        sizer_2.Add(wx.StaticText(self, -1, "HOME/END"))
+        stxt_1 = wx.StaticText(self, -1, "Set the parameter to its minimum/maximum recommended value. (Larger/smaller values might be possible but will probably not sound very musical")
+        stxt_1.Wrap(350)
+        sizer_2.Add(stxt_1)
+        
+        sizer_1.Add(sizer_2)
 
         btn = wx.Button(self, wx.ID_OK)
-        sizer.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer_1.Add(btn, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
-        self.SetSizer(sizer)
-        sizer.Fit(self)
+        self.SetSizer(sizer_1)
+        sizer_1.Fit(self)
 
 
 """
@@ -951,7 +1151,7 @@ class ToneParentFrame(wx.Frame):
         
         helpMenu = wx.Menu()
         helpMenu.Append(wx.ID_HELP, _("&Help"), _("Displays help information"))
-        helpMenu.Append(wx.ID_ABOUT, _("&About" + " " + wx.GetApp().GetAppName()), _("Displays program information, version number, and copyright"))
+        helpMenu.Append(wx.ID_ABOUT, _("&About"), _("Displays program information, version number, and copyright"))
         menuBar.Append(helpMenu, _("&Help"))
 
         self.Bind(wx.EVT_MENU, self.OnAbout, id=wx.ID_ABOUT)
@@ -1056,12 +1256,14 @@ def main():
 
     # Start the app
     _app = wx.App(False)
+    _app.SetAppName(_("ToneTyrant"))
 
     # Initialise the document-view system
     _docManager = ToneDocumentManager()
     _frame = ToneParentFrame(None,wx.ID_ANY,"Untitled.TON")
     _frame.SetDocManager(_docManager)
     _frame.SetSize(wx.DefaultCoord, wx.DefaultCoord, 620, 580)
+    _frame.SetIcon(wx.Icon("tyrant-64x64.ico"))
     _view = hexeditview.HexEditView(_frame)
     _docManager.SetView(_view)
 
@@ -1073,6 +1275,7 @@ def main():
 
     _view._callback_window = _hintsDlg
     _hintsDlg._view = _view
+    _docManager.SetView2(_hintsDlg)
 
     # Run the application
     _frame.Show(True)

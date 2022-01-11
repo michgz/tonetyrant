@@ -94,6 +94,18 @@ for i in elem.find("parameters"):
             dv_val = int(dv)
     
 
+
+    nm_val = ""
+    nn = i.find("name")
+    if nn is not None:
+        nm_val = nn.text
+
+    cst_val = ""
+    ct = i.find("cluster")
+    if ct is not None:
+        cst_val = ct.text
+
+
     A.append((     i.get("number"),   # non-unique number!
                    i.get("block"),
                    of_val,            # offset into file
@@ -102,7 +114,9 @@ for i in elem.find("parameters"):
                    cm_val,
                    dv_val,            # default value
                    r1_val,
-                   r2_val
+                   r2_val,
+                   nm_val,
+                   cst_val,
              ))
     
 
@@ -116,6 +130,8 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
                   class Param:
                       number: int
                       block0: int
+                      name: str
+                      cluster: str
                       byteOffset: int
                       byteCount: int
                       bitOffset: int
@@ -129,7 +145,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
     f_py.write("Params = [\n")
 
     for AA in A:
-        f_py.write("    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8})),\n".format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8]))
+        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), name="{9}", cluster="{10}"),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10]))
     
     f_py.write("]\n\n\n")
 
