@@ -58,6 +58,7 @@
         </parameter>
         <parameter number="3" block="0">
             <sound>A</sound>
+            <cluster>Velocity (Sound A)</cluster>
             <bytes>
                 <offset>0x84</offset>
                 <count>1</count>
@@ -70,6 +71,7 @@
         </parameter>
         <parameter number="4" block="0">
             <name>Velocity to filter cutoff</name>
+            <cluster>Velocity (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x85</offset>
@@ -83,6 +85,7 @@
         </parameter>
         <parameter number="5" block="0">
             <name>Velocity sense</name>
+            <cluster>Velocity (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x86</offset>
@@ -95,7 +98,8 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="6" block="0">
-            <name>Pitch envelope Attack level</name>
+            <name>Attack</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x02</offset>
@@ -118,7 +122,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="6" block="1">
-            <name>Pitch envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x06</offset>
@@ -141,7 +146,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="6" block="2">
-            <name>Pitch envelope Release level</name>
+            <name>Release</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x0A</offset>
@@ -164,7 +170,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="7" block="0">
-            <name>Pitch envelope unused time</name>
+            <name>unused time</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x00</offset>
@@ -186,7 +193,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="7" block="1">
-            <name>Pitch envelope Attack time</name>
+            <name>Attack time</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x04</offset>
@@ -208,7 +216,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="7" block="2">
-            <name>Pitch envelope Release time</name>
+            <name>Release time</name>
+            <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x08</offset>
@@ -231,6 +240,7 @@
         </parameter>
         <parameter number="8" block="0">
             <sound>A</sound>
+            <cluster>Unknown (Sound A)</cluster>
             <bytes>
                 <offset>0x7C</offset>
                 <count>1</count>
@@ -243,6 +253,7 @@
         </parameter>
         <parameter number="9" block="0">
             <sound>A</sound>
+            <cluster>Unknown (Sound A)</cluster>
             <bytes>
                 <offset>0x7D</offset>
                 <count>1</count>
@@ -254,7 +265,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="0">
-            <name>Unknown envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x0E</offset>
@@ -276,7 +288,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="1">
-            <name>Unknown envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x12</offset>
@@ -298,7 +311,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="2">
-            <name>Unknown envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x16</offset>
@@ -320,7 +334,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="3">
-            <name>Unknown envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x1A</offset>
@@ -342,7 +357,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="4">
-            <name>Unknown envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x1E</offset>
@@ -364,7 +380,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="5">
-            <name>Unknown envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x22</offset>
@@ -386,7 +403,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="10" block="6">
-            <name>Unknown envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x26</offset>
@@ -408,7 +426,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="11" block="0">
-            <name>Unknown envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x0C</offset>
@@ -430,7 +449,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="1">
-            <name>Unknown envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x10</offset>
@@ -452,7 +472,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="2">
-            <name>Unknown envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x14</offset>
@@ -474,7 +495,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="3">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x18</offset>
@@ -496,7 +518,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="4">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x1C</offset>
@@ -518,7 +541,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="5">
-            <name>Unknown envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x20</offset>
@@ -540,7 +564,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="11" block="6">
-            <name>Unknown envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x24</offset>
@@ -562,7 +587,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="12" block="0">
-            <name>Unknown envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x2A</offset>
@@ -584,7 +610,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="1">
-            <name>Unknown envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x2E</offset>
@@ -606,7 +633,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="2">
-            <name>Unknown envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x32</offset>
@@ -628,7 +656,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="3">
-            <name>Unknown envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x36</offset>
@@ -650,7 +679,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="4">
-            <name>Unknown envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x3A</offset>
@@ -672,7 +702,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="5">
-            <name>Unknown envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x3E</offset>
@@ -694,7 +725,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="12" block="6">
-            <name>Unknown envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x42</offset>
@@ -716,7 +748,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="13" block="0">
-            <name>Unknown envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x28</offset>
@@ -738,7 +771,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="1">
-            <name>Unknown envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x2C</offset>
@@ -760,7 +794,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="2">
-            <name>Unknown envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x30</offset>
@@ -782,7 +817,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="3">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x34</offset>
@@ -804,7 +840,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="4">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x38</offset>
@@ -826,7 +863,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="5">
-            <name>Unknown envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x3C</offset>
@@ -848,7 +886,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="13" block="6">
-            <name>Unknown envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Unknown Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x40</offset>
@@ -870,7 +909,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="14" block="0">
-            <name>Cutoff frequency</name>
+            <name>Cutoff</name>
+            <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x7E</offset>
@@ -883,7 +923,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="15" block="0">
-            <name>Cutoff resonance</name>
+            <name>Resonance</name>
+            <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x7F</offset>
@@ -896,7 +937,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="16" block="0">
-            <name>Multiplier for filter envelope</name>
+            <name>Envelope Multiplier</name>
+            <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x80</offset>
@@ -909,7 +951,8 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="17" block="0">
-            <name>Filter envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x46</offset>
@@ -931,7 +974,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="1">
-            <name>Filter envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x4A</offset>
@@ -953,7 +997,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="2">
-            <name>Filter envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x4E</offset>
@@ -975,7 +1020,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="3">
-            <name>Filter envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x52</offset>
@@ -997,7 +1043,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="4">
-            <name>Filter envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x56</offset>
@@ -1019,7 +1066,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="5">
-            <name>Filter envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x5A</offset>
@@ -1041,7 +1089,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="17" block="6">
-            <name>Filter envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x5E</offset>
@@ -1063,7 +1112,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="18" block="0">
-            <name>Filter envelope unused time</name>
+            <name>unused time</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x44</offset>
@@ -1085,7 +1135,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="1">
-            <name>Filter envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x48</offset>
@@ -1107,7 +1158,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="2">
-            <name>Filter envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x4C</offset>
@@ -1129,7 +1181,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="3">
-            <name>Filter envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x50</offset>
@@ -1151,7 +1204,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="4">
-            <name>Filter envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x54</offset>
@@ -1173,7 +1227,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="5">
-            <name>Filter envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x58</offset>
@@ -1195,7 +1250,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="18" block="6">
-            <name>Filter envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x5C</offset>
@@ -1217,7 +1273,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="19" block="0">
-            <name>Envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x62</offset>
@@ -1239,7 +1296,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="1">
-            <name>Envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x66</offset>
@@ -1261,7 +1319,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="2">
-            <name>Envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x6A</offset>
@@ -1283,7 +1342,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="3">
-            <name>Envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x6E</offset>
@@ -1305,7 +1365,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="4">
-            <name>Envelope Hold level</name>
+            <name>Hold level</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x72</offset>
@@ -1327,7 +1388,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="5">
-            <name>Envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x76</offset>
@@ -1349,7 +1411,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="19" block="6">
-            <name>Envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x7A</offset>
@@ -1371,7 +1434,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="20" block="0">
-            <name>Envelope unused time</name>
+            <name>unused time</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x60</offset>
@@ -1393,7 +1457,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="1">
-            <name>Envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x64</offset>
@@ -1415,7 +1480,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="2">
-            <name>Envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x68</offset>
@@ -1437,7 +1503,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="3">
-            <name>Envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x6C</offset>
@@ -1459,7 +1526,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="4">
-            <name>Envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x70</offset>
@@ -1481,7 +1549,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="5">
-            <name>Envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x74</offset>
@@ -1503,7 +1572,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="20" block="6">
-            <name>Envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
                 <offset>0x78</offset>
@@ -1569,6 +1639,7 @@
         </parameter>
         <parameter number="23" block="0">
             <sound>B</sound>
+            <cluster>Velocity (Sound B)</cluster>
             <bytes>
                 <offset>0x10C</offset>
                 <count>1</count>
@@ -1581,6 +1652,7 @@
         </parameter>
         <parameter number="24" block="0">
             <name>Velocity to filter cutoff</name>
+            <cluster>Velocity (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x10D</offset>
@@ -1594,6 +1666,7 @@
         </parameter>
         <parameter number="25" block="0">
             <name>Velocity sense</name>
+            <cluster>Velocity (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x10E</offset>
@@ -1606,7 +1679,8 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="26" block="0">
-            <name>Pitch envelope Attack level</name>
+            <name>Attack</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x08A</offset>
@@ -1629,7 +1703,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="26" block="1">
-            <name>Pitch envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x08E</offset>
@@ -1652,7 +1727,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="26" block="2">
-            <name>Pitch envelope Release level</name>
+            <name>Release</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x092</offset>
@@ -1675,7 +1751,8 @@
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="27" block="0">
-            <name>Pitch envelope unused time</name>
+            <name>unused time</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x088</offset>
@@ -1697,7 +1774,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="27" block="1">
-            <name>Pitch envelope Attack time</name>
+            <name>Attack time</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x08C</offset>
@@ -1719,7 +1797,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="27" block="2">
-            <name>Pitch envelope Release time</name>
+            <name>Release time</name>
+            <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x090</offset>
@@ -1742,6 +1821,7 @@
         </parameter>
         <parameter number="28" block="0">
             <sound>B</sound>
+            <cluster>Unknown (Sound B)</cluster>
             <bytes>
                 <offset>0x104</offset>
                 <count>1</count>
@@ -1754,6 +1834,7 @@
         </parameter>
         <parameter number="29" block="0">
             <sound>B</sound>
+            <cluster>Unknown (Sound B)</cluster>
             <bytes>
                 <offset>0x105</offset>
                 <count>1</count>
@@ -1765,7 +1846,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="0">
-            <name>Unknown envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x096</offset>
@@ -1787,7 +1869,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="1">
-            <name>Unknown envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x09A</offset>
@@ -1809,7 +1892,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="2">
-            <name>Unknown envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x09E</offset>
@@ -1831,7 +1915,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="3">
-            <name>Unknown envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0A2</offset>
@@ -1853,7 +1938,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="4">
-            <name>Unknown envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0A6</offset>
@@ -1875,7 +1961,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="5">
-            <name>Unknown envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0AA</offset>
@@ -1897,7 +1984,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="30" block="6">
-            <name>Unknown envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0AE</offset>
@@ -1919,7 +2007,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="31" block="0">
-            <name>Unknown envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x094</offset>
@@ -1941,7 +2030,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="1">
-            <name>Unknown envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x098</offset>
@@ -1963,7 +2053,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="2">
-            <name>Unknown envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x09C</offset>
@@ -1985,7 +2076,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="3">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0A0</offset>
@@ -2007,7 +2099,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="4">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0A4</offset>
@@ -2029,7 +2122,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="5">
-            <name>Unknown envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0A8</offset>
@@ -2051,7 +2145,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="31" block="6">
-            <name>Unknown envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0AC</offset>
@@ -2073,7 +2168,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="32" block="0">
-            <name>Unknown envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0B2</offset>
@@ -2095,7 +2191,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="1">
-            <name>Unknown envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0B6</offset>
@@ -2117,7 +2214,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="2">
-            <name>Unknown envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0BA</offset>
@@ -2139,7 +2237,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="3">
-            <name>Unknown envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0BE</offset>
@@ -2161,7 +2260,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="4">
-            <name>Unknown envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0C2</offset>
@@ -2183,7 +2283,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="5">
-            <name>Unknown envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0C6</offset>
@@ -2205,7 +2306,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="32" block="6">
-            <name>Unknown envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0CA</offset>
@@ -2227,7 +2329,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="33" block="0">
-            <name>Unknown envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0B0</offset>
@@ -2249,7 +2352,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="1">
-            <name>Unknown envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0B4</offset>
@@ -2271,7 +2375,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="2">
-            <name>Unknown envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0B8</offset>
@@ -2293,7 +2398,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="3">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0BC</offset>
@@ -2315,7 +2421,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="4">
-            <name>Unknown envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0C0</offset>
@@ -2337,7 +2444,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="5">
-            <name>Unknown envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0C4</offset>
@@ -2359,7 +2467,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="33" block="6">
-            <name>Unknown envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Unknown Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0C8</offset>
@@ -2381,7 +2490,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="34" block="0">
-            <name>Cutoff frequency</name>
+            <name>Cutoff</name>
+            <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x106</offset>
@@ -2394,7 +2504,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="35" block="0">
-            <name>Cutoff resonance</name>
+            <name>Resonance</name>
+            <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x107</offset>
@@ -2407,7 +2518,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="36" block="0">
-            <name>Multiplier for filter envelope</name>
+            <name>Envelope Multiplier</name>
+            <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x108</offset>
@@ -2420,7 +2532,8 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="37" block="0">
-            <name>Filter envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0CE</offset>
@@ -2442,7 +2555,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="1">
-            <name>Filter envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0D2</offset>
@@ -2464,7 +2578,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="2">
-            <name>Filter envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0D6</offset>
@@ -2486,7 +2601,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="3">
-            <name>Filter envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0DA</offset>
@@ -2508,7 +2624,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="4">
-            <name>Filter envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0DE</offset>
@@ -2530,7 +2647,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="5">
-            <name>Filter envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0E2</offset>
@@ -2552,7 +2670,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="37" block="6">
-            <name>Filter envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0E6</offset>
@@ -2574,7 +2693,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="38" block="0">
-            <name>Filter envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0CC</offset>
@@ -2596,7 +2716,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="1">
-            <name>Filter envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0D0</offset>
@@ -2618,7 +2739,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="2">
-            <name>Filter envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0D4</offset>
@@ -2640,7 +2762,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="3">
-            <name>Filter envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0D8</offset>
@@ -2662,7 +2785,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="4">
-            <name>Filter envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0DC</offset>
@@ -2684,7 +2808,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="5">
-            <name>Filter envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0E0</offset>
@@ -2706,7 +2831,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="38" block="6">
-            <name>Filter envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0E4</offset>
@@ -2728,7 +2854,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="39" block="0">
-            <name>Envelope Attack level 1</name>
+            <name>Attack 1</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0EA</offset>
@@ -2750,7 +2877,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="1">
-            <name>Envelope Attack level 2</name>
+            <name>Attack 2</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0EE</offset>
@@ -2772,7 +2900,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="2">
-            <name>Envelope Attack level 3</name>
+            <name>Attack 3</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0F2</offset>
@@ -2794,7 +2923,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="3">
-            <name>Envelope Attack level 4</name>
+            <name>Attack 4</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0F6</offset>
@@ -2816,7 +2946,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="4">
-            <name>Envelope Hold level</name>
+            <name>Hold</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0FA</offset>
@@ -2838,7 +2969,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="5">
-            <name>Envelope Release level 1</name>
+            <name>Release 1</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0FE</offset>
@@ -2860,7 +2992,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="39" block="6">
-            <name>Envelope Release level 2</name>
+            <name>Release 2</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x102</offset>
@@ -2882,7 +3015,8 @@
             <defaultValue>128</defaultValue>
         </parameter>
         <parameter number="40" block="0">
-            <name>Envelope unused time</name>
+            <name>Unused time</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0E8</offset>
@@ -2904,7 +3038,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="1">
-            <name>Envelope Attack time 2</name>
+            <name>Attack time 1</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0EC</offset>
@@ -2926,7 +3061,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="2">
-            <name>Envelope Attack time 3</name>
+            <name>Attack time 2</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0F0</offset>
@@ -2948,7 +3084,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="3">
-            <name>Envelope Attack time 4</name>
+            <name>Attack time 3</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0F4</offset>
@@ -2970,7 +3107,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="4">
-            <name>Envelope Attack time 4</name>
+            <name>Attack time 4</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0F8</offset>
@@ -2992,7 +3130,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="5">
-            <name>Envelope Release time 1</name>
+            <name>Release time 1</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x0FC</offset>
@@ -3014,7 +3153,8 @@
             <defaultValue>512</defaultValue>
         </parameter>
         <parameter number="40" block="6">
-            <name>Envelope Release time 2</name>
+            <name>Release time 2</name>
+            <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
                 <offset>0x100</offset>
@@ -3070,6 +3210,7 @@
         </parameter>
         <parameter number="43" block="0">
             <name>Octave shift</name>
+            <cluster>Octave</cluster>
             <bytes>
                 <offset>0x1A5</offset>
                 <count>1</count>
@@ -3082,10 +3223,16 @@
                 <min>0</min>
                 <max>7</max>
             </absoluteLimits>
+            <recommendedLimits>
+                <min>1</min>
+                <max>7</max>
+                <step>1</step>
+            </recommendedLimits>
             <defaultValue>4</defaultValue>
         </parameter>
         <parameter number="44" block="0">
             <name>Enable DSP</name>
+            <cluster>DSP Chain</cluster>
             <bytes>
                 <offset>0x1A5</offset>
                 <count>1</count>
@@ -3124,6 +3271,7 @@
         </parameter>
         <parameter number="46" block="0">
             <name>Volume 2</name>
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1B7</offset>
                 <count>1</count>
@@ -3145,6 +3293,7 @@
         </parameter>
         <parameter number="47" block="0">
             <name>Key-follow 1</name>
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1B8</offset>
                 <count>1</count>
@@ -3166,6 +3315,7 @@
         </parameter>
         <parameter number="48" block="0">
             <name>Key-follow 2</name>
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1B9</offset>
                 <count>1</count>
@@ -3186,6 +3336,7 @@
             <defaultValue>2</defaultValue>
         </parameter>
         <parameter number="49" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BA</offset>
                 <count>1</count>
@@ -3206,6 +3357,7 @@
             <defaultValue>2</defaultValue>
         </parameter>
         <parameter number="50" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BB</offset>
                 <count>1</count>
@@ -3226,6 +3378,7 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="51" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BC</offset>
                 <count>1</count>
@@ -3246,6 +3399,7 @@
             <defaultValue>2</defaultValue>
         </parameter>
         <parameter number="52" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BD</offset>
                 <count>1</count>
@@ -3266,6 +3420,7 @@
             <defaultValue>127</defaultValue>
         </parameter>
         <parameter number="53" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BE</offset>
                 <count>1</count>
@@ -3286,6 +3441,7 @@
             <defaultValue>2</defaultValue>
         </parameter>
         <parameter number="54" block="0">
+            <cluster>Gain</cluster>
             <bytes>
                 <offset>0x1BF</offset>
                 <count>1</count>
@@ -3388,6 +3544,7 @@
         </parameter>
         <parameter number="59" block="0">
             <name>Vibrato type</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x124</offset>
                 <count>1</count>
@@ -3409,6 +3566,7 @@
         </parameter>
         <parameter number="60" block="0">
             <name>Vibrato rate</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x113</offset>
                 <count>1</count>
@@ -3430,6 +3588,7 @@
         </parameter>
         <parameter number="61" block="0">
             <name>Vibrato delay</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x114</offset>
                 <count>1</count>
@@ -3451,6 +3610,7 @@
         </parameter>
         <parameter number="62" block="0">
             <name>Vibrato rise time</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x115</offset>
                 <count>1</count>
@@ -3472,6 +3632,7 @@
         </parameter>
         <parameter number="63" block="0">
             <name>Vibrato depth</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x116</offset>
                 <count>1</count>
@@ -3493,6 +3654,7 @@
         </parameter>
         <parameter number="64" block="0">
             <name>Vibrato depth for CC 01 (modulation)</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x117</offset>
                 <count>1</count>
@@ -3514,6 +3676,7 @@
         </parameter>
         <parameter number="65" block="0">
             <name>Vibrato depth for after-touch</name>
+            <cluster>Vibrato</cluster>
             <bytes>
                 <offset>0x118</offset>
                 <count>1</count>
@@ -3535,6 +3698,7 @@
         </parameter>
         <parameter number="66" block="0">
             <name>Tremolo/filter LFO type</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x124</offset>
                 <count>1</count>
@@ -3556,6 +3720,7 @@
         </parameter>
         <parameter number="67" block="0">
             <name>Tremolo/filter LFO rate</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x119</offset>
                 <count>1</count>
@@ -3577,6 +3742,7 @@
         </parameter>
         <parameter number="68" block="0">
             <name>Filter LFO delay</name>
+            <cluster>Filter LFO</cluster>
             <bytes>
                 <offset>0x11A</offset>
                 <count>1</count>
@@ -3598,6 +3764,7 @@
         </parameter>
         <parameter number="69" block="0">
             <name>Filter LFO rise time</name>
+            <cluster>Filter LFO</cluster>
             <bytes>
                 <offset>0x11B</offset>
                 <count>1</count>
@@ -3619,6 +3786,7 @@
         </parameter>
         <parameter number="70" block="0">
             <name>Filter LFO depth</name>
+            <cluster>Filter LFO</cluster>
             <bytes>
                 <offset>0x11C</offset>
                 <count>1</count>
@@ -3640,6 +3808,7 @@
         </parameter>
         <parameter number="71" block="0">
             <name>Filter LFO depth for CC 01 (modulation)</name>
+            <cluster>Filter LFO</cluster>
             <bytes>
                 <offset>0x11D</offset>
                 <count>1</count>
@@ -3661,6 +3830,7 @@
         </parameter>
         <parameter number="72" block="0">
             <name>Filter LFO depth for after-touch</name>
+            <cluster>Filter LFO</cluster>
             <bytes>
                 <offset>0x11E</offset>
                 <count>1</count>
@@ -3682,6 +3852,7 @@
         </parameter>
         <parameter number="73" block="0">
             <name>Tremolo delay</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x11F</offset>
                 <count>1</count>
@@ -3703,6 +3874,7 @@
         </parameter>
         <parameter number="74" block="0">
             <name>Tremolo rise time</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x120</offset>
                 <count>1</count>
@@ -3724,6 +3896,7 @@
         </parameter>
         <parameter number="75" block="0">
             <name>Tremolo depth</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x121</offset>
                 <count>1</count>
@@ -3745,6 +3918,7 @@
         </parameter>
         <parameter number="76" block="0">
             <name>Tremolo depth for CC 01 (modulation)</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x122</offset>
                 <count>1</count>
@@ -3766,6 +3940,7 @@
         </parameter>
         <parameter number="77" block="0">
             <name>Tremolo depth for after-touch</name>
+            <cluster>Tremolo</cluster>
             <bytes>
                 <offset>0x123</offset>
                 <count>1</count>
@@ -3884,6 +4059,7 @@
         </parameter>
         <parameter number="84" block="0">
             <name>DSP chain name</name>
+            <cluster>DSP Chain</cluster>
             <bytes>
                 <offset>0x126</offset>
                 <count>16</count>
@@ -3893,6 +4069,7 @@
         </parameter>
         <parameter number="85" block="0">
             <name>DSP effect 1</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x136</offset>
                 <count>2</count>
@@ -3914,6 +4091,7 @@
         </parameter>
         <parameter number="85" block="1">
             <name>DSP effect 2</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x148</offset>
                 <count>2</count>
@@ -3935,6 +4113,7 @@
         </parameter>
         <parameter number="85" block="2">
             <name>DSP effect 3</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x15A</offset>
                 <count>2</count>
@@ -3956,6 +4135,7 @@
         </parameter>
         <parameter number="85" block="3">
             <name>DSP effect 4</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x16C</offset>
                 <count>2</count>
@@ -3977,6 +4157,7 @@
         </parameter>
         <parameter number="86" block="0">
             <name>DSP bypass 1</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x136</offset>
                 <count>2</count>
@@ -3993,6 +4174,7 @@
         </parameter>
         <parameter number="86" block="1">
             <name>DSP bypass 2</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x148</offset>
                 <count>2</count>
@@ -4009,6 +4191,7 @@
         </parameter>
         <parameter number="86" block="2">
             <name>DSP bypass 3</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x15A</offset>
                 <count>2</count>
@@ -4025,6 +4208,7 @@
         </parameter>
         <parameter number="86" block="3">
             <name>DSP bypass 4</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x16C</offset>
                 <count>2</count>
@@ -4041,6 +4225,7 @@
         </parameter>
         <parameter number="87" block="0">
             <name>DSP parameters 1</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x138</offset>
                 <count>16</count>
@@ -4048,6 +4233,7 @@
         </parameter>
         <parameter number="87" block="1">
             <name>DSP parameters 2</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x14A</offset>
                 <count>16</count>
@@ -4055,6 +4241,7 @@
         </parameter>
         <parameter number="87" block="2">
             <name>DSP parameters 3</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x15C</offset>
                 <count>16</count>
@@ -4062,6 +4249,7 @@
         </parameter>
         <parameter number="87" block="3">
             <name>DSP parameters 4</name>
+            <cluster>DSP</cluster>
             <bytes>
                 <offset>0x16E</offset>
                 <count>16</count>
@@ -4264,6 +4452,7 @@
         </parameter>
         <parameter number="100" block="0">
             <name>DSP chain number</name>
+            <cluster>DSP Chain</cluster>
             <bytes>
                 <offset>0x184</offset>
                 <count>4</count>
@@ -4367,6 +4556,7 @@
         </parameter>
         <parameter number="107" block="0">
             <name>Portamento time</name>
+            <cluster>Portamento</cluster>
             <bytes>
                 <offset>0x194</offset>
                 <count>1</count>
@@ -4388,6 +4578,7 @@
         </parameter>
         <parameter number="108" block="0">
             <name>Octave shift (keyboard)</name>
+            <cluster>Octave</cluster>
             <bytes>
                 <offset>0x195</offset>
                 <count>1</count>
@@ -4396,6 +4587,11 @@
                 <offset>0</offset>
                 <count>7</count>
             </bits>
+            <recommendedLimits>
+                <min>1</min>
+                <max>7</max>
+                <step>1</step>
+            </recommendedLimits>
             <defaultValue>4</defaultValue>
         </parameter>
         <parameter number="109" block="0">
@@ -4507,6 +4703,7 @@
         </parameter>
         <parameter number="116" block="0">
             <name>Portamento</name>
+            <cluster>Portamento</cluster>
             <bytes>
                 <offset>0x19A</offset>
                 <count>1</count>

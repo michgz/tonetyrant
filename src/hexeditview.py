@@ -40,6 +40,7 @@ class HexEditView(wx.Control):
         self.Bind(wx.EVT_LEFT_DOWN, self.OnMouse)
         
         self._callback_window = None
+        self._highlighted_offsets = []
 
 
     def __config(self):
@@ -56,6 +57,10 @@ class HexEditView(wx.Control):
         self._brush1 = wx.Brush( wx.ColourDatabase().FindColour("DARK GREY") )
         self._brush2 = wx.Brush( wx.ColourDatabase().FindColour("LIGHT GREY") )
         self._brush3 = wx.Brush( wx.ColourDatabase().FindColour("GREY") )
+
+        self._brush4 = wx.Brush( wx.Colour(220, 205, 205) )   # A pale pink.
+
+
         
         self._x1 = 40
         self._x2 = 450
@@ -99,6 +104,7 @@ class HexEditView(wx.Control):
         if self._callback_window is not None:
             self._callback_window.SetSelected(self._caret_pos // 2)
             self._callback_window.UpdateValues(self._buffer)
+            self._highlighted_offsets = self._callback_window.GetHighlightList()
         return True
 
 
@@ -123,6 +129,12 @@ class HexEditView(wx.Control):
         xx = int((x - (self._x2 + 5)) / self._x4)
         
         return 32*yy+2*xx
+
+    def SetHighlightList(self, list_):
+        self._highlighted_offsets = list_
+
+    def ClearHighlightList(self):
+        self._highlighted_offsets = []
 
 
     def OnMouse(self, event):
@@ -309,6 +321,21 @@ class HexEditView(wx.Control):
             _dc.SetTextForeground(self._font_colour1 )
 
             # Second frame
+            
+            i = 0
+            y = self._y1
+            _dc.SetBrush(self._brush4)
+            while (i < len(self._buffer)):
+                k = 0
+                while i + k < len(self._buffer) and k < 16:
+                    if (i + k) in self._highlighted_offsets:
+                        _dc.DrawRectangle(self._x1 + 0 + self._x3*(3*k + (1 if k >= 8 else 0)), y-1, self._x3*2+10  , self._y2 + 2)
+                    k += 1
+
+                i += k
+                y += self._y2
+            
+            
             i = 0
             y = self._y1
             while (i < len(self._buffer)):

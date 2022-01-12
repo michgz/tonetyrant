@@ -44,6 +44,8 @@ for i in elem.find("parameters"):
         else:
             cm_val = int(cm)
 
+    r3_val = 16
+
     rr = i.find("recommendedLimits")
     if rr is None:
         # Try absoluteLimits before giving up.
@@ -79,6 +81,14 @@ for i in elem.find("parameters"):
             r2_val = int(r2, 16)
         else:
             r2_val = int(r2)
+        r3 = rr.find("step")
+        if r3 is not None:
+            r3 = r3.text
+            if r3.startswith("0x") or r3.startswith("0X"):
+                r3_val = int(r3, 16)
+            else:
+                r3_val = int(r3)
+        
 
 
 
@@ -115,6 +125,7 @@ for i in elem.find("parameters"):
                    dv_val,            # default value
                    r1_val,
                    r2_val,
+                   r3_val,
                    nm_val,
                    cst_val,
              ))
@@ -137,6 +148,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
                       bitOffset: int
                       bitCount: int
                       recommendedLimits: tuple
+                      recommendedStep: int
                       defaultValue: int
                   
                   
@@ -145,7 +157,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
     f_py.write("Params = [\n")
 
     for AA in A:
-        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), name="{9}", cluster="{10}"),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10]))
+        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), recommendedStep={9}, name="{10}", cluster="{11}"),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11]))
     
     f_py.write("]\n\n\n")
 

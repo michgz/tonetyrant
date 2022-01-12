@@ -38,6 +38,12 @@ class ViewType:
     CUSTOM_FILTERTYPE = 2
     CUSTOM_WAVETABLETIMBRE = 3
     CUSTOM_TONENAME = 4
+    CUSTOM_DSPTYPE = 5
+    CUSTOM_LFOTYPE = 6
+    CUSTOM_PORTAMENTO = 7
+    CUSTOM_OCTAVESHIFT = 8
+    CUSTOM_DSPNAME = 9
+    CUSTOM_DSPPARAMS = 10
 
 
 @dataclasses.dataclass
@@ -85,6 +91,69 @@ class CustomText_ToneName(wx.TextCtrl):
 
 
 
+class CustomListBox_DSPType(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0\t" + _(""),
+            "1\t" + _("Stereo 3-band EQ"),
+            "2\t" + _("Compress"),
+            "3\t" + _("Limiter"),
+            "4\t" + _("Enhancer"),
+            "5\t" + _("Reflection"),
+            "6\t" + _("Phaser"),
+            "7\t" + _("Chorus"),
+            "8\t" + _("Flange"),
+            "9\t" + _("Tremolo"),
+            "10\t" + _("Auto pan"),
+            "11\t" + _("Rotary"),
+            "12\t" + _("Drive rotary"),
+            "13\t" + _("LFO wah"),
+            "14\t" + _("Auto wah"),
+            "15\t" + _("Distortion"),
+            "16\t" + _("Pitch shift"),
+            "17\t" + _(""),
+            "18\t" + _("Ring modulation"),
+            "19\t" + _("Delay"),
+            "20\t" + _("Piano"),
+            "21\t" + _("Stereo 1-band EQ"),
+            "22\t" + _("Stereo 2-band EQ"),
+            "23\t" + _("Drive"),
+            "24\t" + _("Amp cabinet"),
+            "25\t" + _(""),
+            "26\t" + _(""),
+            "27\t" + _("Mono 1-band EQ"),
+            "28\t" + _("Mono 2-band EQ"),
+            "29\t" + _("Mono 3-band EQ"),
+            "30\t" + _("Model wah"),
+            "31\t" + _("Tone control")   ] )
+
+
+
+class CustomListBox_LFOType(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0\t" + _("Sine"),
+            "1\t" + _("Triangle"),
+            "2\t" + _("Saw up"),
+            "3\t" + _("Saw down"),
+            "4\t" + _("1:3 rectangle"),
+            "5\t" + _("Square"),
+            "6\t" + _("3:1 rectangle")  ] )
+
+
+
+class CustomListBox_Portamento(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0\t" + _("Off"),
+            "1\t" + _("On"),
+            "2\t" + _("Legato")  ] )
+
+
+
 
 class HintsPanelGeneric(wx.Panel):
   
@@ -99,7 +168,7 @@ class HintsPanelGeneric(wx.Panel):
         LABEL_X = 105
         for i, PV in enumerate(PVList):
             # Type 2, 3 are quite wide, need more room
-            if PV.type_ == 2 or PV.type_ == 3 or PV.type_ == 4:
+            if PV.type_ in [2,3,4,5,6,7,8,9,10]:
                 LABEL_X = 175
         
         for i, PV in enumerate(PVList):
@@ -110,10 +179,25 @@ class HintsPanelGeneric(wx.Panel):
                 CustomListBox_FilterType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
             elif PV.type_ == 3:
                 CustomListBox_WavetableTimbre(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
-            elif PV.type_ == 4:
-                CustomText_ToneName(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ in [4,9,10]:
+                w_ = CustomText_ToneName(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                # Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
+                # and we need to ignore for them.
+                self.Bind(wx.EVT_TEXT, self.OnTextChanged, id=w_.Id)
+            elif PV.type_ == 5:
+                CustomListBox_DSPType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 6:
+                CustomListBox_LFOType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 7:
+                CustomListBox_Portamento(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 8:
+                wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=-4,max=3,initial=0, name="C_P{0}".format(PV.id_))
             else:
-                wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
+                if PV.param.bitCount > 16:
+                    # Don't have the maximum field -- will get confusing
+                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,initial=0, name="C_P{0}".format(PV.id_))
+                else:
+                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
           
             name_ = PV.param.name
             wx.StaticText(self, pos=wx.Point(LABEL_X,10+i*40), label=name_, name="L_P{0}".format(PV.id_))
@@ -124,7 +208,6 @@ class HintsPanelGeneric(wx.Panel):
         self.Bind(wx.EVT_SPINCTRL, self.OnValueChanged)
         self.Bind(wx.EVT_CHECKBOX, self.OnCheckChanged)
         self.Bind(wx.EVT_COMBOBOX, self.OnComboBoxSelected)
-        self.Bind(wx.EVT_TEXT, self.OnTextChanged)
 
 
     def Update(self, sel_id_):
@@ -141,14 +224,16 @@ class HintsPanelGeneric(wx.Panel):
             W_ = self.FindWindowByName("C_P{0}".format(PV.id_))
             V_ = self.Parent._buffer.GetParamFrom(PV.param)
             
-            if PV.type_ == 4:
+            if PV.type_ in [4,9,10]:
                 W_.SetValue(V_)
             else:
                 
                 if PV.type_ == 3:
                     V_ = V_ // 2
+                elif PV.type_ == 8:
+                    V_ = V_ - 4
                 
-                if PV.type_ == 2 or PV.type_ == 3:
+                if PV.type_ in [2,3,5,6,7]:
                     W_.SetSelection(V_)
                 else:
                     W_.SetValue(V_)
@@ -160,7 +245,10 @@ class HintsPanelGeneric(wx.Panel):
             p_idx = int(w.Name[3:])
             for PV in self.PARAMS:
                 if PV.id_ == p_idx:
-                    self.Parent._buffer.SetParamTo(PV.param, event.GetPosition())
+                    V_ = event.GetPosition()
+                    if PV.type_ == 8:
+                        V_ += 4
+                    self.Parent._buffer.SetParamTo(PV.param, V_)
                     break
         else:
             raise Exception
@@ -210,54 +298,10 @@ class HintsPanelGeneric(wx.Panel):
             W_.SetSelection(val)
         elif PV.type_ == 3:
             W_.SetSelection(val // 2)
+        elif PV.type_ == 8:
+            W_.SetValue(val+4)
         else:
             W_.SetValue(val)
-
-
-    def DoControlVal(self, offset, ctrl_val):
-        for k, P_idx in enumerate(self.PARAMS):
-            PP = parameters.Params[P_idx]
-            if offset == PP.byteOffset:
-                if self.TYPES[k] == 1:  # Checkbox
-                    W_ = self.FindWindowByName("C_P{0}".format(P_idx))
-                    Curr = int(W_.GetValue())
-                    Min = 0
-                    Max = 1
-                    X = Curr
-                    if ctrl_val == hexeditview.CtrlVals.DECREASE or ctrl_val == hexeditview.CtrlVals.MINIMUM:
-                        X = Min
-                    elif ctrl_val == hexeditview.CtrlVals.INCREASE or ctrl_val == hexeditview.CtrlVals.MAXIMUM:
-                        X = Max
-                    if X != Curr:
-                        W_.SetValue(bool(X))
-                        # Setting the value doesn't raise an Event, so we must do the function
-                        # of OnValueChanged
-                        self.Parent._view.SetParamTo(PP, X)
-                else:    # Spin Control
-                    W_ = self.FindWindowByName("C_P{0}".format(P_idx))
-                    Curr = W_.GetValue()
-                    Min = W_.GetMin()
-                    Max = W_.GetMax()
-                    Step = 10  # TODO:
-                    X = Curr
-                    if ctrl_val == hexeditview.CtrlVals.INCREASE:
-                        X = Curr + Step
-                        if X > Max:
-                            X = Max
-                    elif ctrl_val == hexeditview.CtrlVals.DECREASE:
-                        X = Curr - Step
-                        if X < Min:
-                            X = Min
-                    elif ctrl_val == hexeditview.CtrlVals.MINIMUM:
-                        X = Min
-                    elif ctrl_val == hexeditview.CtrlVals.MAXIMUM:
-                        X = Max
-                    if X != Curr:
-                        W_.SetValue(X)
-                        # Setting the value doesn't raise an Event, so we must do the function
-                        # of OnValueChanged
-                        self.Parent._view.SetParamTo(PP, X)
-
 
 
 
@@ -314,7 +358,8 @@ class HintsView(wx.EvtHandler):
                 if PP.byteOffset not in OFFSETS_:
                     for k, CC in enumerate(self.CLUSTERS):
                         if CC == PP.cluster:
-                            OFFSETS_.update({PP.byteOffset: k})
+                            for XX in range(PP.byteOffset, PP.byteOffset+PP.byteCount):
+                                OFFSETS_.update({XX: k})
                             
         self.OFFSETS = OFFSETS_
         self._paramviewlist = None
@@ -348,6 +393,18 @@ class HintsView(wx.EvtHandler):
                         type_ = 3
                     elif PP.number == 0:
                         type_ = 4
+                    elif PP.number == 85:
+                        type_ = 5
+                    elif PP.number in [59, 66]:
+                        type_ = 6
+                    elif PP.number == 116:
+                        type_ = 7
+                    elif PP.number in [43, 108]:
+                        type_ = 8
+                    elif PP.number == 84:
+                        type_ = 9
+                    elif PP.number == 87:
+                        type_ = 10
                     offset_ = PP.byteOffset
                     if offset_ in OFFSETS_:
                         offset_ = None
@@ -408,12 +465,22 @@ class HintsView(wx.EvtHandler):
                 self.Layout()
 
 
+    def GetHighlightList(self):
+        if self._paramviewlist is None:
+            return []
+        else:
+            offs_ = set()
+            for PV in self._paramviewlist:
+                offs_ |= set(list(range(PV.param.byteOffset+0x20, PV.param.byteOffset+0x20 + PV.param.byteCount))  )
+            return list(offs_)
 
     @staticmethod
     def SuggestStep(PV : ParamView):
         if PV.type_ == 1:
             return 1
         else:
+            if PV.param.recommendedStep >= 1:
+                return PV.param.recommendedStep
             return 10
 
 
@@ -682,6 +749,20 @@ class ToneDocument(docview.Document):
             offset_ = P.byteOffset + 0x20
             self._data[offset_:offset_+12] = STR_.encode('ascii')
             return
+            
+        if P.number == 84:
+            STR_ = p_val.ljust(16, " ")[:16]
+            offset_ = P.byteOffset + 0x20
+            self._data[offset_:offset_+16] = STR_.encode('ascii')
+            return
+            
+        if P.number == 87:
+            BYTES_ = bytes.fromhex(p_val).ljust(14, b'\x00')[:14]
+            offset_ = P.byteOffset + 0x20
+            self._data[offset_:offset_+14] = BYTES_
+            return
+            
+            
       
         if p_val >= (1 << P.bitCount):
             raise Exception("Trying to set value {0} to a field with only {1} bits".format(p_val, P.bitCount))
@@ -704,6 +785,17 @@ class ToneDocument(docview.Document):
             offset_ = P.byteOffset + 0x20
             STR_ = self._data[offset_:offset_+12].decode('ascii')
             return STR_
+      
+        if P.number == 84:
+            offset_ = P.byteOffset + 0x20
+            STR_ = self._data[offset_:offset_+16].decode('ascii')
+            return STR_
+      
+        if P.number == 87:
+            offset_ = P.byteOffset + 0x20
+            STR_ = self._data[offset_:offset_+14].hex(" ").upper()
+            return STR_
+          
       
       
         X, = struct.unpack_from("<I", self._data, P.byteOffset + 0x20)
