@@ -37,6 +37,7 @@ MIDI_DOWNLOAD_ID = wx.NewIdRef()
 MIDI_UPLOAD_ID = wx.NewIdRef()
 
 
+ICON_LOCATION = ""
 
 
 class ViewType:
@@ -1212,7 +1213,7 @@ class AboutDialog(wx.Dialog):
         sizer = wx.BoxSizer(wx.VERTICAL)
         
         _icon = wx.StaticBitmap(self, wx.ID_ANY)
-        _icon.SetIcon(wx.Icon("tyrant-64x64.ico"))
+        _icon.SetIcon(wx.Icon(ICON_LOCATION))
         sizer.Add(_icon, wx.ALIGN_LEFT)
 
         sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName()), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
@@ -1474,6 +1475,8 @@ The main function
 """
 def main():
   
+    global ICON_LOCATION
+  
     # Set up the root logger
     _logger = logging.getLogger()
     _logger.setLevel(logging.DEBUG)
@@ -1490,7 +1493,23 @@ def main():
     _frame = ToneParentFrame(None,wx.ID_ANY,"Untitled.TON")
     _frame.SetDocManager(_docManager)
     _frame.SetSize(wx.DefaultCoord, wx.DefaultCoord, 620, 580)
-    _frame.SetIcon(wx.Icon("tyrant-64x64.ico"))
+
+    
+    # Find the location of the icon file. See:
+    #     https://stackoverflow.com/questions/45628653/add-ico-file-to-executable-in-pyinstaller
+    if getattr(sys, 'frozen', False):
+        application_path = sys._MEIPASS
+    elif __file__:
+        application_path = os.path.dirname(os.path.dirname(__file__))
+        print(application_path)
+
+    iconFile = 'tyrant-64x64.ico'
+    
+    ICON_LOCATION = os.path.join(application_path, iconFile)
+
+    
+    _frame.SetIcon(wx.Icon(ICON_LOCATION))
+    
     _view = hexeditview.HexEditView(_frame)
     _docManager.SetView(_view)
 
