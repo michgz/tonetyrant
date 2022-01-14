@@ -9,8 +9,13 @@ import time
 import binascii
 
 
-def _(X):
-    return X
+
+
+# Set up the language translation system. Currently, none is used and this function
+# does nothing
+_ = lambda X : X
+
+
 
 
 INPUT_PORT_SEL_ID = wx.NewIdRef()
@@ -599,13 +604,19 @@ class MidiComms:
             if val_result < 801 or val_result > 900:
                 raise Exception("Cannot upload to Tone number {0}".format(val_result))
             
-            self.upload_ac7_internal(val_result - 801, buffer_[0x20:-4], memory=1, category=3)
+            try:
+                self.upload_ac7_internal(val_result - 801, buffer_[0x20:-4], memory=1, category=3)
             
-            time.sleep(0.3)
-            dlg_2.Update(44)
-            time.sleep(0.3)
-            dlg_2.Update(96)
-            time.sleep(0.3)
+                time.sleep(0.3)
+                dlg_2.Update(44)
+                time.sleep(0.3)
+                dlg_2.Update(96)
+                time.sleep(0.3)
+            
+            except MidiComms.SysexTimeoutError:
+                pass
+            except Exception:
+                pass
             
             dlg_2.Destroy()
             
@@ -625,15 +636,21 @@ class MidiComms:
             if val_result < 801 or val_result > 900:
                 raise Exception("Cannot download from Tone number {0}".format(val_result))
             
-            x_ = self.download_ac7_internal(val_result - 801, memory=1, category=3)
-            buffer_[0x20:-4] = x_
-            
-            time.sleep(0.3)
-            dlg_2.Update(44)
-            time.sleep(0.3)
-            dlg_2.Update(96)
-            time.sleep(0.3)
-            
+            try:
+                x_ = self.download_ac7_internal(val_result - 801, memory=1, category=3)
+                buffer_[0x20:-4] = x_
+                
+                time.sleep(0.3)
+                dlg_2.Update(44)
+                time.sleep(0.3)
+                dlg_2.Update(96)
+                time.sleep(0.3)
+
+            except MidiComms.SysexTimeoutError:
+                pass
+            except Exception:
+                pass
+
             dlg_2.Destroy()
         
 

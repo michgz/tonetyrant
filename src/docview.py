@@ -560,6 +560,7 @@ class Document(wx.EvtHandler):
 
         #self.SetDocumentModificationDate()  # TODO: is this out of order?
         self.SetFilename(filename, True)
+        self.SetTitle(FileNameFromPath(filename))
         self.Modify(False)
         self.SetDocumentSaved(True)
         self.UpdateAllViews()

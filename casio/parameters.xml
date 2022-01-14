@@ -8,9 +8,9 @@
             <cluster>Name</cluster>
             <bytes>
                 <offset>0x1A6</offset>
-                <count>12</count>
+                <count>16</count>
             </bytes>
-            <midiBytes>12</midiBytes>
+            <midiBytes>16</midiBytes>
             <help>The name of the tone, as shown in the keyboard front panel.\nCharacters can be any normal ASCII character.</help>
         </parameter>
         <parameter number="1" block="0">
@@ -3351,8 +3351,8 @@
             </absoluteLimits>
             <recommendedLimits>
                 <min>0</min>
-                <max>127</max>
-                <step>16</step>
+                <max>126</max>
+                <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
         </parameter>
@@ -3393,8 +3393,8 @@
             </absoluteLimits>
             <recommendedLimits>
                 <min>0</min>
-                <max>127</max>
-                <step>16</step>
+                <max>126</max>
+                <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
         </parameter>
@@ -3435,8 +3435,8 @@
             </absoluteLimits>
             <recommendedLimits>
                 <min>0</min>
-                <max>127</max>
-                <step>16</step>
+                <max>126</max>
+                <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
         </parameter>

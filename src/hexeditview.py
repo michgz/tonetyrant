@@ -84,11 +84,18 @@ class HexEditView(wx.Control):
         self._buffer = buff
         self._caret_pos = 0
         self._edit_region = 2   # 2 or 3
+        
+        
+    def Update(self):
+        self.Refresh()
 
 
     def UpdateCaretPos(self, new_pos):
       
         if new_pos is None:
+            return False
+            
+        if self._buffer is None:
             return False
       
         if new_pos >= 2*len(self._buffer):
@@ -336,12 +343,20 @@ class HexEditView(wx.Control):
                 y += self._y2
             
             
+            
+            list_ = self._buffer.GetChangeList()
+            
             i = 0
             y = self._y1
             while (i < len(self._buffer)):
                 k = 0
                 while i + k < len(self._buffer) and k < 16:
                     s = "{0:02X}".format(self._buffer[i + k])
+                    if (i + k) in list_:
+                        _dc.SetTextForeground(self._font_colour2 )
+                    else:
+                        _dc.SetTextForeground(self._font_colour1 )
+                    
                     _dc.DrawText(s, self._x1 + 5 + self._x3*(3*k + (1 if k >= 8 else 0)), y)
                     k += 1
 
@@ -354,6 +369,11 @@ class HexEditView(wx.Control):
             if (self._caret_pos % 2 != 0):
                 p += 1
             s = " "*p + u"\u2017"
+            if (self._caret_pos // 2) in list_:
+                _dc.SetTextForeground(self._font_colour2 )
+            else:
+                _dc.SetTextForeground(self._font_colour1 )
+            
             _dc.DrawText(s, self._x1 + 5 + self._x3*(3*n + (1 if n >= 8 else 0)), self._y1 + m*self._y2)
 
 
@@ -382,6 +402,51 @@ class HexEditView(wx.Control):
             n = (self._caret_pos % 32) // 2
             s = u"\u2017"
             _dc.DrawText(s, self._x2 + 5 + self._x4*n, self._y1 + m*self._y2)
+
+
+    def GetFrame(self):
+        return self.Parent
+        
+    def GetDocument(self):
+        return self._buffer
+
+
+    def OnChangeFilename(self):
+        """
+        Called when the filename has changed. The default implementation
+        constructs a suitable title and sets the title of the view frame (if
+        any).
+        """
+        if self.GetFrame():
+            appName = wx.GetApp().GetAppName()
+            if not self.GetDocument():
+                if appName:
+                    title = appName
+                else:
+                    return
+                self.GetFrame().SetTitle(title)
+            else:
+                if appName and True:#isinstance(self.GetFrame(), DocChildFrame):  # Only need app name in title for SDI
+                    title = appName + (" - ")
+                else:
+                    title = ''
+                self.GetFrame().SetTitle(title + self.GetDocument().GetPrintableName())
+
+    def OnUpdate(self, sender, hint):
+        """
+        Called when the view should be updated. sender is a pointer to the
+        view that sent the update request, or None if no single view requested
+        the update (for instance, when the document is opened). hint is as yet
+        unused but may in future contain application-specific information for
+        making updating more efficient.
+        """
+        if hint:
+            if hint[0] == "modify":  # if dirty flag changed, update the view's displayed title
+                frame = self.GetFrame()
+                if frame and hasattr(frame, "OnTitleIsModified"):
+                    frame.OnTitleIsModified()
+                    return True
+        return False
 
 
 

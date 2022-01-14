@@ -13,13 +13,20 @@ import dataclasses
 import parameters
 import random
 import struct
+import binascii
+import copy
 
 __version__ = "1.0.0"
+__author__ = "michgz"
+
 from midi_comms import MidiComms
 
 
-def _(X):
-    return X
+
+# Set up the language translation system. Currently, none is used and this function
+# does nothing
+_ = lambda X : X
+
 
 
 EDIT_SETTODEFAULT_ID = wx.NewIdRef()
@@ -33,8 +40,10 @@ MIDI_UPLOAD_ID = wx.NewIdRef()
 
 
 class ViewType:
-    SPIN = 0
-    CHECK = 1
+    SPIN = 0      # Handles most numeric fields
+    CHECK = 1     # Handles most binary fields
+    
+    # Now some custom types for fields that need specific handling: ...
     CUSTOM_FILTERTYPE = 2
     CUSTOM_WAVETABLETIMBRE = 3
     CUSTOM_TONENAME = 4
@@ -50,7 +59,7 @@ class ViewType:
 class ParamView:
     type_: ViewType
     param: parameters.Param
-    offset: int
+    offsets: list
     id_: int
 
 
@@ -86,8 +95,8 @@ class CustomListBox_WavetableTimbre(wx.ComboBox):
 
 class CustomText_ToneName(wx.TextCtrl):
 
-    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.TextCtrlNameStr):
-        wx.TextCtrl.__init__(self, parent, id, value=value, pos=pos, style=0, name=name)
+    def __init__(self, parent, id=wx.ID_ANY, value="", size=wx.Size(192, 30), pos=wx.DefaultPosition, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, id, value=value, size=size, pos=pos, style=0, name=name)
 
 
 
@@ -168,8 +177,10 @@ class HintsPanelGeneric(wx.Panel):
         LABEL_X = 105
         for i, PV in enumerate(PVList):
             # Type 2, 3 are quite wide, need more room
-            if PV.type_ in [2,3,4,5,6,7,8,9,10]:
+            if PV.type_ in [2,3,5,6,7,8] and LABEL_X < 175:
                 LABEL_X = 175
+            if PV.type_ in [4,9,10] and LABEL_X < 202:
+                LABEL_X = 202
         
         for i, PV in enumerate(PVList):
           
@@ -194,10 +205,10 @@ class HintsPanelGeneric(wx.Panel):
                 wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=-4,max=3,initial=0, name="C_P{0}".format(PV.id_))
             else:
                 if PV.param.bitCount > 16:
-                    # Don't have the maximum field -- will get confusing
-                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,initial=0, name="C_P{0}".format(PV.id_))
+                    # Put some arbitrary limit on the maximum field
+                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=1023,initial=0, name="C_P{0}".format(PV.id_))
                 else:
-                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
+                    w_ = wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
           
             name_ = PV.param.name
             wx.StaticText(self, pos=wx.Point(LABEL_X,10+i*40), label=name_, name="L_P{0}".format(PV.id_))
@@ -249,6 +260,7 @@ class HintsPanelGeneric(wx.Panel):
                     if PV.type_ == 8:
                         V_ += 4
                     self.Parent._buffer.SetParamTo(PV.param, V_)
+                    self.Parent._view.Update()
                     break
         else:
             raise Exception
@@ -261,6 +273,7 @@ class HintsPanelGeneric(wx.Panel):
             for PV in self.PARAMS:
                 if PV.id_ == p_idx:
                     self.Parent._buffer.SetParamTo(PV.param, event.GetInt())
+                    self.Parent._view.Update()
                     break
         else:
             raise Exception
@@ -272,6 +285,7 @@ class HintsPanelGeneric(wx.Panel):
             for PV in self.PARAMS:
                 if PV.id_ == p_idx:
                     self.Parent._buffer.SetParamTo(PV.param, event.GetString())
+                    self.Parent._view.Update()
                     break
         else:
             raise Exception
@@ -286,6 +300,7 @@ class HintsPanelGeneric(wx.Panel):
                     if PV.type_ == 3:
                         V_ = 2*V_
                     self.Parent._buffer.SetParamTo(PV.param, V_)
+                    self.Parent._view.Update()
                     break
         else:
             raise Exception
@@ -294,14 +309,19 @@ class HintsPanelGeneric(wx.Panel):
         W_ = self.FindWindowByName("C_P{0}".format(PV.id_))
         if PV.type_ == 1:
             W_.SetValue(bool(val))
-        elif PV.type_ == 2:
+        elif PV.type_ in [2, 5, 6, 7]:
             W_.SetSelection(val)
         elif PV.type_ == 3:
             W_.SetSelection(val // 2)
         elif PV.type_ == 8:
-            W_.SetValue(val+4)
+            W_.SetValue(val - 4)
         else:
             W_.SetValue(val)
+        self.Parent._view.Update()
+
+
+
+
 
 
 
@@ -313,7 +333,10 @@ class ExtParam(parameters.Param):
         if self.bitCount > 0 and self.bitOffset >= 0:
             X, = struct.unpack_from("<I", dd, self.byteOffset+0x20)
             MASK = ((1 << self.bitCount) - 1) << self.bitOffset
-            Y = random.randint(*self.recommendedLimits)
+            if self.number in [1, 21]:
+                Y = 0
+            else:
+                Y = random.randint(*self.recommendedLimits)
             X = (X & ~MASK) + (Y << self.bitOffset)
             struct.pack_into("<I", dd, self.byteOffset+0x20, X)
 
@@ -367,9 +390,11 @@ class HintsView(wx.EvtHandler):
     def SetDocument(self, buff):
       
         self._buffer = buff
+        self._paramviewlist = None
+        if buff is None:
+            self.ClearSelected()
         self._current_cluster = None
         self._current_offset = None
-        self._paramviewlist = None
         
 
     @staticmethod
@@ -405,18 +430,50 @@ class HintsView(wx.EvtHandler):
                         type_ = 9
                     elif PP.number == 87:
                         type_ = 10
-                    offset_ = PP.byteOffset
-                    if offset_ in OFFSETS_:
-                        offset_ = None
-                    else:
-                        OFFSETS_.add(offset_)
-                    LIST_.append( ParamView(type_= type_ , param=PP, offset=offset_, id_=k) )
+                    offsets_ = list(range(PP.byteOffset, PP.byteOffset + PP.byteCount))
+                    for offset_ in offsets_:
+                        if offset_ in OFFSETS_:
+                            offset_ = None
+                        else:
+                            OFFSETS_.add(offset_)
+                    LIST_.append( ParamView(type_= type_ , param=PP, offsets=offsets_, id_=k) )
         return LIST_
 
 
+    def ClearSelected(self):
+        
+        wx.Frame.SetTitle(self, _("Hints"))
+            
+        _enter = None
+        _exit = None
+        
+
+        if self._current_cluster is not None:
+            _exit = self._current_cluster
+            
+        
+        self._current_offset = None
+
+        if _exit is not None:
+            self._sizer.Remove(0)
+            self._panel.Destroy()
+            self._panel = None
+            self._paramviewlist = None
+            self._current_cluster = None
+            self._sizer.GetStaticBox().SetLabelText("")
+                
+        if _exit is not None or _enter is not None:
+            self._sizer.Fit(self)
+            self.Layout()
+                
     def SetSelected(self, offset_in_file):
         if offset_in_file >= 0x20 and offset_in_file < 0x1E8 or True:
             offset = offset_in_file - 0x20
+            
+            if offset >= 0:
+                wx.Frame.SetTitle(self, _("Hints") + ": {0:03X}h".format(offset))
+            else:
+                wx.Frame.SetTitle(self, _("Hints"))
             
             _enter = None
             _exit = None
@@ -450,11 +507,12 @@ class HintsView(wx.EvtHandler):
                 self._sizer.Add(self._panel)
                 self._sizer.GetStaticBox().SetLabelText(list(self.CLUSTERS.keys())[_enter])
                 self._current_cluster = _enter
+
             
             if self._paramviewlist is not None:
                 sel_id = None
                 for PV in self._paramviewlist:
-                    if PV.offset == offset:
+                    if offset in PV.offsets:
                         sel_id = PV.id_
                         break
                 if self._panel is not None:
@@ -478,6 +536,9 @@ class HintsView(wx.EvtHandler):
     def SuggestStep(PV : ParamView):
         if PV.type_ == 1:
             return 1
+        elif PV.type_ in [4,9,10]:
+            # Non-numeric
+            return None
         else:
             if PV.param.recommendedStep >= 1:
                 return PV.param.recommendedStep
@@ -495,10 +556,13 @@ class HintsView(wx.EvtHandler):
         
         if self._paramviewlist is not None and self._current_offset is not None:
             for PV in self._paramviewlist:
-                if PV.offset == self._current_offset:
+                if self._current_offset in PV.offsets:
                     
                     CURR = self._buffer.GetParamFrom(PV.param)
                     STEP = self.SuggestStep(PV)
+                    
+                    if STEP is None:
+                        return   # No action possible
                     
                     X = None
                     
@@ -519,7 +583,7 @@ class HintsView(wx.EvtHandler):
                         if self._panel is not None:
                             self._panel.SetNewVal(PV, X)
                         self._buffer.SetParamTo(PV.param, X)
-                        # TODO: update all views.
+                        self._buffer.Modify(True)
 
 
 class HintsDialog(wx.Frame, HintsView):
@@ -536,13 +600,11 @@ class HintsDialog(wx.Frame, HintsView):
         self.SetSizer(_sizer)
         _sizer.Fit(self)
         self.Bind(wx.EVT_IDLE, self.OnIdle) # Want to adjust the starting position relative to the parent
-        #self.Bind(wx.EVT_CHAR, self.OnChar)
         
         self._is_1B6 = False
         self._panel = None
         self._sizer = _sizer
         self._view = None
-
         
 
     def OnIdle(self, event):
@@ -551,23 +613,9 @@ class HintsDialog(wx.Frame, HintsView):
         event.Skip()
 
 
-
-
     def UpdateValues(self, doc_):
         if self._panel is not None:
             self._panel.ReadValues(doc_)
-
-
-    #def OnChar(self, event):
-    #    if True:
-    #        if event.KeyCode in [wx.WXK_PAGEUP,  wx.WXK_NUMPAD_PAGEUP ]:
-    #            self._panel.DoControlVal(self._current_offset, CtrlVals.INCREASE)
-    #        elif event.KeyCode in [wx.WXK_PAGEDOWN,  wx.WXK_NUMPAD_PAGEDOWN ]:
-    #            self._panel.DoControlVal(self._current_offset, CtrlVals.DECREASE)
-    #        if event.KeyCode in [wx.WXK_END,  wx.WXK_NUMPAD_END ]:
-    #            self._panel.DoControlVal(self._current_offset, CtrlVals.MINIMUM)
-    #        elif event.KeyCode in [wx.WXK_HOME,  wx.WXK_NUMPAD_BEGIN ]:
-    #            self._panel.DoControlVal(self._current_offset, CtrlVals.MAXIMUM)
 
 
 
@@ -672,6 +720,7 @@ class ToneDocument(docview.Document):
     def __init__(self):
         docview.Document.__init__(self)
         self._data = bytearray( self.CALSINE )
+        self._current_changelist = []
 
     """
     Three functions to make the class behave a lot like a byte-string/byte array:
@@ -679,13 +728,32 @@ class ToneDocument(docview.Document):
     def __len__(self):
         return len(self._data)
         
-    def __getitem__(self, slice):
-        return self._data[slice]
+    def __getitem__(self, slice_):
+        return self._data[slice_]
         
-    def __setitem__(self, slice, data):
-        self._data[slice] = data
+    def __setitem__(self, slice_, data):
+        old_data = copy.copy(self._data)
+        self._data[slice_] = data
+        CHANGELIST_ = []
+        if isinstance(slice_, int):
+            if slice_>=0x20 and slice_<0x1E8:
+                self._data[0x18:0x1C] = struct.pack("<I", binascii.crc32(self._data[0x20:0x1E8]))
+                CHANGELIST_ = [slice_] + list(range(0x18, 0x1C))
+            else:
+                CHANGELIST_ = [slice_]
+        elif isinstance(slice_, slice):
+            if slice_.stop>0x20 or slice_.start<0x1E8:
+                self._data[0x18:0x1C] = struct.pack("<I", binascii.crc32(self._data[0x20:0x1E8]))
+                CHANGELIST_ = list(range(slice_.start,slice_.stop)) + list(range(0x18, 0x1C))
+            else:
+                CHANGELIST_ = list(range(slice_.start,slice_.stop))
+        if self._data != old_data:
+            self._current_changelist = [X for X in CHANGELIST_ if old_data[X] != self._data[X]]
+            self.Modify(True)
 
 
+    def GetChangeList(self):
+        return self._current_changelist
 
     def LoadObject(self, file):
         """
@@ -697,7 +765,7 @@ class ToneDocument(docview.Document):
         so you can use pickle.
         """
         x = file.read()
-        if len(x) == 0x1E8:
+        if len(x) == 0x1EC:
             self._data = bytearray(x)
         return True
 
@@ -734,32 +802,47 @@ class ToneDocument(docview.Document):
                  - String parameters are excluded
                  - Param 109 seems to have a permanent effect, so exclude it to avoid
                      that happening.
+                 - Filters. It's possible for these to take on values that result in no sound.
+                 - Gain-related key follows. These can cause apparent silence.
             """
             if p.number not in [0, 84, 45, 46, 109, 200] \
-                        and (include_wavetable or p.number not in [115, 41, 1, 2, 21, 22]):
+                        and (include_wavetable or p.number not in [115, 41, 1, 2, 21, 22])   \
+                        and p.number not in [117, 118, 119, 120, 121, 122]   \
+                        and p.number not in [47, 48, 201, 202]:
                 ExtParam(p).SetRandom(self._data)
         self.Modify(True)
+
+
+    def GetWriteable(self):
+        """
+        I'm not sure what this one was supposed to do. Just return True
+        """
+        return True
 
 
     def SetParamTo(self, P : parameters.Param, p_val):
       
       
         if P.number == 0:
-            STR_ = p_val.ljust(12, " ")[:12]
+            STR_ = p_val.ljust(16, " ")[:16]
             offset_ = P.byteOffset + 0x20
-            self._data[offset_:offset_+12] = STR_.encode('ascii')
+            self[offset_:offset_+16] = STR_.encode('ascii')
             return
             
         if P.number == 84:
             STR_ = p_val.ljust(16, " ")[:16]
             offset_ = P.byteOffset + 0x20
-            self._data[offset_:offset_+16] = STR_.encode('ascii')
+            self[offset_:offset_+16] = STR_.encode('ascii')
             return
             
         if P.number == 87:
-            BYTES_ = bytes.fromhex(p_val).ljust(14, b'\x00')[:14]
+            try:
+                BYTES_ = bytes.fromhex(p_val).ljust(14, b'\x00')[:14]
+            except ValueError:
+                # Failed to decode. Assume it's just being changed, and ignore for now.
+                return
             offset_ = P.byteOffset + 0x20
-            self._data[offset_:offset_+14] = BYTES_
+            self[offset_:offset_+14] = BYTES_
             return
             
             
@@ -774,7 +857,8 @@ class ToneDocument(docview.Document):
         X = X & ~MASK
         X = X | (p_val << P.bitOffset)
         
-        struct.pack_into("<I", self._data, P.byteOffset + 0x20, X)
+        
+        self[P.byteOffset + 0x20:P.byteOffset + 0x20 + 4] = struct.pack("<I", X)
         
 
 
@@ -783,7 +867,7 @@ class ToneDocument(docview.Document):
       
         if P.number == 0:
             offset_ = P.byteOffset + 0x20
-            STR_ = self._data[offset_:offset_+12].decode('ascii')
+            STR_ = self._data[offset_:offset_+16].decode('ascii')
             return STR_
       
         if P.number == 84:
@@ -805,6 +889,22 @@ class ToneDocument(docview.Document):
         
         return X
 
+
+    def SetFilename(self, filename, notifyViews = False):
+        """
+        Sets the filename for this document. Usually called by the framework.
+        If notifyViews is true, :meth:`View.OnChangeFilename` is called for all
+        views.
+        """
+        self._documentFile = filename
+        if notifyViews:
+            self._documentTemplate.GetDocumentManager()._view.OnChangeFilename()
+            #for view in self._documentViews:
+            #    view.OnChangeFilename()
+
+
+    def UpdateAllViews(self, hint=None):
+        self._documentTemplate.GetDocumentManager()._view.OnUpdate(None, ("modify", ))
 
 
 
@@ -901,6 +1001,8 @@ class ToneDocumentManager(wx.EvtHandler):
         _new_doc.SetCommandProcessor(_new_doc.OnCreateCommandProcessor())
         self._view.SetDocument(_new_doc)
         self._view2.SetDocument(_new_doc)
+        self._view.OnChangeFilename()
+        self._view.Update()
         
     def OnSave(self):
         if len(self._docs) >= 1:
@@ -918,6 +1020,8 @@ class ToneDocumentManager(wx.EvtHandler):
             else:
                 self.OnNew()
                 self._docs[0].OnOpenDocument(path)
+            self._view.OnChangeFilename()
+            self._view.Update()
     
     def OnSetToDefault(self, include_wavetable=False):
         self._view.DoDefaults(include_wavetable)
@@ -934,7 +1038,7 @@ class ToneDocumentManager(wx.EvtHandler):
             return
         if doc.GetCommandProcessor():
             doc.GetCommandProcessor().Undo()
-
+            self._view.Update()
 
     def OnRedo(self):
         """
@@ -945,8 +1049,8 @@ class ToneDocumentManager(wx.EvtHandler):
             return
         if doc.GetCommandProcessor():
             doc.GetCommandProcessor().Redo()
-   
-   
+            self._view.Update()
+
     def OnMenu(self, event):
         Id = event.GetId()
         if Id == wx.ID_NEW:
@@ -993,6 +1097,10 @@ class ToneDocumentManager(wx.EvtHandler):
             #doc.DeleteAllViews()
             if doc in self._docs:
                 self._docs.remove(doc)
+            self._view.SetDocument(None)
+            self._view2.SetDocument(None)
+            self._view.OnChangeFilename()
+            self._view.Update()
 
     def OnUpdateFileOpen(self, event):
         """
@@ -1333,6 +1441,33 @@ class ToneParentFrame(wx.Frame):
         elif Id == wx.ID_CLOSE or Id==wx.ID_SAVE or Id==wx.ID_SAVEAS:
             self._docManager.ProcessEvent(event)
 
+    def GetDocument(self):
+        if not self._docManager:
+            return None
+        return self._docManager.GetCurrentDocument()
+
+    def OnTitleIsModified(self):
+        """
+        Add/remove to the frame's title an indication that the document is dirty.
+        If the document is dirty, an '*' is appended to the title
+        """
+        title = self.GetTitle()
+        if title:
+            _doc = self.GetDocument()
+            if _doc is not None:
+                if _doc.IsModified():
+                    if title.endswith("*"):
+                        return
+                    else:
+                        title = title + "*"
+                        self.SetTitle(title)
+                else:
+                    if title.endswith("*"):
+                        title = title[:-1]
+                        self.SetTitle(title)
+                    else:
+                        return
+
 
 """
 The main function
@@ -1371,6 +1506,7 @@ def main():
 
     # Run the application
     _frame.Show(True)
+    _view.OnChangeFilename()
     _app.MainLoop() 
 
 
