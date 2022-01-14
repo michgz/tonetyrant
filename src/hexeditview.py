@@ -146,7 +146,7 @@ class HexEditView(wx.Control):
 
     def OnMouse(self, event):
       
-        if event.EventType == 10026:#wx.EVT_LEFT_DOWN:
+        if event.EventType in wx.EVT_LEFT_DOWN.evtType:
             
             offs = self.PosToBuff(event.GetX(), event.GetY())
             if offs is not None:
