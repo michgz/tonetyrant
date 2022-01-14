@@ -46,11 +46,12 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          pyinstaller main.spec
+          pyinstaller tyrant.spec
+          sudo chmod +x dist/tyrant
       - uses: actions/upload-artifact@v2
         with:
           name: linux-executable-artifact
-          path: dist/main
+          path: dist/tyrant
     
   build-windows:
     # The type of runner that the job will run on
@@ -78,8 +79,8 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          pyinstaller main.spec
+          pyinstaller tyrant.spec
       - uses: actions/upload-artifact@v2
         with:
           name: windows-executable-artifact
-          path: dist/main.exe
+          path: dist/tyrant.exe
