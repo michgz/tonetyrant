@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+import sys
 
 
 block_cipher = None
@@ -26,14 +27,14 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,  
           [],
-          name='main',
+          name='tyrant',
           debug=False,
           bootloader_ignore_signals=False,
-          strip=False,
+          strip=sys.platform.startswith('linux'),  # Significantly reduces binary size for linux
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True,
+          console=False,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
