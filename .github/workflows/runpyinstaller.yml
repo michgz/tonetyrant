@@ -23,7 +23,7 @@ jobs:
     
     # Output is the built executable
     outputs: 
-      executable: dist/main
+      executable: dist/tyrant
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -59,7 +59,7 @@ jobs:
     
     # Output is the built executable
     outputs: 
-      executable: dist/main.exe
+      executable: dist/tyrant.exe
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
