@@ -14,4 +14,4 @@ A pre-built executable may be downloaded from here for Linux kernel versions fro
 
 ## From source
 
-You can also just clone or download this Github repository and run it by calling ```python run.py```. That should work for Windows, all versions of Linux, and maybe even Mac OS. There are some prerequisites to install - see here.
+You can also just clone or download this Github repository and run it by calling ```python run.py```. That works for Windows, all versions of Linux, and maybe even Mac OS. There are some prerequisites to install which are detailed [here](Prequisites.md).
