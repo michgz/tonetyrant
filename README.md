@@ -18,13 +18,13 @@ A pre-built executable may be downloaded from here for Linux kernel versions fro
 
 ### From source
 
-Running from source code will give the best possible compatibility with your operating system. Clone or download this Github repository and run it by calling ```python run.py```. There are some prerequisites to install which are detailed [here](Prerequisites.md).
+Running from source code will give the best possible compatibility with your operating system. Clone or download this Github repository and run it by calling ```python run.py```. There are some prerequisites to install which are listed [here](Prerequisites.md).
 
 This method works for Windows, all versions of Linux, and maybe even Mac OS (if you try it on Mac OS, please give some feedback with your experiences using a Github "Issue").
 
 ## Quick start guide
 
-To try out the main features of this software, go through the following steps:
+To try out the main features of the software, go through the following steps:
 
 1. "Ctrl+N" to create a new TON file. It will be pre-filled with a sine-wave tone.
 2. Use arrow keys &#2190 &#2191 &#2192 &#2193 to navigate around the bytes in the file
@@ -33,6 +33,3 @@ To try out the main features of this software, go through the following steps:
 5. Press "Ctrl+R" and "OK" to change all parameters in the file to random values.
 6. Attach a CT-X3000/X5000 keyboard to the computer by MIDI, switched on, and press "Ctrl+M" to set up the MIDI communications. Make sure you change both the "Input port" and the "Output port" to be the Casio USB MIDI, and press "OK".
 7. Press "F3" and "OK" to upload the new randomised file to User Tone 801 on the keyboard. Change the selected tone in the keyboard to something else (e.g. tone 802), then back to 801 and play some notes. They will sound with the new randomised tone.
-
-
-
