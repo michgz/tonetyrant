@@ -27,7 +27,7 @@ This method works for Windows, all versions of Linux, and maybe even Mac OS (if 
 To try out the main features of the software, go through the following steps:
 
 1. "Ctrl+N" to create a new TON file. It will be pre-filled with a sine-wave tone.
-2. Use arrow keys &#2190;&#2191;&#2192;&#2193; to navigate around the bytes in the file
+2. Use arrow keys &#8592;&#8593;&#8594;&#8595; to navigate around the bytes in the file
 3. Overwrite values by typing in numbers. The numbers are in "hexadecimal", so digits "0" -- "9" and "A" -- "F" are all accepted.
 4. When you have navigated to certain parameters, boxes will pop up in the "Hints" window. When that happens, try increasing/decreasing the parameter values by pressing PG.UP/PG.DN keys.
 5. Press "Ctrl+R" and "OK" to change all parameters in the file to random values.
