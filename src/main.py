@@ -28,6 +28,13 @@ from midi_comms import MidiComms
 _ = lambda X : X
 
 
+# A separator to place between numbers and letters in a ComboBox. Tab works well
+# for linux, but looks wierd on Windows. Go with this as a compromise.
+SEP = "  "
+
+
+
+
 
 EDIT_SETTODEFAULT_ID = wx.NewIdRef()
 EDIT_SETTORANDOMISE_ID = wx.NewIdRef()
@@ -72,15 +79,15 @@ class CustomListBox_FilterType(wx.ComboBox):
   
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
         wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
-            "0\t" + _("All-pass"),
-            "1\t" + _("Low-pass"),
-            "2\t" + _("High-pass"),
-            "3\t" + _("Wide band-pass"),
-            "4\t" + _("Bass shelf"),
-            "5\t" + _("Treble shelf"),
-            "6\t" + _("Band boost/cut"),
-            "7\t" + _("Notch"),
-            "8\t" + _("All-pass")  ]  )
+            "0" + SEP + _("All-pass"),
+            "1" + SEP + _("Low-pass"),
+            "2" + SEP + _("High-pass"),
+            "3" + SEP + _("Wide band-pass"),
+            "4" + SEP + _("Bass shelf"),
+            "5" + SEP + _("Treble shelf"),
+            "6" + SEP + _("Band boost/cut"),
+            "7" + SEP + _("Notch"),
+            "8" + SEP + _("All-pass")  ]  )
 
 
 
@@ -88,10 +95,10 @@ class CustomListBox_WavetableTimbre(wx.ComboBox):
   
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
         wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
-            "0\t" + _("Melody"),
-            "2\t" + _("Drum"),
-            "4\t" + _("Piano"),
-            "6\t" + _("Versatile")  ]  )
+            "0" + SEP + _("Melody"),
+            "2" + SEP + _("Drum"),
+            "4" + SEP + _("Piano"),
+            "6" + SEP + _("Versatile")  ]  )
 
 
 class CustomText_ToneName(wx.TextCtrl):
@@ -105,38 +112,38 @@ class CustomListBox_DSPType(wx.ComboBox):
   
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
         wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
-            "0\t" + _(""),
-            "1\t" + _("Stereo 3-band EQ"),
-            "2\t" + _("Compress"),
-            "3\t" + _("Limiter"),
-            "4\t" + _("Enhancer"),
-            "5\t" + _("Reflection"),
-            "6\t" + _("Phaser"),
-            "7\t" + _("Chorus"),
-            "8\t" + _("Flange"),
-            "9\t" + _("Tremolo"),
-            "10\t" + _("Auto pan"),
-            "11\t" + _("Rotary"),
-            "12\t" + _("Drive rotary"),
-            "13\t" + _("LFO wah"),
-            "14\t" + _("Auto wah"),
-            "15\t" + _("Distortion"),
-            "16\t" + _("Pitch shift"),
-            "17\t" + _(""),
-            "18\t" + _("Ring modulation"),
-            "19\t" + _("Delay"),
-            "20\t" + _("Piano"),
-            "21\t" + _("Stereo 1-band EQ"),
-            "22\t" + _("Stereo 2-band EQ"),
-            "23\t" + _("Drive"),
-            "24\t" + _("Amp cabinet"),
-            "25\t" + _(""),
-            "26\t" + _(""),
-            "27\t" + _("Mono 1-band EQ"),
-            "28\t" + _("Mono 2-band EQ"),
-            "29\t" + _("Mono 3-band EQ"),
-            "30\t" + _("Model wah"),
-            "31\t" + _("Tone control")   ] )
+            "0" + SEP + _(""),
+            "1" + SEP + _("Stereo 3-band EQ"),
+            "2" + SEP + _("Compress"),
+            "3" + SEP + _("Limiter"),
+            "4" + SEP + _("Enhancer"),
+            "5" + SEP + _("Reflection"),
+            "6" + SEP + _("Phaser"),
+            "7" + SEP + _("Chorus"),
+            "8" + SEP + _("Flange"),
+            "9" + SEP + _("Tremolo"),
+            "10" + SEP + _("Auto pan"),
+            "11" + SEP + _("Rotary"),
+            "12" + SEP + _("Drive rotary"),
+            "13" + SEP + _("LFO wah"),
+            "14" + SEP + _("Auto wah"),
+            "15" + SEP + _("Distortion"),
+            "16" + SEP + _("Pitch shift"),
+            "17" + SEP + _(""),
+            "18" + SEP + _("Ring modulation"),
+            "19" + SEP + _("Delay"),
+            "20" + SEP + _("Piano"),
+            "21" + SEP + _("Stereo 1-band EQ"),
+            "22" + SEP + _("Stereo 2-band EQ"),
+            "23" + SEP + _("Drive"),
+            "24" + SEP + _("Amp cabinet"),
+            "25" + SEP + _(""),
+            "26" + SEP + _(""),
+            "27" + SEP + _("Mono 1-band EQ"),
+            "28" + SEP + _("Mono 2-band EQ"),
+            "29" + SEP + _("Mono 3-band EQ"),
+            "30" + SEP + _("Model wah"),
+            "31" + SEP + _("Tone control")   ] )
 
 
 
@@ -144,13 +151,13 @@ class CustomListBox_LFOType(wx.ComboBox):
   
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
         wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
-            "0\t" + _("Sine"),
-            "1\t" + _("Triangle"),
-            "2\t" + _("Saw up"),
-            "3\t" + _("Saw down"),
-            "4\t" + _("1:3 rectangle"),
-            "5\t" + _("Square"),
-            "6\t" + _("3:1 rectangle")  ] )
+            "0" + SEP + _("Sine"),
+            "1" + SEP + _("Triangle"),
+            "2" + SEP + _("Saw up"),
+            "3" + SEP + _("Saw down"),
+            "4" + SEP + _("1:3 rectangle"),
+            "5" + SEP + _("Square"),
+            "6" + SEP + _("3:1 rectangle")  ] )
 
 
 
@@ -158,9 +165,9 @@ class CustomListBox_Portamento(wx.ComboBox):
   
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
         wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
-            "0\t" + _("Off"),
-            "1\t" + _("On"),
-            "2\t" + _("Legato")  ] )
+            "0" + SEP + _("Off"),
+            "1" + SEP + _("On"),
+            "2" + SEP + _("Legato")  ] )
 
 
 
