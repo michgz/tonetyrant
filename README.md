@@ -8,7 +8,7 @@ A hex editor and tone editing tool for Casio keyboards. Currently works for keyb
 
 A pre-built windows executable may be downloaded from here. Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
 
-[https://github.com/michgz/tonetyrant/releases/download/v1.0.0/windows-executable-v1.0.0.zip]
+[https://github.com/michgz/tonetyrant/releases/download/v1.0.1/windows-10-executable-v1.0.1.zip]
 
 ### Linux
 
@@ -33,3 +33,8 @@ To try out the main features of the software, go through the following steps:
 5. Press "Ctrl+R" and "OK" to change all parameters in the tone to random values.
 6. Attach a CT-X3000/X5000 keyboard to the computer by MIDI, switched on, and press "Ctrl+M" to set up the MIDI communications. Make sure you change both the "Input port" and the "Output port" to be the Casio USB MIDI, and press "OK".
 7. Press "F3" and "OK" to upload the new randomised file to User Tone 801 on the keyboard. Change the selected tone in the keyboard to something else (e.g. tone 802), then back to 801 and play some notes. It will sound with the new randomised tone.
+
+## History
+
+* v1.0.1  Improvements to the appearance of the Hints window under MS Windows
+* v1.0.0  First release
