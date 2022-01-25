@@ -1,4 +1,4 @@
-# This is a basic workflow to help you get started with Actions
+# This is a basic workflow for building ToneTyrant
 
 name: CI
 
@@ -11,12 +11,12 @@ on:
   #pull_request:
   #  branches: [ master ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Runs this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains of a linux build and a windows:
+  # This workflow contains of a linux build and two windows builds:
   build-linux:
     # The type of runner that the job will run on
     runs-on: ubuntu-18.04
@@ -54,7 +54,8 @@ jobs:
           path: dist/tyrant
     
   build-windows:
-    # The type of runner that the job will run on
+    # The type of runner that the job will run on. This is Server 2019, corresponding
+    # to Windows 10.
     runs-on: windows-latest
     
     # Output is the built executable
@@ -82,5 +83,38 @@ jobs:
           pyinstaller tyrant.spec
       - uses: actions/upload-artifact@v2
         with:
-          name: windows-executable-artifact
+          name: windows-10-executable-artifact
+          path: dist/tyrant.exe
+
+  build-windows-11:
+    # The type of runner that the job will run on. This is Server 2019, corresponding
+    # to Windows 11.
+    runs-on: windows-2022
+    
+    # Output is the built executable
+    outputs: 
+      executable: dist/tyrant.exe
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install python-rtmidi
+          pip install wxPython
+          pip install pyinstaller
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Building
+          pyinstaller tyrant.spec
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-11-executable-artifact
           path: dist/tyrant.exe
