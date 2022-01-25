@@ -232,10 +232,23 @@ class HintsPanelGeneric(wx.Panel):
     def Update(self, sel_id_):
       
         for k, PP in enumerate(self.PARAMS):
-            if sel_id_ == PP.id_:
-                self.FindWindowByName("L_P{0}".format(PP.id_)).SetLabelMarkup("<b>" + self.NAMES[k] + "</b>")
+            W_ = self.FindWindowByName("L_P{0}".format(PP.id_))
+            N_ = self.NAMES[k]
+            # Use different methods for emphasis based on the OS. For linux, markup
+            # works but bolding messes up the sizing of the statictext.
+            # Windows doesn't support markup, but works okay with bolding.
+            if sys.platform.startswith("win"):
+                if sel_id_ == PP.id_:
+                    W_.SetFont(self.Parent._font2)
+                else:
+                    W_.SetFont(self.Parent._font1)
+                W_.SetLabelMarkup(N_)
             else:
-                self.FindWindowByName("L_P{0}".format(PP.id_)).SetLabelMarkup(self.NAMES[k])
+                # Linux
+                if sel_id_ == PP.id_:
+                    W_.SetLabelMarkup("<b>" + N_ + "</b>")
+                else:
+                    W_.SetLabelMarkup(N_)
 
     def ReadValues(self, doc_):
 
@@ -613,6 +626,9 @@ class HintsDialog(wx.Frame, HintsView):
         self._panel = None
         self._sizer = _sizer
         self._view = None
+        
+        self._font1 = wx.Font(wx.DEFAULT, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
+        self._font2 = wx.Font(wx.DEFAULT, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
         
 
     def OnIdle(self, event):
