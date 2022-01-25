@@ -600,7 +600,7 @@ class HintsDialog(wx.Frame, HintsView):
     def __init__(self, parent):
         HintsView.__init__(self)
         self._parent = parent
-        wx.Frame.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.FRAME_TOOL_WINDOW | wx.FRAME_FLOAT_ON_PARENT)
+        wx.Frame.__init__(self, parent, wx.ID_ANY, _("Hints"), style = wx.FRAME_TOOL_WINDOW | wx.FRAME_FLOAT_ON_PARENT | wx.CAPTION | wx.CLIP_CHILDREN)
         
         _sizer = wx.StaticBoxSizer(wx.VERTICAL, self, "")
         
