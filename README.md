@@ -14,7 +14,7 @@ A pre-built windows executable may be downloaded from here. Extract from the zip
 
 A pre-built executable may be downloaded from here for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
 
-[https://github.com/michgz/tonetyrant/releases/download/v1.0.0/linux-executable-v1.0.0.zip]
+[https://github.com/michgz/tonetyrant/releases/download/v1.0.1/linux-executable-v1.0.1.zip]
 
 ### From source
 
