@@ -16,7 +16,7 @@ import struct
 import binascii
 import copy
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = "michgz"
 
 from midi_comms import MidiComms
@@ -1216,7 +1216,7 @@ class AboutDialog(wx.Dialog):
         _icon.SetIcon(wx.Icon(ICON_LOCATION))
         sizer.Add(_icon, wx.ALIGN_LEFT)
 
-        sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName()), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName() + " v" + str(__version__)), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         sizer.Add(wx.StaticText(self, -1, _(u"\u00A9 2022")), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         sizer.Add(wx.StaticText(self, -1, "https://github.com/michgz/ToneTyrant"), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
