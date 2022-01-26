@@ -44,4 +44,9 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          python -m nuitka src/main.py
+          python -m nuitka --onefile src/main.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: windows-10-nuitka-artifact-DO-NOT-USE
+          path: main.exe
+        
