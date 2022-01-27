@@ -24,7 +24,7 @@ jobs:
     
     # Output is the built executable
     outputs: 
-      executable: dist/tyrant.exe
+      executable: tyrant.exe
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -44,9 +44,9 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          python -m nuitka --onefile src/main.py
+          python -m nuitka --onefile --assume-yes-for-downloads --include-data-file tyrant-64x64.ico --windows-icon-from-ico tyrant-64x64.ico --windows-product-name "ToneTyrant" --windows-file-version "1.0.1" --windows-product-version "1.0.1" --windows-file-description "Tone editor for Casio" --verbose -o tyrant.exe src/main.py
       - uses: actions/upload-artifact@v2
         with:
           name: windows-10-nuitka-artifact-DO-NOT-USE
-          path: main.exe
+          path: tyrant.exe
         
