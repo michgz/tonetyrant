@@ -44,7 +44,7 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Building
-          python -m nuitka --onefile --assume-yes-for-downloads --include-data-file tyrant-64x64.ico --windows-icon-from-ico tyrant-64x64.ico --windows-product-name "ToneTyrant" --windows-file-version "1.0.1" --windows-product-version "1.0.1" --verbose -o tyrant.exe src/main.py
+          python -m nuitka --onefile --assume-yes-for-downloads --include-data-file=tyrant-64x64.ico=tyrant-64x64.ico --windows-icon-from-ico=tyrant-64x64.ico --windows-product-name="ToneTyrant" --windows-file-version="1.0.1" --windows-product-version="1.0.1" --verbose -o tyrant.exe src/main.py
       - uses: actions/upload-artifact@v2
         with:
           name: windows-10-nuitka-artifact-DO-NOT-USE
