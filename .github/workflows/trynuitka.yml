@@ -49,5 +49,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: windows-10-nuitka-artifact-DO-NOT-USE
-          path: src/tyrant.exe
+          path: tyrant.exe
         
