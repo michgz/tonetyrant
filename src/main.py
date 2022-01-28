@@ -1518,13 +1518,17 @@ def main():
     _frame.SetSize(wx.DefaultCoord, wx.DefaultCoord, 620, 580)
 
     
-    # Find the location of the icon file. See:
-    #     https://stackoverflow.com/questions/45628653/add-ico-file-to-executable-in-pyinstaller
+    # Find the location of the icon file.
     if getattr(sys, 'frozen', False):
+        # This is a frozen build created by pyinstaller. See:
+        #     https://stackoverflow.com/questions/45628653/add-ico-file-to-executable-in-pyinstaller
         application_path = sys._MEIPASS
-    elif __file__:
+    elif str(__file__).lower().endswith(".py"):
+        # Being run directly with python -- not a frozen build
         application_path = os.path.dirname(os.path.dirname(__file__))
-        print(application_path)
+    elif __file__:
+        # This is probably a frozen build created by nuitka.
+        application_path = os.path.dirname(__file__)
 
     iconFile = 'tyrant-64x64.ico'
     
