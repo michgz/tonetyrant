@@ -1523,12 +1523,17 @@ def main():
         # This is a frozen build created by pyinstaller. See:
         #     https://stackoverflow.com/questions/45628653/add-ico-file-to-executable-in-pyinstaller
         application_path = sys._MEIPASS
+        _logger.debug("Detected PyInstaller build")
     elif str(__file__).lower().endswith(".py"):
         # Being run directly with python -- not a frozen build
         application_path = os.path.dirname(os.path.dirname(__file__))
+        _logger.debug("Detected direct run")
+        _logger.debug("__file__ = " + str(__file__))
     elif __file__:
         # This is probably a frozen build created by nuitka.
         application_path = os.path.dirname(__file__)
+        _logger.debug("Detected Nuitka build")
+        _logger.debug("__file__ = " + str(__file__))
 
     iconFile = 'tyrant-64x64.ico'
     
