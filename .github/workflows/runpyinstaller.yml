@@ -56,6 +56,9 @@ jobs:
   build-windows:
     # The type of runner that the job will run on. This is Server 2019, corresponding
     # to Windows 10.
+    #
+    # PyInstaller only builds for the version of windows that's it's built on. That
+    # means this will only run on Windows 10/11 64-bit.
     runs-on: windows-latest
     
     # Output is the built executable
@@ -86,14 +89,18 @@ jobs:
           name: windows-10-executable-artifact
           path: dist/tyrant.exe
 
-  build-windows-11:
+  build-windows-7:
     # The type of runner that the job will run on. This is Server 2019, corresponding
-    # to Windows 11.
-    runs-on: windows-2022
+    # to Windows 10.
+    #
+    # This is built using Nuitka (an alternative to PyInstaller). That should 
+    # build executables that are more generally compatible, so there's a chance
+    # this will run on Windows 7.
+    runs-on: windows-latest
     
     # Output is the built executable
     outputs: 
-      executable: dist/tyrant.exe
+      executable: tyrant.exe
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -108,13 +115,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install python-rtmidi
           pip install wxPython
-          pip install pyinstaller
+          pip install nuitka
+          pip install zstandard
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
           echo Building
-          pyinstaller tyrant.spec
+          python nuitka_build.py
       - uses: actions/upload-artifact@v2
         with:
-          name: windows-11-executable-artifact
-          path: dist/tyrant.exe
+          name: windows-7-executable-artifact
+          path: tyrant.exe
