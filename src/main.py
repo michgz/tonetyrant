@@ -16,15 +16,13 @@ import struct
 import binascii
 import copy
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 __author__ = "michgz"
 
 
-# A one-letter signifier for the origin of the executable. Displayed in the
-# about box after the version
-#   <blank> = run from source (someone typed "python run.py")
-#     P     = build by PyInstaller
-#     N     = built by Nuitka
+# A text-format signifier for the origin of the executable. Displayed in the
+# about box after the version. Can leave blank, for example if there's no
+# executable.
 _build_signifier = ""
 
 from midi_comms import MidiComms
@@ -1247,7 +1245,8 @@ class AboutDialog(wx.Dialog):
         _icon.SetIcon(wx.Icon(ICON_LOCATION))
         sizer.Add(_icon, wx.ALIGN_LEFT)
 
-        sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName() + " v" + str(__version__) + " " + _build_signifier), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer.Add(wx.StaticText(self, -1, wx.GetApp().GetAppName() + " v" + str(__version__)), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
+        sizer.Add(wx.StaticText(self, -1, _build_signifier), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         sizer.Add(wx.StaticText(self, -1, _(u"\u00A9 2022")), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
         sizer.Add(wx.StaticText(self, -1, "https://github.com/michgz/ToneTyrant"), 0, wx.ALIGN_CENTRE|wx.ALL, 5)
 
@@ -1507,6 +1506,7 @@ The main function
 def main():
   
     global ICON_LOCATION
+    global _build_signifier
   
     # Set up the root logger
     _logger = logging.getLogger()
@@ -1531,14 +1531,14 @@ def main():
         # This is a frozen build created by pyinstaller. See:
         #     https://stackoverflow.com/questions/45628653/add-ico-file-to-executable-in-pyinstaller
         application_path = sys._MEIPASS
-        _build_signifier = "P"
+        _build_signifier = "(Built by PyInstaller)"
     elif str(sys.argv[0]).lower().endswith(".py"):
         # Being run directly with python -- not a frozen build
         application_path = os.path.dirname(os.path.dirname(__file__))
     elif __file__:
         # This is probably a frozen build created by nuitka.
         application_path = os.path.dirname(__file__)
-        _build_signifier = "N"
+        _build_signifier = "(Built by Nuitka)"
 
     iconFile = 'tyrant-64x64.ico'
     

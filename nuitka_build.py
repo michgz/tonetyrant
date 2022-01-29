@@ -34,8 +34,8 @@ def build():
     sys.argv.extend(["--windows-file-description", "Tone editor for Casio keyboards"])
     
     
-    sys.argv.extend(["--show-scons"])
-    sys.argv.extend(["--verbose"])
+    sys.argv.extend(["--show-scons"])   # These two produce lots of output!!
+    sys.argv.extend(["--verbose"])      #
     sys.argv.extend(["-o", "tyrant.exe"])
     sys.argv.extend(["src/main.py"])
     
