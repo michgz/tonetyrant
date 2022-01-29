@@ -27,7 +27,7 @@ def build():
     
     sys.argv.extend(["--windows-icon-from-ico", "tyrant-64x64.ico"])
     
-    sys.argv.extend(["--windows-company-name", "https://github.com/michgz/ToneTyrant"])
+    sys.argv.extend(["--windows-company-name", "https://github.com/michgz"])
     sys.argv.extend(["--windows-product-name", "ToneTyrant"])
     sys.argv.extend(["--windows-file-version", VERSION_STR])
     sys.argv.extend(["--windows-product-version", VERSION_STR])
