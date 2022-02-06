@@ -35,6 +35,7 @@
                 <step>2</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
             <help>0 Melody\n2 Drum\n4 Piano\nVersatile</help>
         </parameter>
         <parameter number="2" block="0">
@@ -54,6 +55,7 @@
                 <max>900</max>
                 <step>1</step>
             </recommendedLimits>
+            <midiBytes>2</midiBytes>
             <defaultValue>1</defaultValue>
         </parameter>
         <parameter number="3" block="0">
@@ -68,6 +70,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="4" block="0">
             <name>Velocity to filter cutoff</name>
@@ -82,6 +85,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="5" block="0">
             <name>Velocity sense</name>
@@ -96,6 +100,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="6" block="0">
             <name>Attack</name>
@@ -119,6 +124,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="6" block="1">
@@ -143,6 +149,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="6" block="2">
@@ -167,6 +174,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="7" block="0">
@@ -191,6 +199,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="7" block="1">
             <name>Attack time</name>
@@ -214,6 +223,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="7" block="2">
             <name>Release time</name>
@@ -237,6 +247,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="8" block="0">
             <sound>A</sound>
@@ -250,6 +261,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="9" block="0">
             <sound>A</sound>
@@ -263,6 +275,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="0">
             <name>Attack 1</name>
@@ -286,6 +299,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="1">
             <name>Attack 2</name>
@@ -309,6 +323,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="2">
             <name>Attack 3</name>
@@ -332,6 +347,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="3">
             <name>Attack 4</name>
@@ -355,6 +371,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="4">
             <name>Hold</name>
@@ -378,6 +395,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="5">
             <name>Release 1</name>
@@ -401,6 +419,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="10" block="6">
             <name>Release 2</name>
@@ -424,6 +443,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="0">
             <name>Unused time</name>
@@ -447,6 +467,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="1">
             <name>Attack time 1</name>
@@ -470,6 +491,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="2">
             <name>Attack time 2</name>
@@ -493,6 +515,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="3">
             <name>Attack time 3</name>
@@ -516,6 +539,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="4">
             <name>Attack time 4</name>
@@ -539,6 +563,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="5">
             <name>Release time 1</name>
@@ -562,6 +587,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="11" block="6">
             <name>Release time 2</name>
@@ -585,6 +611,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="0">
             <name>Attack 1</name>
@@ -608,6 +635,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="1">
             <name>Attack 2</name>
@@ -631,6 +659,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="2">
             <name>Attack 3</name>
@@ -654,6 +683,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="3">
             <name>Attack 4</name>
@@ -677,6 +707,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="4">
             <name>Hold</name>
@@ -700,6 +731,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="5">
             <name>Release 1</name>
@@ -723,6 +755,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="12" block="6">
             <name>Release 2</name>
@@ -746,6 +779,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="0">
             <name>Unused time</name>
@@ -769,6 +803,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="1">
             <name>Attack time 1</name>
@@ -792,6 +827,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="2">
             <name>Attack time 2</name>
@@ -815,6 +851,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="3">
             <name>Attack time 3</name>
@@ -838,6 +875,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="4">
             <name>Attack time 4</name>
@@ -861,6 +899,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="5">
             <name>Release time 1</name>
@@ -884,6 +923,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="13" block="6">
             <name>Release time 2</name>
@@ -907,6 +947,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="14" block="0">
             <name>Cutoff</name>
@@ -921,6 +962,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="15" block="0">
             <name>Resonance</name>
@@ -935,6 +977,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="16" block="0">
             <name>Envelope Multiplier</name>
@@ -946,9 +989,10 @@
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>8</count>
+                <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="17" block="0">
             <name>Attack 1</name>
@@ -972,6 +1016,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="1">
             <name>Attack 2</name>
@@ -995,6 +1040,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="2">
             <name>Attack 3</name>
@@ -1018,6 +1064,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="3">
             <name>Attack 4</name>
@@ -1041,6 +1088,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="4">
             <name>Hold</name>
@@ -1064,6 +1112,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="5">
             <name>Release 1</name>
@@ -1087,6 +1136,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="17" block="6">
             <name>Release 2</name>
@@ -1110,6 +1160,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="0">
             <name>unused time</name>
@@ -1133,6 +1184,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="1">
             <name>Attack time 1</name>
@@ -1156,6 +1208,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="2">
             <name>Attack time 2</name>
@@ -1179,6 +1232,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="3">
             <name>Attack time 3</name>
@@ -1202,6 +1256,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="4">
             <name>Attack time 4</name>
@@ -1225,6 +1280,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="5">
             <name>Release time 1</name>
@@ -1248,6 +1304,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="18" block="6">
             <name>Release time 2</name>
@@ -1271,6 +1328,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="0">
             <name>Attack 1</name>
@@ -1294,6 +1352,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="1">
             <name>Attack 2</name>
@@ -1317,6 +1376,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="2">
             <name>Attack 3</name>
@@ -1340,6 +1400,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="3">
             <name>Attack 4</name>
@@ -1363,6 +1424,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="4">
             <name>Hold level</name>
@@ -1386,6 +1448,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="5">
             <name>Release 1</name>
@@ -1409,6 +1472,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="19" block="6">
             <name>Release 2</name>
@@ -1432,6 +1496,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="0">
             <name>unused time</name>
@@ -1455,6 +1520,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="1">
             <name>Attack time 1</name>
@@ -1478,6 +1544,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="2">
             <name>Attack time 2</name>
@@ -1501,6 +1568,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="3">
             <name>Attack time 3</name>
@@ -1524,6 +1592,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="4">
             <name>Attack time 4</name>
@@ -1547,6 +1616,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="5">
             <name>Release time 1</name>
@@ -1570,6 +1640,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="20" block="6">
             <name>Release time 2</name>
@@ -1593,6 +1664,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="21" block="0">
             <name>Timbre</name>
@@ -1616,6 +1688,7 @@
                 <step>2</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
             <help>0 Melody\n2 Drum\n4 Piano\nVersatile</help>
         </parameter>
         <parameter number="22" block="0">
@@ -1636,6 +1709,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="23" block="0">
             <sound>B</sound>
@@ -1649,6 +1723,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="24" block="0">
             <name>Velocity to filter cutoff</name>
@@ -1663,6 +1738,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="25" block="0">
             <name>Velocity sense</name>
@@ -1677,6 +1753,7 @@
                 <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="26" block="0">
             <name>Attack</name>
@@ -1700,6 +1777,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="26" block="1">
@@ -1724,6 +1802,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="26" block="2">
@@ -1748,6 +1827,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
             <help>Units 1/8 semitones</help>
         </parameter>
         <parameter number="27" block="0">
@@ -1772,6 +1852,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="27" block="1">
             <name>Attack time</name>
@@ -1795,6 +1876,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="27" block="2">
             <name>Release time</name>
@@ -1818,6 +1900,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="28" block="0">
             <sound>B</sound>
@@ -1831,6 +1914,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="29" block="0">
             <sound>B</sound>
@@ -1844,6 +1928,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="0">
             <name>Attack 1</name>
@@ -1867,6 +1952,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="1">
             <name>Attack 2</name>
@@ -1890,6 +1976,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="2">
             <name>Attack 3</name>
@@ -1913,6 +2000,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="3">
             <name>Attack 4</name>
@@ -1936,6 +2024,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="4">
             <name>Hold</name>
@@ -1959,6 +2048,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="5">
             <name>Release 1</name>
@@ -1982,6 +2072,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="30" block="6">
             <name>Release 2</name>
@@ -2005,6 +2096,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="0">
             <name>Unused time</name>
@@ -2028,6 +2120,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="1">
             <name>Attack time 1</name>
@@ -2051,6 +2144,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="2">
             <name>Attack time 2</name>
@@ -2074,6 +2168,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="3">
             <name>Attack time 3</name>
@@ -2097,6 +2192,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="4">
             <name>Attack time 4</name>
@@ -2120,6 +2216,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="5">
             <name>Release time 1</name>
@@ -2143,6 +2240,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="31" block="6">
             <name>Release time 2</name>
@@ -2166,6 +2264,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="0">
             <name>Attack 1</name>
@@ -2189,6 +2288,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="1">
             <name>Attack 2</name>
@@ -2212,6 +2312,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="2">
             <name>Attack 3</name>
@@ -2235,6 +2336,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="3">
             <name>Attack 4</name>
@@ -2258,6 +2360,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="4">
             <name>Hold</name>
@@ -2281,6 +2384,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="5">
             <name>Release 1</name>
@@ -2304,6 +2408,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="32" block="6">
             <name>Release 2</name>
@@ -2327,6 +2432,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="0">
             <name>Unused time</name>
@@ -2350,6 +2456,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="1">
             <name>Attack time 1</name>
@@ -2373,6 +2480,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="2">
             <name>Attack time 2</name>
@@ -2396,6 +2504,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="3">
             <name>Attack time 3</name>
@@ -2419,6 +2528,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="4">
             <name>Attack time 4</name>
@@ -2442,6 +2552,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="5">
             <name>Release time 1</name>
@@ -2465,6 +2576,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="33" block="6">
             <name>Release time 2</name>
@@ -2488,6 +2600,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="34" block="0">
             <name>Cutoff</name>
@@ -2502,6 +2615,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="35" block="0">
             <name>Resonance</name>
@@ -2516,6 +2630,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="36" block="0">
             <name>Envelope Multiplier</name>
@@ -2527,9 +2642,10 @@
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>8</count>
+                <count>7</count>
             </bits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="37" block="0">
             <name>Attack 1</name>
@@ -2553,6 +2669,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="1">
             <name>Attack 2</name>
@@ -2576,6 +2693,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="2">
             <name>Attack 3</name>
@@ -2599,6 +2717,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="3">
             <name>Attack 4</name>
@@ -2622,6 +2741,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="4">
             <name>Hold</name>
@@ -2645,6 +2765,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="5">
             <name>Release 1</name>
@@ -2668,6 +2789,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="37" block="6">
             <name>Release 2</name>
@@ -2691,6 +2813,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="0">
             <name>Unused time</name>
@@ -2714,6 +2837,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="1">
             <name>Attack time 1</name>
@@ -2737,6 +2861,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="2">
             <name>Attack time 2</name>
@@ -2760,6 +2885,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="3">
             <name>Attack time 3</name>
@@ -2783,6 +2909,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="4">
             <name>Attack time 4</name>
@@ -2806,6 +2933,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="5">
             <name>Release time 1</name>
@@ -2829,6 +2957,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="38" block="6">
             <name>Release time 2</name>
@@ -2852,6 +2981,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="0">
             <name>Attack 1</name>
@@ -2875,6 +3005,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="1">
             <name>Attack 2</name>
@@ -2898,6 +3029,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="2">
             <name>Attack 3</name>
@@ -2921,6 +3053,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="3">
             <name>Attack 4</name>
@@ -2944,6 +3077,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="4">
             <name>Hold</name>
@@ -2967,6 +3101,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="5">
             <name>Release 1</name>
@@ -2990,6 +3125,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="39" block="6">
             <name>Release 2</name>
@@ -3013,6 +3149,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>128</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="0">
             <name>Unused time</name>
@@ -3036,6 +3173,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="1">
             <name>Attack time 1</name>
@@ -3059,6 +3197,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="2">
             <name>Attack time 2</name>
@@ -3082,6 +3221,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="3">
             <name>Attack time 3</name>
@@ -3105,6 +3245,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="4">
             <name>Attack time 4</name>
@@ -3128,6 +3269,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="5">
             <name>Release time 1</name>
@@ -3151,6 +3293,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="40" block="6">
             <name>Release time 2</name>
@@ -3174,6 +3317,7 @@
                 <step>64</step>
             </recommendedLimits>
             <defaultValue>512</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="41" block="0">
             <name>Sound B used for note-off</name>
@@ -3190,6 +3334,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="42" block="0">
             <name>Note off velocity</name>
@@ -3206,6 +3351,7 @@
                 <max>3</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
             <help>0 Note-off\n1 Saved note-on\nMinimum of note-off and saved note-on</help>
         </parameter>
         <parameter number="43" block="0">
@@ -3229,6 +3375,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>4</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="44" block="0">
             <name>Enable DSP</name>
@@ -3246,6 +3393,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="45" block="0">
             <name>Volume</name>
@@ -3268,6 +3416,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>100</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="46" block="0">
             <name>Volume 2</name>
@@ -3290,6 +3439,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="47" block="0">
             <name>Key-follow 1</name>
@@ -3312,6 +3462,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default</help>
         </parameter>
         <parameter number="48" block="0">
             <name>Key-follow 2</name>
@@ -3334,6 +3486,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default</help>
         </parameter>
         <parameter number="49" block="0">
             <cluster>Gain</cluster>
@@ -3355,6 +3509,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="50" block="0">
             <cluster>Gain</cluster>
@@ -3376,6 +3531,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="51" block="0">
             <cluster>Gain</cluster>
@@ -3397,6 +3553,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="52" block="0">
             <cluster>Gain</cluster>
@@ -3418,6 +3575,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="53" block="0">
             <cluster>Gain</cluster>
@@ -3439,6 +3597,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="54" block="0">
             <cluster>Gain</cluster>
@@ -3460,6 +3619,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="55" block="0">
             <bytes>
@@ -3475,6 +3635,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="56" block="0">
             <name>Chorus send</name>
@@ -3497,6 +3658,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="57" block="0">
             <name>Reverb send</name>
@@ -3519,6 +3681,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="58" block="0">
             <name>Delay send</name>
@@ -3541,6 +3704,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="59" block="0">
             <name>Vibrato type</name>
@@ -3563,6 +3727,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>15</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="60" block="0">
             <name>Vibrato rate</name>
@@ -3585,6 +3750,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="61" block="0">
             <name>Vibrato delay</name>
@@ -3607,6 +3773,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="62" block="0">
             <name>Vibrato rise time</name>
@@ -3629,6 +3796,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="63" block="0">
             <name>Vibrato depth</name>
@@ -3651,6 +3819,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="64" block="0">
             <name>Vibrato depth for CC 01 (modulation)</name>
@@ -3673,6 +3842,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>72</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="65" block="0">
             <name>Vibrato depth for after-touch</name>
@@ -3695,6 +3865,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>72</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="66" block="0">
             <name>Tremolo/filter LFO type</name>
@@ -3717,6 +3888,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>15</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="67" block="0">
             <name>Tremolo/filter LFO rate</name>
@@ -3739,6 +3911,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="68" block="0">
             <name>Filter LFO delay</name>
@@ -3761,6 +3934,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="69" block="0">
             <name>Filter LFO rise time</name>
@@ -3783,6 +3957,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="70" block="0">
             <name>Filter LFO depth</name>
@@ -3805,6 +3980,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="71" block="0">
             <name>Filter LFO depth for CC 01 (modulation)</name>
@@ -3827,6 +4003,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="72" block="0">
             <name>Filter LFO depth for after-touch</name>
@@ -3849,6 +4026,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="73" block="0">
             <name>Tremolo delay</name>
@@ -3871,6 +4049,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="74" block="0">
             <name>Tremolo rise time</name>
@@ -3893,6 +4072,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="75" block="0">
             <name>Tremolo depth</name>
@@ -3915,6 +4095,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="76" block="0">
             <name>Tremolo depth for CC 01 (modulation)</name>
@@ -3937,6 +4118,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="77" block="0">
             <name>Tremolo depth for after-touch</name>
@@ -3959,6 +4141,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>64</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="78" block="0">
             <bytes>
@@ -3974,6 +4157,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="79" block="0">
             <bytes>
@@ -3982,13 +4166,14 @@
             </bytes>
             <bits>
                 <offset>0</offset>
-                <count>7</count>
+                <count>4</count>
             </bits>
             <absoluteLimits>
                 <min>0</min>
-                <max>127</max>
+                <max>15</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="80" block="0">
             <name>Stretch tuning</name>
@@ -4010,6 +4195,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
             <help>Specifies the stretch tuning, a.k.a. Railsback curve. 0 should be used for most instruments, while 1-7 may be suitable for piano or electric piano sounds</help>
         </parameter>
         <parameter number="81" block="0">
@@ -4026,6 +4212,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="82" block="0">
             <bytes>
@@ -4041,6 +4228,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="83" block="0">
             <bytes>
@@ -4056,6 +4244,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="84" block="0">
             <name>DSP chain name</name>
@@ -4088,6 +4277,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0x3FFF</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="85" block="1">
             <name>DSP effect 2</name>
@@ -4110,6 +4300,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0x3FFF</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="85" block="2">
             <name>DSP effect 3</name>
@@ -4132,6 +4323,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0x3FFF</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="85" block="3">
             <name>DSP effect 4</name>
@@ -4154,6 +4346,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0x3FFF</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="86" block="0">
             <name>DSP bypass 1</name>
@@ -4171,6 +4364,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="86" block="1">
             <name>DSP bypass 2</name>
@@ -4188,6 +4382,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="86" block="2">
             <name>DSP bypass 3</name>
@@ -4205,6 +4400,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="86" block="3">
             <name>DSP bypass 4</name>
@@ -4222,6 +4418,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="87" block="0">
             <name>DSP parameters 1</name>
@@ -4230,6 +4427,7 @@
                 <offset>0x138</offset>
                 <count>16</count>
             </bytes>
+            <midiBytes>16</midiBytes>
         </parameter>
         <parameter number="87" block="1">
             <name>DSP parameters 2</name>
@@ -4238,6 +4436,7 @@
                 <offset>0x14A</offset>
                 <count>16</count>
             </bytes>
+            <midiBytes>16</midiBytes>
         </parameter>
         <parameter number="87" block="2">
             <name>DSP parameters 3</name>
@@ -4246,6 +4445,7 @@
                 <offset>0x15C</offset>
                 <count>16</count>
             </bytes>
+            <midiBytes>16</midiBytes>
         </parameter>
         <parameter number="87" block="3">
             <name>DSP parameters 4</name>
@@ -4254,6 +4454,7 @@
                 <offset>0x16E</offset>
                 <count>16</count>
             </bytes>
+            <midiBytes>16</midiBytes>
         </parameter>
         <parameter number="88" block="0">
             <bytes>
@@ -4269,6 +4470,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="89" block="0">
             <bytes>
@@ -4284,6 +4486,7 @@
                 <max>3</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="90" block="0">
             <bytes>
@@ -4299,6 +4502,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="91" block="0">
             <bytes>
@@ -4314,6 +4518,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="92" block="0">
             <bytes>
@@ -4329,6 +4534,7 @@
                 <max>7</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="93" block="0">
             <bytes>
@@ -4349,6 +4555,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>100</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="94" block="0">
             <bytes>
@@ -4364,6 +4571,7 @@
                 <max>3</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="95" block="0">
             <bytes>
@@ -4379,6 +4587,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="96" block="0">
             <bytes>
@@ -4394,6 +4603,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="97" block="0">
             <bytes>
@@ -4414,6 +4624,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="98" block="0">
             <bytes>
@@ -4434,6 +4645,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="99" block="0">
             <bytes>
@@ -4449,6 +4661,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="100" block="0">
             <name>DSP chain number</name>
@@ -4466,6 +4679,7 @@
                 <max>899</max>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>5</midiBytes>
             <help>Number of the DSP chain. This is not used for anything and can be set to any value</help>
         </parameter>
         <parameter number="101" block="0">
@@ -4482,6 +4696,7 @@
                 <max>1</max>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>5</midiBytes>
         </parameter>
         <parameter number="102" block="0">
             <bytes>
@@ -4493,6 +4708,7 @@
                 <count>8</count>
             </bits>
             <defaultValue>0</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="103" block="0">
             <bytes>
@@ -4508,6 +4724,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="104" block="0">
             <bytes>
@@ -4523,6 +4740,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="105" block="0">
             <bytes>
@@ -4538,6 +4756,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="106" block="0">
             <bytes>
@@ -4553,6 +4772,7 @@
                 <max>1</max>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>5</midiBytes>
         </parameter>
         <parameter number="107" block="0">
             <name>Portamento time</name>
@@ -4575,6 +4795,7 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="108" block="0">
             <name>Octave shift (keyboard)</name>
@@ -4593,6 +4814,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>4</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="109" block="0">
             <bytes>
@@ -4608,6 +4830,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>2</midiBytes>
         </parameter>
         <parameter number="110" block="0">
             <bytes>
@@ -4623,6 +4846,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="111" block="0">
             <bytes>
@@ -4638,6 +4862,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="112" block="0">
             <bytes>
@@ -4653,6 +4878,7 @@
                 <max>127</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="113" block="0">
             <bytes>
@@ -4668,6 +4894,7 @@
                 <max>15</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="114" block="0">
             <name>Monophonic</name>
@@ -4684,6 +4911,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="115" block="0">
             <name>Sound B used for double-stop</name>
@@ -4700,6 +4928,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="116" block="0">
             <name>Portamento</name>
@@ -4722,6 +4951,7 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
             <help>0 Off\n1 On\n2 Legato</help>
         </parameter>
         <parameter number="117" block="0">
@@ -4745,6 +4975,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>0 All-pass\n1 Low-pass\n2 High-pass\n3 Wide band-pass\n4 Bass shelf\n5 Treble shelf\n6 Band boost/cut\n7 Notch\n8 All-pass</help>
         </parameter>
         <parameter number="117" block="1">
             <name>Type</name>
@@ -4767,6 +4999,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>0 All-pass\n1 Low-pass\n2 High-pass\n3 Wide band-pass\n4 Bass shelf\n5 Treble shelf\n6 Band boost/cut\n7 Notch\n8 All-pass</help>
         </parameter>
         <parameter number="118" block="0">
             <name>Parameter 1</name>
@@ -4789,6 +5023,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>12</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls frequency</help>
         </parameter>
         <parameter number="118" block="1">
             <name>Parameter 1</name>
@@ -4811,6 +5047,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>12</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls frequency</help>
         </parameter>
         <parameter number="119" block="0">
             <name>Parameter 2</name>
@@ -4833,6 +5071,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>12</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls gain</help>
         </parameter>
         <parameter number="119" block="1">
             <name>Parameter 2</name>
@@ -4855,6 +5095,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>12</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls gain</help>
         </parameter>
         <parameter number="120" block="0">
             <name>Parameter 3</name>
@@ -4877,6 +5119,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls resonance Q-value</help>
         </parameter>
         <parameter number="120" block="1">
             <name>Parameter 3</name>
@@ -4899,6 +5143,8 @@
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Meaning depends on the filter type. Often it controls resonance Q-value</help>
         </parameter>
         <parameter number="121" block="0">
             <cluster>Filter 1</cluster>
@@ -4915,6 +5161,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="121" block="1">
             <cluster>Filter 2</cluster>
@@ -4931,6 +5178,7 @@
                 <max>1</max>
             </absoluteLimits>
             <defaultValue>1</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="122" block="0">
             <cluster>Filter 1</cluster>
@@ -4947,6 +5195,7 @@
                 <max>7</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="122" block="1">
             <cluster>Filter 2</cluster>
@@ -4963,9 +5212,10 @@
                 <max>7</max>
             </absoluteLimits>
             <defaultValue>0</defaultValue>
+            <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="200" block="0">
-            <name>Volume 3 (keyboard)</name>
+            <name>Volume 3</name>
             <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C2</offset>
@@ -4985,9 +5235,11 @@
                 <step>16</step>
             </recommendedLimits>
             <defaultValue>127</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Volume of the note.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
         </parameter>
         <parameter number="201" block="0">
-            <name>Key-follow 3 (keyboard)</name>
+            <name>Key-follow 3</name>
             <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C3</offset>
@@ -5003,13 +5255,15 @@
             </absoluteLimits>
             <recommendedLimits>
                 <min>0</min>
-                <max>127</max>
+                <max>126</max>
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
         </parameter>
         <parameter number="202" block="0">
-            <name>Key-follow 4 (keyboard)</name>
+            <name>Key-follow 4</name>
             <cluster>Keyboard only</cluster>
             <bytes>
                 <offset>0x1C4</offset>
@@ -5025,10 +5279,12 @@
             </absoluteLimits>
             <recommendedLimits>
                 <min>0</min>
-                <max>127</max>
+                <max>126</max>
                 <step>1</step>
             </recommendedLimits>
             <defaultValue>2</defaultValue>
+            <midiBytes>1</midiBytes>
+            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
         </parameter>
     </parameters>
 </configuration>

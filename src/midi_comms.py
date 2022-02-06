@@ -1,3 +1,10 @@
+"""
+A class with two functions:
+    - Performing MIDI communications
+    - Showing dialogs to the user so they can control those communications
+"""
+
+
 
 
 # Install with pip install python-rtmidi
@@ -18,6 +25,8 @@ _ = lambda X : X
 
 
 
+# Some custom reference IDs for various GUI elements
+#
 INPUT_PORT_SEL_ID = wx.NewIdRef()
 OUTPUT_PORT_SEL_ID = wx.NewIdRef()
 UPLOAD_TARGET_ID = wx.NewIdRef()
@@ -26,6 +35,8 @@ DOWNLOAD_TARGET_ID = wx.NewIdRef()
 
 
 
+# Some global variables used by the communications
+#
 is_busy = False
 must_send_ack = False
 have_got_ack = False
@@ -42,7 +53,8 @@ type_1_rxed = b''
 
 
 
-
+# The main class:
+#
 class MidiComms:
 
     def __init__(self):
@@ -102,6 +114,9 @@ class MidiComms:
 
 
     def ShowMidiSetup(self, parent):
+        """
+        Show the MidiSetupDialog.
+        """
         dlg = self.MidiSetupDialog(parent, self._input_name, self._output_name)
         dlg.CenterOnParent()
         ok_result = dlg.ShowModal()
@@ -120,6 +135,9 @@ class MidiComms:
 
 
     class MidiUploadDialog(wx.Dialog):
+        """
+        A dialog for the user to initiate an upload to CT-X user memory
+        """
       
         target_saved_value = 801
       
@@ -152,7 +170,10 @@ class MidiComms:
 
 
     class MidiDownloadDialog(wx.Dialog):
-      
+        """
+        A dialog for the user to initiate a download from CT-X user memory
+        """
+
         target_saved_value = 801
       
         def __init__(self, parent):
@@ -186,7 +207,7 @@ class MidiComms:
 
     # Define the device ID. Constructed as follows:
     #    0x44       Manufacturer ID ( = Casio)
-    #    0x19 0x01  Model ID ( = CT-X3000 or CT-X5000)
+    #    0x19 0x01  Model ID ( = CT-X3000, CT-X5000, CT-X700)
     #    0x7F       Device. This is a "don't care" value
     #
     DEVICE_ID = b"\x44\x19\x01\x7F"
@@ -194,6 +215,10 @@ class MidiComms:
 
 
     def midi_7bit_to_8bit(self, b):
+      """
+      Decode from MIDI "7-bit format", which requires the MSb of each byte to be
+      zero.
+      """
 
       r = 0  # remainder
       n = 0  # position of split
@@ -245,6 +270,11 @@ class MidiComms:
 
 
     def midi_8bit_to_7bit(self, b):
+      """
+      Encode to MIDI "7-bit format", which requires the MSb of each byte to be
+      zero.
+      """
+
       r = 0  # remainder
       n = 0  # position of split
       i = 0  # pointer to input
@@ -290,6 +320,10 @@ class MidiComms:
 
 
     def handle_pkt(self, p):
+      """
+      Handle a complete packet as received from the MIDI port. It is assumed that
+      each packet will be in Casio SYSEX format.
+      """
       global is_busy
       global must_send_ack
       global have_got_ack
@@ -333,6 +367,9 @@ class MidiComms:
         type_1_rxed = v
 
     def parse_response(self, b, *, _debug=False):
+      """
+      Parse bytes received from the MIDI port, collating them into SYSEX packets.
+      """
       global so_far
       
       in_pkt = True
@@ -365,9 +402,18 @@ class MidiComms:
             in_pkt = True
 
     class SysexTimeoutError(Exception):
+      """
+      An exception specific to the SYSEX communications. The most likely reason
+      for this exception to be raised is that the keyboard has become unplugged,
+      powered off, etc.
+      """
       pass
 
     def wait_for_ack(self, f):
+      """
+      Receive bytes from the MIDI port and parse them until an ACK packet has
+      been seen. If more than 4 seconds passes then an exception will be raised.
+      """
       global have_got_ack
       have_got_ack = False
       st = time.monotonic()
@@ -399,7 +445,9 @@ class MidiComms:
                     command=-1,
                     sub_command=3,
                     data=b''):
-
+      """
+      Construct a packet in Casio SYSEX format, for sending over the MIDI port
+      """
 
       w = b'\xf0' + self.DEVICE_ID
       if command < 0:
@@ -448,6 +496,16 @@ class MidiComms:
 
 
     def upload_ac7_internal(self, param_set, data, memory=1, category=30, *, _debug=False):
+      """
+      Send a complete parameter set to the keyboard. The meaning of the data, and
+      the required data length, depend on the values of "memory" and "category".
+      For upload to Tone data in User Memory, the values should be:
+          - memory=1
+          - category=3
+      In that case, the value of "param_set" can be any number from 0 to 99,
+      corresponding to User Tone numbers 801-900, and the data is required to be
+      of length 0x1C8.
+      """
 
       # Open the device (if needed)
       midiin = rtmidi.MidiIn()
@@ -514,6 +572,15 @@ class MidiComms:
 
 
     def download_ac7_internal(self, param_set, memory=1, category=30, *, _debug=False):
+      """
+      Request and receive a complete parameter set from the keyboard. The meaning
+      of the data depends on the values of "memory" and "category". For download
+      from Tone data in User Memory, the values should be:
+          - memory=1
+          - category=3
+      In that case, the value of "param_set" can be any number from 0 to 99,
+      corresponding to User Tone numbers 801-900.
+      """
 
       global have_got_ess
       global total_rxed
@@ -591,6 +658,10 @@ class MidiComms:
 
 
     def ShowMidiUpload(self, parent, buffer_):
+        """
+        Show the MidiUploadDialog, and perform any operations which were requested.
+        """
+        
         dlg_1 = self.MidiUploadDialog(parent)
         dlg_1.CenterOnParent()
         id_result = dlg_1.ShowModal()
@@ -622,6 +693,10 @@ class MidiComms:
             
 
     def ShowMidiDownload(self, parent, buffer_):
+        """
+        Show the MidiDownloadDialog, and perform any operations which were requested.
+        """
+
         dlg_1 = self.MidiDownloadDialog(parent)
         dlg_1.CenterOnParent()
         id_result = dlg_1.ShowModal()

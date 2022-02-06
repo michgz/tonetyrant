@@ -88,9 +88,19 @@ for i in elem.find("parameters"):
                 r3_val = int(r3, 16)
             else:
                 r3_val = int(r3)
-        
 
 
+
+
+    mb = i.find("midiBytes")
+    if mb is None:
+        raise Exception
+    else:
+        mb = mb.text
+        if mb.startswith("0x") or mb.startswith("0X"):
+            mb_val = int(mb, 16)
+        else:
+            mb_val = int(mb)
 
 
 
@@ -128,6 +138,7 @@ for i in elem.find("parameters"):
                    r3_val,
                    nm_val,
                    cst_val,
+                   mb_val,            # MIDI bytes count
              ))
     
 
@@ -150,6 +161,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
                       recommendedLimits: tuple
                       recommendedStep: int
                       defaultValue: int
+                      midiBytes: int
                   
                   
                   """))
@@ -157,7 +169,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
     f_py.write("Params = [\n")
 
     for AA in A:
-        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), recommendedStep={9}, name="{10}", cluster="{11}"),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11]))
+        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), recommendedStep={9}, name="{10}", cluster="{11}", midiBytes={12}),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11], AA[12]))
     
     f_py.write("]\n\n\n")
 
