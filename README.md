@@ -4,6 +4,12 @@
 
 A hex editor and tone editing tool for Casio keyboards. Currently works for keyboards CT-X3000 & CT-X5000.
 
+Features include:
+* Automatically calculates the Casio CRC value
+* Provides "Hints" when editing bytes that are associated with a known parameter. The parameter can be quickly increased/decreased with PAGE UP/PAGE DN buttons.
+* Can generate a random tone
+* Upload and download to User Tone memory locations in a CT-X3000/5000 keyboard
+
 ### Windows
 
 A pre-built windows executable may be downloaded from here. Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
@@ -36,5 +42,6 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v1.0.2  Try a new build method which might give better compatibility with older Windows versions (this version built for Windows only)
 * v1.0.1  Improvements to the appearance of the Hints window under MS Windows
 * v1.0.0  First release

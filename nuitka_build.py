@@ -32,6 +32,7 @@ def build():
     sys.argv.extend(["--windows-file-version", VERSION_STR])
     sys.argv.extend(["--windows-product-version", VERSION_STR])
     sys.argv.extend(["--windows-file-description", "Tone editor for Casio keyboards"])
+    sys.argv.extend(["--windows-disable-console"])
     
     
     sys.argv.extend(["--show-scons"])   # These two produce lots of output!!
