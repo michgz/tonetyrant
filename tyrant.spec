@@ -1,3 +1,11 @@
+#
+#  A Script for running from PyInstaller. Usage:
+#
+#     PyInstaller tyrant.spec
+#
+#
+
+
 # -*- mode: python ; coding: utf-8 -*-
 import sys
 
@@ -5,9 +13,72 @@ import sys
 block_cipher = None
 
 
+def get_version:
+    import os
+    import os.path
+    import importlib
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("main", os.path.join(os.get_cwd(), "src"))
+    main = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(main)
+    ver_strs = main.__version__.split(".")
+    return (int(ver_strs[0], int(ver_strs[1], int(ver_strs[2], 0)
+
+
+ver = get_version()
+
+
+if sys.platform.startswith('win'):
+    
+    # Create a version structure for windows executable.
+    
+    from PyInstaller.utils.win32.versioninfo import VSVersionInfo
+
+    version_info_ = VSVersionInfo(
+                      ffi=FixedFileInfo(
+                        filevers=ver,
+                        prodvers=ver,
+                        mask=0x3f,
+                        flags=0x0,
+                        OS=0x04,
+                        fileType=0x1,
+                        subtype=0x0,
+                        date=(0, 0)
+                        ),
+                      kids=[
+                        StringFileInfo(
+                          [
+                          StringTable(
+                            '000004B0',
+                            [StringStruct('CompanyName', 'https://github.com/michgz'),
+                            StringStruct('FileDescription', 'Tone editor for Casio keyboards'),
+                            StringStruct('FileVersion', '{0}.{1}.{2}.{3}'.format(*ver)),
+                            StringStruct('OriginalFilename', 'tyrant.exe'),
+                            StringStruct('ProductName', 'ToneTyrant'),
+                            StringStruct('ProductVersion', '{0}.{1}.{2}.{3}'.format(*ver))])
+                          ]), 
+                        VarFileInfo([VarStruct('Translation', [1200])])
+                      ]
+                    )
+
+
+    # Include the Windows SDK libraries. This is for the benefit of Windows 7, which
+    # doesn't always have these available. From Windows 10 they are always available
+    # (see https://blogs.msdn.microsoft.com/vcblog/2015/03/03/introducing-the-universal-crt/)
+    #
+    binaries_ = [ ("C:\Program Files (x86)\Windows Kits\10\Redist\ucrt", "ucrt") ]
+
+else:
+
+    # None of the above is relevant for Linux
+
+    version_info_ = None
+    binaries_ = []
+
+
 a = Analysis(['src/main.py'],
              pathex=[],
-             binaries=[],
+             binaries=binaries_,
              datas=[ ('./tyrant-64x64.ico', '.') ],
              hiddenimports=[],
              hookspath=[],
@@ -17,7 +88,8 @@ a = Analysis(['src/main.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
-             noarchive=False)
+             noarchive=False,
+             version=version_info_)
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
