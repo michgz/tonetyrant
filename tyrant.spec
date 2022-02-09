@@ -13,7 +13,7 @@ import sys
 block_cipher = None
 
 
-def get_version:
+def get_version():
     import os
     import os.path
     import importlib
