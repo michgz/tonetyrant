@@ -14,6 +14,7 @@ import wx
 import struct
 import time
 import binascii
+import configparser
 
 
 
@@ -58,8 +59,11 @@ type_1_rxed = b''
 class MidiComms:
 
     def __init__(self):
-        self._input_name = ""
-        self._output_name = ""
+        cfg = configparser.ConfigParser()
+        cfg.read('tyrant.cfg')
+        self._input_name = cfg.get('Midi','InPort',fallback="")
+        self._output_name = cfg.get('Midi','OutPort',fallback="")
+
 
     class MidiSetupDialog(wx.Dialog):
         """
@@ -120,17 +124,30 @@ class MidiComms:
         dlg = self.MidiSetupDialog(parent, self._input_name, self._output_name)
         dlg.CenterOnParent()
         ok_result = dlg.ShowModal()
+        
+        cfg = configparser.ConfigParser()
+        cfg.read('tyrant.cfg')
+        
         if ok_result == wx.ID_OK:
             _lst = dlg.FindWindowById(INPUT_PORT_SEL_ID)
             _n = _lst.GetSelection()
             if _n != wx.NOT_FOUND:
                 self._input_name = _lst.GetString(_n)
+                if not cfg.has_section("Midi"):
+                    cfg.add_section("Midi")
+                cfg.set('Midi', 'InPort', self._input_name)
 
             _lst = dlg.FindWindowById(OUTPUT_PORT_SEL_ID)
             _n = _lst.GetSelection()
             if _n != wx.NOT_FOUND:
                 self._output_name = _lst.GetString(_n)
-            
+                if not cfg.has_section("Midi"):
+                    cfg.add_section("Midi")
+                cfg.set('Midi', 'OutPort', self._output_name)
+        
+        with open('tyrant.cfg', 'w') as cfg_file:
+            cfg.write(cfg_file)
+        
         dlg.Destroy()
 
 
