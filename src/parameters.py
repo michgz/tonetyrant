@@ -1,4 +1,4 @@
-## Automatically generated file. Time of processing: 2022-02-06T18:27:10.795387
+## Automatically generated file. Time of processing: 2022-02-21T11:44:10.863476
 
 
 from dataclasses import dataclass
@@ -165,8 +165,8 @@ Params = [
     Param(40, 4, byteOffset=248, byteCount=2, bitOffset=0, bitCount=10, defaultValue=512, recommendedLimits=(256, 1023), recommendedStep=64, name="Attack time 4", cluster="Gain Envelope (Sound B)", midiBytes=2),
     Param(40, 5, byteOffset=252, byteCount=2, bitOffset=0, bitCount=10, defaultValue=512, recommendedLimits=(256, 1023), recommendedStep=64, name="Release time 1", cluster="Gain Envelope (Sound B)", midiBytes=2),
     Param(40, 6, byteOffset=256, byteCount=2, bitOffset=0, bitCount=10, defaultValue=512, recommendedLimits=(256, 1023), recommendedStep=64, name="Release time 2", cluster="Gain Envelope (Sound B)", midiBytes=2),
-    Param(41, 0, byteOffset=421, byteCount=1, bitOffset=7, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Sound B used for note-off", cluster="", midiBytes=1),
-    Param(42, 0, byteOffset=421, byteCount=1, bitOffset=5, bitCount=2, defaultValue=0, recommendedLimits=(0, 3), recommendedStep=16, name="Note off velocity", cluster="", midiBytes=1),
+    Param(41, 0, byteOffset=421, byteCount=1, bitOffset=7, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Sound B used for note-off", cluster="Octave", midiBytes=1),
+    Param(42, 0, byteOffset=421, byteCount=1, bitOffset=5, bitCount=2, defaultValue=0, recommendedLimits=(0, 3), recommendedStep=16, name="Note off velocity", cluster="Octave", midiBytes=1),
     Param(43, 0, byteOffset=421, byteCount=1, bitOffset=1, bitCount=3, defaultValue=4, recommendedLimits=(1, 7), recommendedStep=1, name="Octave shift", cluster="Octave", midiBytes=1),
     Param(44, 0, byteOffset=421, byteCount=1, bitOffset=0, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Enable DSP", cluster="DSP Chain", midiBytes=1),
     Param(45, 0, byteOffset=438, byteCount=1, bitOffset=0, bitCount=7, defaultValue=100, recommendedLimits=(0, 127), recommendedStep=16, name="Volume", cluster="Volume", midiBytes=1),
@@ -204,7 +204,7 @@ Params = [
     Param(77, 0, byteOffset=291, byteCount=1, bitOffset=0, bitCount=7, defaultValue=64, recommendedLimits=(0, 127), recommendedStep=16, name="Tremolo depth for after-touch", cluster="Tremolo", midiBytes=1),
     Param(78, 0, byteOffset=448, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(79, 0, byteOffset=449, byteCount=1, bitOffset=0, bitCount=4, defaultValue=0, recommendedLimits=(0, 15), recommendedStep=16, name="", cluster="", midiBytes=1),
-    Param(80, 0, byteOffset=420, byteCount=1, bitOffset=3, bitCount=3, defaultValue=0, recommendedLimits=(0, 7), recommendedStep=1, name="Stretch tuning", cluster="", midiBytes=1),
+    Param(80, 0, byteOffset=420, byteCount=1, bitOffset=3, bitCount=3, defaultValue=0, recommendedLimits=(0, 7), recommendedStep=1, name="Stretch tuning", cluster="Tuning", midiBytes=1),
     Param(81, 0, byteOffset=420, byteCount=1, bitOffset=2, bitCount=1, defaultValue=1, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(82, 0, byteOffset=420, byteCount=1, bitOffset=1, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(83, 0, byteOffset=420, byteCount=1, bitOffset=0, bitCount=1, defaultValue=1, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="", midiBytes=1),
@@ -240,16 +240,16 @@ Params = [
     Param(104, 0, byteOffset=398, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(105, 0, byteOffset=399, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(106, 0, byteOffset=400, byteCount=4, bitOffset=0, bitCount=32, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="", midiBytes=5),
-    Param(107, 0, byteOffset=404, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="Portamento time", cluster="Portamento", midiBytes=1),
+    Param(107, 0, byteOffset=404, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="Portamento time", cluster="Misc.", midiBytes=1),
     Param(108, 0, byteOffset=405, byteCount=1, bitOffset=0, bitCount=7, defaultValue=4, recommendedLimits=(1, 7), recommendedStep=1, name="Octave shift (keyboard)", cluster="Octave", midiBytes=1),
     Param(109, 0, byteOffset=406, byteCount=1, bitOffset=0, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="", midiBytes=2),
     Param(110, 0, byteOffset=407, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(111, 0, byteOffset=408, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(112, 0, byteOffset=409, byteCount=1, bitOffset=0, bitCount=7, defaultValue=0, recommendedLimits=(0, 127), recommendedStep=16, name="", cluster="", midiBytes=1),
     Param(113, 0, byteOffset=410, byteCount=1, bitOffset=0, bitCount=4, defaultValue=1, recommendedLimits=(0, 15), recommendedStep=16, name="", cluster="", midiBytes=1),
-    Param(114, 0, byteOffset=410, byteCount=1, bitOffset=4, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Monophonic", cluster="", midiBytes=1),
-    Param(115, 0, byteOffset=410, byteCount=1, bitOffset=5, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Sound B used for double-stop", cluster="", midiBytes=1),
-    Param(116, 0, byteOffset=410, byteCount=1, bitOffset=6, bitCount=2, defaultValue=0, recommendedLimits=(0, 2), recommendedStep=1, name="Portamento", cluster="Portamento", midiBytes=1),
+    Param(114, 0, byteOffset=410, byteCount=1, bitOffset=4, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Monophonic", cluster="Misc.", midiBytes=1),
+    Param(115, 0, byteOffset=410, byteCount=1, bitOffset=5, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Sound B used for double-stop", cluster="Misc.", midiBytes=1),
+    Param(116, 0, byteOffset=410, byteCount=1, bitOffset=6, bitCount=2, defaultValue=0, recommendedLimits=(0, 2), recommendedStep=1, name="Portamento", cluster="Misc.", midiBytes=1),
     Param(117, 0, byteOffset=412, byteCount=1, bitOffset=0, bitCount=4, defaultValue=0, recommendedLimits=(0, 8), recommendedStep=1, name="Type", cluster="Filter 1", midiBytes=1),
     Param(117, 1, byteOffset=416, byteCount=1, bitOffset=0, bitCount=4, defaultValue=0, recommendedLimits=(0, 8), recommendedStep=1, name="Type", cluster="Filter 2", midiBytes=1),
     Param(118, 0, byteOffset=412, byteCount=2, bitOffset=4, bitCount=6, defaultValue=12, recommendedLimits=(0, 31), recommendedStep=1, name="Parameter 1", cluster="Filter 1", midiBytes=1),

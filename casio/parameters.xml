@@ -3321,6 +3321,7 @@
         </parameter>
         <parameter number="41" block="0">
             <name>Sound B used for note-off</name>
+            <cluster>Octave</cluster>
             <bytes>
                 <offset>0x1A5</offset>
                 <count>1</count>
@@ -3338,6 +3339,7 @@
         </parameter>
         <parameter number="42" block="0">
             <name>Note off velocity</name>
+            <cluster>Octave</cluster>
             <bytes>
                 <offset>0x1A5</offset>
                 <count>1</count>
@@ -4177,6 +4179,7 @@
         </parameter>
         <parameter number="80" block="0">
             <name>Stretch tuning</name>
+            <cluster>Tuning</cluster>
             <bytes>
                 <offset>0x1A4</offset>
                 <count>1</count>
@@ -4776,7 +4779,7 @@
         </parameter>
         <parameter number="107" block="0">
             <name>Portamento time</name>
-            <cluster>Portamento</cluster>
+            <cluster>Misc.</cluster>
             <bytes>
                 <offset>0x194</offset>
                 <count>1</count>
@@ -4898,6 +4901,7 @@
         </parameter>
         <parameter number="114" block="0">
             <name>Monophonic</name>
+            <cluster>Misc.</cluster>
             <bytes>
                 <offset>0x19A</offset>
                 <count>1</count>
@@ -4915,6 +4919,7 @@
         </parameter>
         <parameter number="115" block="0">
             <name>Sound B used for double-stop</name>
+            <cluster>Misc.</cluster>
             <bytes>
                 <offset>0x19A</offset>
                 <count>1</count>
@@ -4932,7 +4937,7 @@
         </parameter>
         <parameter number="116" block="0">
             <name>Portamento</name>
-            <cluster>Portamento</cluster>
+            <cluster>Misc.</cluster>
             <bytes>
                 <offset>0x19A</offset>
                 <count>1</count>
