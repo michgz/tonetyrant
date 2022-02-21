@@ -39,7 +39,8 @@ INPUT_PORT_SEL_ID = wx.NewIdRef()
 OUTPUT_PORT_SEL_ID = wx.NewIdRef()
 UPLOAD_TARGET_ID = wx.NewIdRef()
 DOWNLOAD_TARGET_ID = wx.NewIdRef()
-
+RT_ENABLE_ID = wx.NewIdRef()
+RT_CHANNEL_ID = wx.NewIdRef()
 
 
 
@@ -70,14 +71,14 @@ class MidiComms:
         self._input_name = cfg.get('Midi','InPort',fallback="")
         self._output_name = cfg.get('Midi','OutPort',fallback="")
         self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
-        self._readtime_enable = bool(cfg.get('Midi Real-Time', 'Enable', fallback="True"))
+        self._realtime_enable = bool(cfg.get('Midi Real-Time', 'Enable', fallback="True"))
 
 
     class MidiSetupDialog(wx.Dialog):
         """
         A dialog for the user to set MIDI ports
         """
-        def __init__(self, parent, input_name, output_name):
+        def __init__(self, parent, input_name, output_name, realtime_channel, realtime_enable):
             wx.Dialog.__init__(self, parent, wx.ID_ANY, _("MIDI Setup"), style = wx.DEFAULT_DIALOG_STYLE)
 
             sizer = wx.BoxSizer(wx.VERTICAL)
@@ -112,10 +113,20 @@ class MidiComms:
 
             _pnl = wx.StaticBoxSizer(wx.HORIZONTAL, self, "")
             
-            w_1 = wx.CheckBox(self, label="Enable", style=wx.CHK_2STATE, name="MidiRealTimeEnable")
+            w_1 = wx.CheckBox(self, id=RT_ENABLE_ID, label="Enable", style=wx.CHK_2STATE, name="MidiRealTimeEnable")
             _pnl.Add(w_1, 0, wx.ALIGN_CENTRE, 5)
-            w_2 = wx.ComboBox(self, name="MidiRealTimeChannel", choices=["0" + SEP + "Upper keyboard 1", "32" + SEP + "MIDI In 1"])
+            
+            w_1.SetValue(realtime_enable)
+            
+            w_2 = wx.ComboBox(self, id=RT_CHANNEL_ID, name="MidiRealTimeChannel", choices=["0" + SEP + "Upper keyboard 1", "32" + SEP + "MIDI In 1"])
             _pnl.Add(w_2, 0, wx.BOTTOM, 5)
+            
+            if realtime_channel == 32:
+                w_2.SetSelection(1)
+            else:
+                w_2.SetSelection(0)
+            
+            
             w_3 = wx.StaticText(self, label="Channel")
             _pnl.Add(w_3, 0, wx.LEFT, 5)
             
@@ -146,14 +157,17 @@ class MidiComms:
         """
         Show the MidiSetupDialog.
         """
-        dlg = self.MidiSetupDialog(parent, self._input_name, self._output_name)
+        dlg = self.MidiSetupDialog(parent, self._input_name, self._output_name, self._realtime_channel, self._realtime_enable)
         dlg.CenterOnParent()
         ok_result = dlg.ShowModal()
         
-        cfg = configparser.ConfigParser()
-        cfg.read('tyrant.cfg')
         
         if ok_result == wx.ID_OK:
+
+            cfg = configparser.ConfigParser()
+            cfg.read('tyrant.cfg')
+
+
             _lst = dlg.FindWindowById(INPUT_PORT_SEL_ID)
             _n = _lst.GetSelection()
             if _n != wx.NOT_FOUND:
@@ -170,8 +184,22 @@ class MidiComms:
                     cfg.add_section("Midi")
                 cfg.set('Midi', 'OutPort', self._output_name)
         
-        with open('tyrant.cfg', 'w') as cfg_file:
-            cfg.write(cfg_file)
+            _w1 = dlg.FindWindowById(RT_ENABLE_ID)
+            _n1 = bool(_w1.GetValue())
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Enable", str(_n1))
+        
+            _w2 = dlg.FindWindowById(RT_CHANNEL_ID)
+            _n2 = 32 if _w2.GetSelection() == 1 else 0
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Channel", str(_n2))
+        
+        
+        
+            with open('tyrant.cfg', 'w') as cfg_file:
+                cfg.write(cfg_file)
         
         dlg.Destroy()
 
