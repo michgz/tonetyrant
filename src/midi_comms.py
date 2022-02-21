@@ -597,8 +597,8 @@ class MidiComms:
 
 
       # Flush the input queue
+      time.sleep(0.01)
       midiin.get_message()
-      time.sleep(0.4)
 
       # Prepare the input
       d = b''
