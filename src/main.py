@@ -626,6 +626,16 @@ class HintsView(wx.EvtHandler):
                             self._panel.SetNewVal(PV, X)
                         self._buffer.SetParamTo(PV.param, X)
                         self._buffer.Modify(True)
+                        
+                    # Leave the loop after the first parameter has been processed.
+                    # That prevents multiple parameters being changed when they
+                    # share a byte offset.
+                    #
+                    # For shared parameters, only one at a time will be bolded within
+                    # hints window. Is it the same one that is change here?? At the
+                    # moment it's left undefined, and may not necessarily behave as
+                    # expected.
+                    break
 
 
 class HintsDialog(wx.Frame, HintsView):
