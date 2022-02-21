@@ -1,4 +1,4 @@
-## Automatically generated file. Time of processing: 2022-02-21T12:52:32.338664
+## Automatically generated file. Time of processing: 2022-02-21T16:33:10.671609
 
 
 from dataclasses import dataclass
@@ -253,10 +253,10 @@ Params = [
     Param(116, 0, byteOffset=410, byteCount=1, bitOffset=6, bitCount=2, defaultValue=0, recommendedLimits=(0, 2), recommendedStep=1, name="Portamento", cluster="Misc.", midiBytes=1, helpStr=""),
     Param(117, 0, byteOffset=412, byteCount=1, bitOffset=0, bitCount=4, defaultValue=0, recommendedLimits=(0, 8), recommendedStep=1, name="Type", cluster="Filter 1", midiBytes=1, helpStr=""),
     Param(117, 1, byteOffset=416, byteCount=1, bitOffset=0, bitCount=4, defaultValue=0, recommendedLimits=(0, 8), recommendedStep=1, name="Type", cluster="Filter 2", midiBytes=1, helpStr=""),
-    Param(118, 0, byteOffset=412, byteCount=2, bitOffset=4, bitCount=6, defaultValue=12, recommendedLimits=(0, 31), recommendedStep=1, name="Parameter 1", cluster="Filter 1", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls frequency"),
-    Param(118, 1, byteOffset=416, byteCount=2, bitOffset=4, bitCount=6, defaultValue=12, recommendedLimits=(0, 31), recommendedStep=1, name="Parameter 1", cluster="Filter 2", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls frequency"),
-    Param(119, 0, byteOffset=413, byteCount=1, bitOffset=2, bitCount=6, defaultValue=12, recommendedLimits=(0, 31), recommendedStep=1, name="Parameter 2", cluster="Filter 1", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls gain"),
-    Param(119, 1, byteOffset=417, byteCount=1, bitOffset=2, bitCount=6, defaultValue=12, recommendedLimits=(0, 31), recommendedStep=1, name="Parameter 2", cluster="Filter 2", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls gain"),
+    Param(118, 0, byteOffset=412, byteCount=2, bitOffset=4, bitCount=6, defaultValue=12, recommendedLimits=(0, 22), recommendedStep=1, name="Parameter 1", cluster="Filter 1", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls frequency"),
+    Param(118, 1, byteOffset=416, byteCount=2, bitOffset=4, bitCount=6, defaultValue=12, recommendedLimits=(0, 22), recommendedStep=1, name="Parameter 1", cluster="Filter 2", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls frequency"),
+    Param(119, 0, byteOffset=413, byteCount=1, bitOffset=2, bitCount=6, defaultValue=12, recommendedLimits=(0, 24), recommendedStep=1, name="Parameter 2", cluster="Filter 1", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls gain"),
+    Param(119, 1, byteOffset=417, byteCount=1, bitOffset=2, bitCount=6, defaultValue=12, recommendedLimits=(0, 24), recommendedStep=1, name="Parameter 2", cluster="Filter 2", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls gain"),
     Param(120, 0, byteOffset=414, byteCount=1, bitOffset=4, bitCount=4, defaultValue=0, recommendedLimits=(0, 15), recommendedStep=1, name="Parameter 3", cluster="Filter 1", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls resonance Q-value"),
     Param(120, 1, byteOffset=418, byteCount=1, bitOffset=4, bitCount=4, defaultValue=0, recommendedLimits=(0, 15), recommendedStep=1, name="Parameter 3", cluster="Filter 2", midiBytes=1, helpStr="Meaning depends on the filter type. Often it controls resonance Q-value"),
     Param(121, 0, byteOffset=414, byteCount=1, bitOffset=3, bitCount=1, defaultValue=1, recommendedLimits=(0, 1), recommendedStep=16, name="", cluster="Filter 1", midiBytes=1, helpStr=""),
