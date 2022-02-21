@@ -633,6 +633,13 @@ class MidiComms:
       # Close the device
       midiin.close_port()
       midiout.close_port()
+      
+      # Also delete the instances. See notes in rtmidi-python documentation. This is
+      # needed to get around delays in the python garbage-collector. A better
+      # solution might be to keep the ports open and close only when exiting the
+      # program.
+      midiin.delete()
+      midiout.delete()
 
 
 
