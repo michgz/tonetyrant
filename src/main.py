@@ -76,6 +76,7 @@ class ParamView:
     param: parameters.Param
     offsets: list
     id_: int
+    help_: str
 
 
 
@@ -199,49 +200,59 @@ class HintsPanelGeneric(wx.Panel):
         self.PARAMS = PVList
         self.TYPES = []
         
-        LABEL_X = 105
-        for i, PV in enumerate(PVList):
-            # Type 2, 3 are quite wide, need more room
-            if PV.type_ in [2,3,5,6,7,8,11] and LABEL_X < 175:
-                LABEL_X = 175
-            if PV.type_ in [4,9,10] and LABEL_X < 202:
-                LABEL_X = 202
+        _sizer = wx.FlexGridSizer(cols=3, gap=wx.Size(5,5))
+        _sizer.SetFlexibleDirection(wx.HORIZONTAL)
         
         for i, PV in enumerate(PVList):
           
             if PV.type_ == 1:
-                wx.CheckBox(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = wx.CheckBox(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 2:
-                CustomListBox_FilterType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_FilterType(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 3:
-                CustomListBox_WavetableTimbre(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_WavetableTimbre(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ in [4,9,10]:
-                w_ = CustomText_ToneName(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomText_ToneName(self, name="C_P{0}".format(PV.id_))
                 # Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
                 # and we need to ignore for them.
                 self.Bind(wx.EVT_TEXT, self.OnTextChanged, id=w_.Id)
             elif PV.type_ == 5:
-                CustomListBox_DSPType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_DSPType(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 6:
-                CustomListBox_LFOType(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_LFOType(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 7:
-                CustomListBox_Portamento(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_Portamento(self, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 8:
-                wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=-4,max=3,initial=0, name="C_P{0}".format(PV.id_))
+                w_ = wx.SpinCtrl(self, min=-4,max=3,initial=0, name="C_P{0}".format(PV.id_))
             elif PV.type_ == 11:
-                CustomListBox_NoteOffVelocity(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
+                w_ = CustomListBox_NoteOffVelocity(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
             else:
                 if PV.param.bitCount > 16:
                     # Put some arbitrary limit on the maximum field
-                    wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=1023,initial=0, name="C_P{0}".format(PV.id_))
+                    w_ = wx.SpinCtrl(self, min=0,max=1023,initial=0, name="C_P{0}".format(PV.id_))
                 else:
-                    w_ = wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
+                    w_ = wx.SpinCtrl(self, min=0,max=(1 << PV.param.bitCount)-1,initial=0, name="C_P{0}".format(PV.id_))
+          
+            _sizer.Add(w_, 0, wx.ALIGN_LEFT|wx.LEFT|wx.RIGHT, 5)
           
             name_ = PV.param.name
-            wx.StaticText(self, pos=wx.Point(LABEL_X,10+i*40), label=name_, name="L_P{0}".format(PV.id_))
+            u_ = wx.StaticText(self, label=name_, name="L_P{0}".format(PV.id_))
+            
+            _sizer.Add(u_, 0, wx.ALIGN_LEFT|wx.LEFT|wx.RIGHT, 5)
+            
+            
+            v_ = wx.StaticBitmap(self)
+            if PV.help_:
+                v_.SetIcon(wx.ArtProvider.GetIcon(wx.ART_HELP))
+                v_.SetToolTip(PV.help_)
+            _sizer.Add(v_, 0, wx.ALIGN_LEFT|wx.LEFT|wx.RIGHT, 5)
+            
             self.NAMES.append(name_)
             self.TYPES.append(PV.type_)
           
+
+        self.SetSizer(_sizer)
+        _sizer.Fit(self)
 
         self.Bind(wx.EVT_SPINCTRL, self.OnValueChanged)
         self.Bind(wx.EVT_CHECKBOX, self.OnCheckChanged)
@@ -478,7 +489,7 @@ class HintsView(wx.EvtHandler):
                             offset_ = None
                         else:
                             OFFSETS_.add(offset_)
-                    LIST_.append( ParamView(type_= type_ , param=PP, offsets=offsets_, id_=k) )
+                    LIST_.append( ParamView(type_= type_ , param=PP, offsets=offsets_, id_=k, help_=PP.helpStr) )
         return LIST_
 
 

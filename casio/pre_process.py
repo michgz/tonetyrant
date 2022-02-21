@@ -104,6 +104,14 @@ for i in elem.find("parameters"):
 
 
 
+
+    hlp = i.find("help")
+    hlp_val = ""
+    if hlp is not None:
+        hlp_val = hlp.text
+
+
+
     dv_val = 0
     dd = i.find("defaultValue")
     if dd is not None:
@@ -139,6 +147,7 @@ for i in elem.find("parameters"):
                    nm_val,
                    cst_val,
                    mb_val,            # MIDI bytes count
+                   hlp_val,
              ))
     
 
@@ -162,6 +171,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
                       recommendedStep: int
                       defaultValue: int
                       midiBytes: int
+                      helpStr: str
                   
                   
                   """))
@@ -169,7 +179,7 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
     f_py.write("Params = [\n")
 
     for AA in A:
-        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), recommendedStep={9}, name="{10}", cluster="{11}", midiBytes={12}),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11], AA[12]))
+        f_py.write('    Param({0}, {1}, byteOffset={2}, byteCount={3}, bitOffset={4}, bitCount={5}, defaultValue={6}, recommendedLimits=({7}, {8}), recommendedStep={9}, name="{10}", cluster="{11}", midiBytes={12}, helpStr="{13}"),\n'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11], AA[12], AA[13]))
     
     f_py.write("]\n\n\n")
 

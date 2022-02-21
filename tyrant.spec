@@ -14,15 +14,24 @@ block_cipher = None
 
 
 def get_version():
+
+    #
+    # Read and parse the version string in file "main.py". Because this is being
+    # called from PyInstaller, we need a somewhat round-about way of finding and
+    # importing "main.py".
+    #
+    # Returns version as a 4-tuple ("Microsoft-style" version)
+    #
+
     import os
     import os.path
     import importlib
     import importlib.util
-    spec = importlib.util.spec_from_file_location("main", os.path.join(os.get_cwd(), "src"))
+    spec = importlib.util.spec_from_file_location("main", os.path.join(os.getcwd(), "src", "main.py"))
     main = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(main)
     ver_strs = main.__version__.split(".")
-    return (int(ver_strs[0], int(ver_strs[1], int(ver_strs[2], 0)
+    return (int(ver_strs[0]), int(ver_strs[1]), int(ver_strs[2]), 0)
 
 
 ver = get_version()
@@ -32,7 +41,7 @@ if sys.platform.startswith('win'):
     
     # Create a version structure for windows executable.
     
-    from PyInstaller.utils.win32.versioninfo import VSVersionInfo
+    from PyInstaller.utils.win32.versioninfo import VSVersionInfo, FixedFileInfo, StringFileInfo, StringTable, StringStruct, VarFileInfo, VarStruct
 
     version_info_ = VSVersionInfo(
                       ffi=FixedFileInfo(
@@ -54,10 +63,11 @@ if sys.platform.startswith('win'):
                             StringStruct('FileDescription', 'Tone editor for Casio keyboards'),
                             StringStruct('FileVersion', '{0}.{1}.{2}.{3}'.format(*ver)),
                             StringStruct('OriginalFilename', 'tyrant.exe'),
+                            StringStruct('InternalName', 'tyrant'),
                             StringStruct('ProductName', 'ToneTyrant'),
                             StringStruct('ProductVersion', '{0}.{1}.{2}.{3}'.format(*ver))])
                           ]), 
-                        VarFileInfo([VarStruct('Translation', [1200])])
+                        VarFileInfo([VarStruct('Translation', [0, 1200])])
                       ]
                     )
 
@@ -66,7 +76,9 @@ if sys.platform.startswith('win'):
     # doesn't always have these available. From Windows 10 they are always available
     # (see https://blogs.msdn.microsoft.com/vcblog/2015/03/03/introducing-the-universal-crt/)
     #
-    binaries_ = [ ("C:\Program Files (x86)\Windows Kits\10\Redist\ucrt", "ucrt") ]
+    # -- FOR NOW, DON'T INCLUDE. --
+    ##binaries_ = [ ("C:/Program Files (x86)/Windows Kits/10/Redist/ucrt/DLLs", "DLLs") ]
+    binaries_ = []
 
 else:
 
@@ -88,8 +100,7 @@ a = Analysis(['src/main.py'],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher,
-             noarchive=False,
-             version=version_info_)
+             noarchive=False)
 pyz = PYZ(a.pure, a.zipped_data,
              cipher=block_cipher)
 
@@ -111,4 +122,5 @@ exe = EXE(pyz,
           target_arch=None,
           codesign_identity=None,
           entitlements_file=None,
-          icon='tyrant-64x64.ico')
+          icon='tyrant-64x64.ico',
+          version=version_info_)

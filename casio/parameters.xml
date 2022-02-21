@@ -36,7 +36,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 Melody\n2 Drum\n4 Piano\nVersatile</help>
         </parameter>
         <parameter number="2" block="0">
             <name>Wavetable</name>
@@ -1689,7 +1688,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 Melody\n2 Drum\n4 Piano\nVersatile</help>
         </parameter>
         <parameter number="22" block="0">
             <name>Wavetable</name>
@@ -3359,7 +3357,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 Note-off\n1 Saved note-on\nMinimum of note-off and saved note-on</help>
         </parameter>
         <parameter number="43" block="0">
             <name>Octave shift</name>
@@ -4262,7 +4259,7 @@
                 <count>16</count>
             </bytes>
             <midiBytes>16</midiBytes>
-            <help>Name of the DSP chain. This is not used for anything and can be set to any value</help>
+            <help>Name of the DSP chain. This is not used for anything and can be set to any string</help>
         </parameter>
         <parameter number="85" block="0">
             <name>DSP effect 1</name>
@@ -4962,7 +4959,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 Off\n1 On\n2 Legato</help>
         </parameter>
         <parameter number="117" block="0">
             <name>Type</name>
@@ -4986,7 +4982,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 All-pass\n1 Low-pass\n2 High-pass\n3 Wide band-pass\n4 Bass shelf\n5 Treble shelf\n6 Band boost/cut\n7 Notch\n8 All-pass</help>
         </parameter>
         <parameter number="117" block="1">
             <name>Type</name>
@@ -5010,7 +5005,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-            <help>0 All-pass\n1 Low-pass\n2 High-pass\n3 Wide band-pass\n4 Bass shelf\n5 Treble shelf\n6 Band boost/cut\n7 Notch\n8 All-pass</help>
         </parameter>
         <parameter number="118" block="0">
             <name>Parameter 1</name>
