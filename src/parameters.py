@@ -1,4 +1,4 @@
-## Automatically generated file. Time of processing: 2022-02-21T11:44:10.863476
+## Automatically generated file. Time of processing: 2022-02-21T11:57:03.278585
 
 
 from dataclasses import dataclass
@@ -166,7 +166,7 @@ Params = [
     Param(40, 5, byteOffset=252, byteCount=2, bitOffset=0, bitCount=10, defaultValue=512, recommendedLimits=(256, 1023), recommendedStep=64, name="Release time 1", cluster="Gain Envelope (Sound B)", midiBytes=2),
     Param(40, 6, byteOffset=256, byteCount=2, bitOffset=0, bitCount=10, defaultValue=512, recommendedLimits=(256, 1023), recommendedStep=64, name="Release time 2", cluster="Gain Envelope (Sound B)", midiBytes=2),
     Param(41, 0, byteOffset=421, byteCount=1, bitOffset=7, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Sound B used for note-off", cluster="Octave", midiBytes=1),
-    Param(42, 0, byteOffset=421, byteCount=1, bitOffset=5, bitCount=2, defaultValue=0, recommendedLimits=(0, 3), recommendedStep=16, name="Note off velocity", cluster="Octave", midiBytes=1),
+    Param(42, 0, byteOffset=421, byteCount=1, bitOffset=5, bitCount=2, defaultValue=0, recommendedLimits=(0, 2), recommendedStep=1, name="Note off velocity", cluster="Octave", midiBytes=1),
     Param(43, 0, byteOffset=421, byteCount=1, bitOffset=1, bitCount=3, defaultValue=4, recommendedLimits=(1, 7), recommendedStep=1, name="Octave shift", cluster="Octave", midiBytes=1),
     Param(44, 0, byteOffset=421, byteCount=1, bitOffset=0, bitCount=1, defaultValue=0, recommendedLimits=(0, 1), recommendedStep=16, name="Enable DSP", cluster="DSP Chain", midiBytes=1),
     Param(45, 0, byteOffset=438, byteCount=1, bitOffset=0, bitCount=7, defaultValue=100, recommendedLimits=(0, 127), recommendedStep=16, name="Volume", cluster="Volume", midiBytes=1),

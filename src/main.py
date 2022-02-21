@@ -67,6 +67,7 @@ class ViewType:
     CUSTOM_OCTAVESHIFT = 8
     CUSTOM_DSPNAME = 9
     CUSTOM_DSPPARAMS = 10
+    CUSTOM_NOTEOFFVELOCITY = 11
 
 
 @dataclasses.dataclass
@@ -177,6 +178,16 @@ class CustomListBox_Portamento(wx.ComboBox):
 
 
 
+class CustomListBox_NoteOffVelocity(wx.ComboBox):
+  
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition, name=wx.ComboBoxNameStr):
+        wx.ComboBox.__init__(self, parent, id, value=value, pos=pos, style=wx.CB_DROPDOWN, name=name, choices=[
+            "0" + SEP + _("Normal"),
+            "1" + SEP + _("Note-on"),
+            "2" + SEP + _("Minimum")  ] )
+
+
+
 
 class HintsPanelGeneric(wx.Panel):
   
@@ -191,7 +202,7 @@ class HintsPanelGeneric(wx.Panel):
         LABEL_X = 105
         for i, PV in enumerate(PVList):
             # Type 2, 3 are quite wide, need more room
-            if PV.type_ in [2,3,5,6,7,8] and LABEL_X < 175:
+            if PV.type_ in [2,3,5,6,7,8,11] and LABEL_X < 175:
                 LABEL_X = 175
             if PV.type_ in [4,9,10] and LABEL_X < 202:
                 LABEL_X = 202
@@ -217,6 +228,8 @@ class HintsPanelGeneric(wx.Panel):
                 CustomListBox_Portamento(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
             elif PV.type_ == 8:
                 wx.SpinCtrl(self, pos=wx.Point(5, 5+i*40), min=-4,max=3,initial=0, name="C_P{0}".format(PV.id_))
+            elif PV.type_ == 11:
+                CustomListBox_NoteOffVelocity(self, pos=wx.Point(5, 5+i*40), name="C_P{0}".format(PV.id_))
             else:
                 if PV.param.bitCount > 16:
                     # Put some arbitrary limit on the maximum field
@@ -271,7 +284,7 @@ class HintsPanelGeneric(wx.Panel):
                 elif PV.type_ == 8:
                     V_ = V_ - 4
                 
-                if PV.type_ in [2,3,5,6,7]:
+                if PV.type_ in [2,3,5,6,7,11]:
                     W_.SetSelection(V_)
                 else:
                     W_.SetValue(V_)
@@ -336,7 +349,7 @@ class HintsPanelGeneric(wx.Panel):
         W_ = self.FindWindowByName("C_P{0}".format(PV.id_))
         if PV.type_ == 1:
             W_.SetValue(bool(val))
-        elif PV.type_ in [2, 5, 6, 7]:
+        elif PV.type_ in [2, 5, 6, 7, 11]:
             W_.SetSelection(val)
         elif PV.type_ == 3:
             W_.SetSelection(val // 2)
@@ -457,6 +470,8 @@ class HintsView(wx.EvtHandler):
                         type_ = 9
                     elif PP.number == 87:
                         type_ = 10
+                    elif PP.number == 42:
+                        type_ = 11
                     offsets_ = list(range(PP.byteOffset, PP.byteOffset + PP.byteCount))
                     for offset_ in offsets_:
                         if offset_ in OFFSETS_:

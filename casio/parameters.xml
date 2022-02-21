@@ -3352,6 +3352,11 @@
                 <min>0</min>
                 <max>3</max>
             </absoluteLimits>
+            <recommendedLimits>
+                <min>0</min>
+                <max>2</max>
+                <step>1</step>
+            </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
             <help>0 Note-off\n1 Saved note-on\nMinimum of note-off and saved note-on</help>
