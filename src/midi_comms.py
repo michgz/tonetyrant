@@ -26,6 +26,13 @@ _ = lambda X : X
 
 
 
+# A separator to place between numbers and letters in a ComboBox. Tab works well
+# for linux, but looks wierd on Windows. Go with this as a compromise.
+SEP = "  "
+
+
+
+
 # Some custom reference IDs for various GUI elements
 #
 INPUT_PORT_SEL_ID = wx.NewIdRef()
@@ -53,7 +60,6 @@ type_1_rxed = b''
 
 
 
-
 # The main class:
 #
 class MidiComms:
@@ -63,6 +69,8 @@ class MidiComms:
         cfg.read('tyrant.cfg')
         self._input_name = cfg.get('Midi','InPort',fallback="")
         self._output_name = cfg.get('Midi','OutPort',fallback="")
+        self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
+        self._readtime_enable = bool(cfg.get('Midi Real-Time', 'Enable', fallback="True"))
 
 
     class MidiSetupDialog(wx.Dialog):
@@ -100,6 +108,23 @@ class MidiComms:
 
 
             sizer.Add(lst_2, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
+
+
+            _pnl = wx.StaticBoxSizer(wx.HORIZONTAL, self, "")
+            
+            w_1 = wx.CheckBox(self, label="Enable", style=wx.CHK_2STATE, name="MidiRealTimeEnable")
+            _pnl.Add(w_1, 0, wx.ALIGN_CENTRE, 5)
+            w_2 = wx.ComboBox(self, name="MidiRealTimeChannel", choices=["0" + SEP + "Upper keyboard 1", "32" + SEP + "MIDI In 1"])
+            _pnl.Add(w_2, 0, wx.BOTTOM, 5)
+            w_3 = wx.StaticText(self, label="Channel")
+            _pnl.Add(w_3, 0, wx.LEFT, 5)
+            
+            
+            
+            sizer.Add(_pnl, 0, wx.EXPAND, 5)
+
+
+
 
             btn_1 = wx.Button(self, wx.ID_OK)
             sizer.Add(btn_1, 0, wx.ALIGN_CENTRE|wx.ALL, 5)
