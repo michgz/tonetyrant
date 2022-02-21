@@ -17,6 +17,7 @@ import binascii
 import configparser
 
 
+import parameters
 
 
 # Set up the language translation system. Currently, none is used and this function
@@ -72,6 +73,12 @@ class MidiComms:
         self._output_name = cfg.get('Midi','OutPort',fallback="")
         self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
         self._realtime_enable = bool(cfg.get('Midi Real-Time', 'Enable', fallback="True"))
+
+
+    def SetParamTo(self, P : parameters.Param, p_val):
+      
+        self.set_single_parameter(P.number, p_val, midi_bytes=P.midiBytes, category=3, memory=3, parameter_set=self._realtime_channel, block0=P.block0)
+        return True
 
 
     class MidiSetupDialog(wx.Dialog):
@@ -560,6 +567,76 @@ class MidiComms:
         w += data
       w += b'\xf7'
       return w
+
+
+
+
+
+
+    def set_single_parameter(self, parameter, data, midi_bytes=1, category=3, memory=3, parameter_set=0, block0=0, block1=0, *, _debug=False):
+      """
+      Send a single parameter value to the keyboard
+      """
+
+
+
+      # Open the device (if needed)
+      midiin = rtmidi.MidiIn()
+      midiout = rtmidi.MidiOut()
+      for i in range(midiout.get_port_count()):
+          if self._output_name == midiout.get_port_name(i):
+              midiout.open_port(port=i)
+      for i in range(midiin.get_port_count()):
+          if self._input_name == midiin.get_port_name(i):
+              midiin.open_port(port=i)
+      if not midiout.is_port_open() or not midiin.is_port_open():
+          raise Exception("Could not find the named port")
+
+      midiin.ignore_types(sysex=False)
+
+
+
+      # Flush the input queue
+      midiin.get_message()
+      time.sleep(0.4)
+
+      # Prepare the input
+      d = b''
+      l = 1
+
+      if isinstance(data, type(0)):
+        # The input is an integer. The "length" parameter passed to make_packet must be
+        # 1, but we don't know how many bytes of bit-stuffed data the keyboard is actually
+        # expecting. Use the "midi_bytes" parameter for that.
+
+        key_len = midi_bytes
+        
+        # Now do the bit-stuffing
+        for i in range(key_len):
+          d = d + struct.pack('B', data&0x7F)
+          data = data//0x80
+        l = 1   # length is always 1 for numeric inputs
+
+      else:
+        # Assume the input is a byte array
+        d = data
+        l = len(d)
+      
+
+      # Write the parameter
+      midiout.send_message(bytearray(self.make_packet(tx=True, parameter_set=parameter_set, category=category, memory=memory, parameter=parameter, block=[0,0,block1,block0], length=l, data=d)))
+      time.sleep(0.1)
+      # Handle any response -- don't expect one
+      midiin.get_message()
+      time.sleep(0.01)
+
+      # Close the device
+      midiin.close_port()
+      midiout.close_port()
+
+
+
+
 
 
 

@@ -15,6 +15,7 @@ import random
 import struct
 import binascii
 import copy
+import concurrent.futures
 
 __version__ = "1.0.2"
 __author__ = "michgz"
@@ -926,6 +927,9 @@ class ToneDocument(docview.Document):
         
         self[P.byteOffset + 0x20:P.byteOffset + 0x20 + 4] = struct.pack("<I", X)
         
+        self._docManager.SetParamTo(P, p_val)
+        
+        
 
 
 
@@ -1025,6 +1029,16 @@ class ToneDocumentManager(wx.EvtHandler):
         self._view = None
         self._view2 = None
         self._template = ToneDocumentTemplate(self)
+        
+        self._executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+
+    def Close(self):
+        self._executor.shutdown()
+
+    def SetParamTo(self, P : parameters.Param, p_val):
+        if self._frame._midi._realtime_enable:
+            self._executor.submit(self._frame._midi.SetParamTo, P, p_val)
+      
 
     def GetCurrentDocument(self):
         """
@@ -1065,6 +1079,7 @@ class ToneDocumentManager(wx.EvtHandler):
         _new_doc.SetDocumentTemplate( self._template )
         _new_doc.OnNewDocument()
         _new_doc.SetCommandProcessor(_new_doc.OnCreateCommandProcessor())
+        _new_doc._docManager = self
         self._view.SetDocument(_new_doc)
         self._view2.SetDocument(_new_doc)
         self._view.OnChangeFilename()
@@ -1595,11 +1610,17 @@ def main():
     _view._callback_window = _hintsDlg
     _hintsDlg._view = _view
     _docManager.SetView2(_hintsDlg)
+    _docManager._frame = _frame
 
     # Run the application
     _frame.Show(True)
     _view.OnChangeFilename()
     _app.MainLoop() 
+    
+    
+    # End the application
+    _docManager.Close()
+    
 
 
 if __name__=="__main__":
