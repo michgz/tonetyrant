@@ -34,7 +34,12 @@ import shutil
 import wx
 import sys
 from functools import cmp_to_key
-_ = wx.GetTranslation
+
+
+#_ = wx.GetTranslation
+# Set up the language translation system. Currently, none is used and this function
+# does nothing
+_ = lambda X : X
 
 
 #----------------------------------------------------------------------

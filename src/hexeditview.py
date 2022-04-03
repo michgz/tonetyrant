@@ -219,6 +219,7 @@ class HexEditView(wx.Control):
             self._buffer.GetCommandProcessor().Submit(cmd)
             self.UpdateCaretPos(self._caret_pos + 1)
             _redraw = True
+        
         elif self._edit_region == 3 and event.KeyCode >= 0x20 and event.KeyCode <= 0x7E:
 
             cmd = HexEditCommand.ChangeByte(self._buffer, self._caret_pos, event.KeyCode)

@@ -15,7 +15,10 @@ import struct
 import time
 import binascii
 import configparser
-
+import concurrent.futures
+import queue
+import threading
+import logging
 
 import parameters
 
@@ -66,17 +69,24 @@ type_1_rxed = b''
 #
 class MidiComms:
 
+
     def __init__(self):
         cfg = configparser.ConfigParser()
         cfg.read('tyrant.cfg')
-        self._input_name = cfg.get('Midi','InPort',fallback="")
-        self._output_name = cfg.get('Midi','OutPort',fallback="")
-        self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
-        self._realtime_enable = bool(cfg.get('Midi Real-Time', 'Enable', fallback="True"))
+        self._input_name = cfg.get('Midi', 'InPort', fallback="")
+        self._output_name = cfg.get('Midi', 'OutPort', fallback="")
+        self._realtime_channel = 0  # unused
+        self._realtime_enable = False # unused
 
-
+        
+ 
+    def QueueParamVal(self, P : parameters.Param, p_val):
+        pass
+ 
+    def Close(self):
+        pass
+ 
     def SetParamTo(self, P : parameters.Param, p_val):
-      
         self.set_single_parameter(P.number, p_val, midi_bytes=P.midiBytes, category=3, memory=3, parameter_set=self._realtime_channel, block0=P.block0)
         return True
 
@@ -116,32 +126,6 @@ class MidiComms:
 
 
             sizer.Add(lst_2, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
-
-
-            _pnl = wx.StaticBoxSizer(wx.HORIZONTAL, self, "")
-            
-            w_1 = wx.CheckBox(self, id=RT_ENABLE_ID, label="Enable", style=wx.CHK_2STATE, name="MidiRealTimeEnable")
-            _pnl.Add(w_1, 0, wx.ALIGN_CENTRE, 5)
-            
-            w_1.SetValue(realtime_enable)
-            
-            w_2 = wx.ComboBox(self, id=RT_CHANNEL_ID, name="MidiRealTimeChannel", choices=["0" + SEP + "Upper keyboard 1", "32" + SEP + "MIDI In 1"])
-            _pnl.Add(w_2, 0, wx.BOTTOM, 5)
-            
-            if realtime_channel == 32:
-                w_2.SetSelection(1)
-            else:
-                w_2.SetSelection(0)
-            
-            
-            w_3 = wx.StaticText(self, label="Channel")
-            _pnl.Add(w_3, 0, wx.LEFT, 5)
-            
-            
-            
-            sizer.Add(_pnl, 0, wx.EXPAND, 5)
-
-
 
 
             btn_1 = wx.Button(self, wx.ID_OK)
@@ -190,20 +174,6 @@ class MidiComms:
                 if not cfg.has_section("Midi"):
                     cfg.add_section("Midi")
                 cfg.set('Midi', 'OutPort', self._output_name)
-        
-            _w1 = dlg.FindWindowById(RT_ENABLE_ID)
-            _n1 = bool(_w1.GetValue())
-            if not cfg.has_section("Midi Real-Time"):
-                cfg.add_section("Midi Real-Time")
-            cfg.set("Midi Real-Time", "Enable", str(_n1))
-        
-            _w2 = dlg.FindWindowById(RT_CHANNEL_ID)
-            _n2 = 32 if _w2.GetSelection() == 1 else 0
-            if not cfg.has_section("Midi Real-Time"):
-                cfg.add_section("Midi Real-Time")
-            cfg.set("Midi Real-Time", "Channel", str(_n2))
-        
-        
         
             with open('tyrant.cfg', 'w') as cfg_file:
                 cfg.write(cfg_file)
@@ -577,6 +547,10 @@ class MidiComms:
       """
       Send a single parameter value to the keyboard
       """
+      
+      _logger = logging.getLogger()
+      _logger.info(f" parameter {parameter}, block {block0} <- {str(data)}:")
+      
 
 
 
@@ -624,7 +598,9 @@ class MidiComms:
       
 
       # Write the parameter
-      midiout.send_message(bytearray(self.make_packet(tx=True, parameter_set=parameter_set, category=category, memory=memory, parameter=parameter, block=[0,0,block1,block0], length=l, data=d)))
+      pkt = self.make_packet(tx=True, parameter_set=parameter_set, category=category, memory=memory, parameter=parameter, block=[0,0,block1,block0], length=l, data=d)
+      midiout.send_message(bytearray(pkt))
+      _logger.info("    " + pkt.hex(" ").upper())
       time.sleep(0.1)
       # Handle any response -- don't expect one
       midiin.get_message()

@@ -15,9 +15,9 @@ import random
 import struct
 import binascii
 import copy
-import concurrent.futures
 
-__version__ = "1.0.2"
+
+__version__ = "1.0.3"
 __author__ = "michgz"
 
 
@@ -603,6 +603,16 @@ class HintsView(wx.EvtHandler):
     def UpdateValues(self, doc_):
         raise NotImplemented
 
+    def PositionChanged(self):
+        """
+        Called by the view controller to indicate that a new value has been typed
+        in (*not* changed via any parameter input). Go through each parameter in
+        the paramviewlist and see if it's value may have changed.
+        """
+        # No action in version 1.x.x
+        pass
+
+
     def UpDown(self, ctrl_val: hexeditview.CtrlVals):
         """
         Process a "increase" or "decrease" key stroke.
@@ -1030,15 +1040,13 @@ class ToneDocumentManager(wx.EvtHandler):
         self._view2 = None
         self._template = ToneDocumentTemplate(self)
         
-        self._executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-
+       
     def Close(self):
-        self._executor.shutdown()
+        self._frame._midi.Close()
 
     def SetParamTo(self, P : parameters.Param, p_val):
-        if self._frame._midi._realtime_enable:
-            self._executor.submit(self._frame._midi.SetParamTo, P, p_val)
-      
+        # No action in version 1.x.x
+        pass
 
     def GetCurrentDocument(self):
         """
@@ -1561,7 +1569,7 @@ def main():
   
     # Set up the root logger
     _logger = logging.getLogger()
-    _logger.setLevel(logging.DEBUG)
+    _logger.setLevel(logging.WARNING)
     _fh = logging.FileHandler('log.txt')
     _fh.setLevel(logging.DEBUG)
     _logger.addHandler(_fh)
