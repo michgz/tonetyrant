@@ -17,7 +17,7 @@ import binascii
 import copy
 
 
-__version__ = "1.0.3"
+__version__ = "2.0.0"
 __author__ = "michgz"
 
 
@@ -609,9 +609,18 @@ class HintsView(wx.EvtHandler):
         in (*not* changed via any parameter input). Go through each parameter in
         the paramviewlist and see if it's value may have changed.
         """
-        # No action in version 1.x.x
-        pass
-
+        if self._paramviewlist is not None:
+          offset_list = []
+          # Remove 0x20 offset
+          for CL in self._buffer._current_changelist:
+              if CL >= 0x20:
+                  offset_list.append(CL-0x20)
+          for PV in self._paramviewlist:
+              # Look for intersections
+              if len(set(PV.offsets) & set(offset_list)) >= 1:
+                  # Send to MIDI for each intersecting parameter
+                  V_ = self._buffer.GetParamFrom(PV.param)
+                  self._buffer._docManager.SetParamTo(PV.param, V_)
 
     def UpDown(self, ctrl_val: hexeditview.CtrlVals):
         """
@@ -1045,8 +1054,7 @@ class ToneDocumentManager(wx.EvtHandler):
         self._frame._midi.Close()
 
     def SetParamTo(self, P : parameters.Param, p_val):
-        # No action in version 1.x.x
-        pass
+        self._frame._midi.QueueParamVal(P, p_val)
 
     def GetCurrentDocument(self):
         """

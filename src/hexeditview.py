@@ -217,6 +217,7 @@ class HexEditView(wx.Control):
             
             cmd = HexEditCommand.ChangeNibble(self._buffer, self._caret_pos, self.Hex2Nibble(event.KeyCode))
             self._buffer.GetCommandProcessor().Submit(cmd)
+            self._callback_window.PositionChanged()
             self.UpdateCaretPos(self._caret_pos + 1)
             _redraw = True
         
@@ -224,6 +225,7 @@ class HexEditView(wx.Control):
 
             cmd = HexEditCommand.ChangeByte(self._buffer, self._caret_pos, event.KeyCode)
             self._buffer.GetCommandProcessor().Submit(cmd)
+            self._callback_window.PositionChanged()
             self.UpdateCaretPos(self._caret_pos + 2)
             _redraw = True
 

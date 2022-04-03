@@ -70,21 +70,57 @@ type_1_rxed = b''
 class MidiComms:
 
 
+    class MidiThread(threading.Thread):
+        def __init__(self, _parent):
+            threading.Thread.__init__(self)
+            self._parent = _parent
+        def run(self):
+            # Loops forever, until a stop signal is received
+            while True:
+                obj = self._parent._queue.get(True)
+                if len(obj) < 5:
+                    # A stop signal
+                    break
+                self._parent.set_single_parameter(obj[0], obj[4], midi_bytes=obj[2], category=3, memory=3, parameter_set=obj[3], block0=obj[1])
+        @classmethod
+        def StopSignal(cls):
+            return (0, )
+
+
     def __init__(self):
         cfg = configparser.ConfigParser()
         cfg.read('tyrant.cfg')
         self._input_name = cfg.get('Midi', 'InPort', fallback="")
         self._output_name = cfg.get('Midi', 'OutPort', fallback="")
-        self._realtime_channel = 0  # unused
-        self._realtime_enable = False # unused
+        self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
+        self._realtime_enable = cfg.get('Midi Real-Time', 'Enable', fallback="False").lower() in ['true', '1', 't', 'y', 'yes']
+        self._logging_level = 0
+        if cfg.get("Logging", "Level", fallback="").lower() in ['on', '1']:
+            self._logging_level = 1
+        elif cfg.get("Logging", "Level", fallback="").lower() in ['2']:
+            self._logging_level = 2
+        # Translate the logging levels to Python logging levels as follows:
+        #   0 = no logging of interest to user. (WARNING)
+        #   1 = logging of each SysEx message, for use by user. (INFO)
+        #   2 = logging of each SysEx message, as well as other extraneous stuff. (DEBUG)
+        if self._logging_level == 1:
+            logging.getLogger().setLevel(logging.INFO)
+        elif self._logging_level == 2:
+            logging.getLogger().setLevel(logging.DEBUG)
+        
+        self._queue = queue.Queue()
+        self._thread = MidiComms.MidiThread(self)
+        self._thread.start()
 
         
  
     def QueueParamVal(self, P : parameters.Param, p_val):
-        pass
+        if self._realtime_enable:
+            self._queue.put( (P.number, P.block0, P.midiBytes, self._realtime_channel, p_val), block=False )
  
     def Close(self):
-        pass
+        self._queue.put( MidiComms.MidiThread.StopSignal(), block=False)
+        self._thread.join(1.0)  # Time out after 1 second
  
     def SetParamTo(self, P : parameters.Param, p_val):
         self.set_single_parameter(P.number, p_val, midi_bytes=P.midiBytes, category=3, memory=3, parameter_set=self._realtime_channel, block0=P.block0)
@@ -126,6 +162,34 @@ class MidiComms:
 
 
             sizer.Add(lst_2, 0, wx.ALIGN_CENTRE|wx.LEFT|wx.RIGHT, 5)
+
+
+            _pnl = wx.StaticBoxSizer(wx.HORIZONTAL, self, "")
+            
+            w_1 = wx.CheckBox(self, id=RT_ENABLE_ID, label="Enable", style=wx.CHK_2STATE, name="MidiRealTimeEnable")
+            _pnl.Add(w_1, 0, wx.ALIGN_CENTRE, 5)
+            
+            w_1.SetValue(realtime_enable)
+            
+            w_2 = wx.ComboBox(self, id=RT_CHANNEL_ID, name="MidiRealTimeChannel", choices=["0" + SEP + "Upper keyboard 1", "32" + SEP + "MIDI In 1"])
+            _pnl.Add(w_2, 0, wx.BOTTOM, 5)
+            
+            if realtime_channel == 32:
+                w_2.SetSelection(1)
+            else:
+                w_2.SetSelection(0)
+            
+            
+            w_3 = wx.StaticText(self, label="Channel")
+            _pnl.Add(w_3, 0, wx.LEFT, 5)
+            
+            
+            w_4 = wx.StaticText(self, label="Real-Time Control:")
+            sizer.Add(w_4, 0, wx.TOP | wx.LEFT, 15)
+            
+            sizer.Add(_pnl, 0, wx.EXPAND, 5)
+
+
 
 
             btn_1 = wx.Button(self, wx.ID_OK)
@@ -174,6 +238,25 @@ class MidiComms:
                 if not cfg.has_section("Midi"):
                     cfg.add_section("Midi")
                 cfg.set('Midi', 'OutPort', self._output_name)
+        
+            _w1 = dlg.FindWindowById(RT_ENABLE_ID)
+            _n1 = bool(_w1.GetValue())
+            self._realtime_enable = _n1
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Enable", str(_n1))
+        
+            _w2 = dlg.FindWindowById(RT_CHANNEL_ID)
+            _n2 = 32 if _w2.GetSelection() == 1 else 0
+            self._realtime_channel = _n2
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Channel", str(_n2))
+        
+            if not cfg.has_section("Logging"):
+                cfg.add_section("Logging")
+            cfg.set("Logging", "Level", str(self._logging_level))
+        
         
             with open('tyrant.cfg', 'w') as cfg_file:
                 cfg.write(cfg_file)
