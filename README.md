@@ -39,6 +39,7 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v2.0.0  Real-time parameter control over MIDI SysEx
 * v1.0.3
    * Improved sizing layout of Hints window
    * Info bubbles for some parameters
