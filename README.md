@@ -40,10 +40,10 @@ To try out the main features of the software, go through the following steps:
 ## History
 
 * v1.0.3
- * Improved sizing layout of Hints window
- * Info bubbles for some parameters
- * Special combo box for parameter 42, "Note Off Velocity"
- * **Linux**: built for GTK 2.0. The previous GTK 3.0 was causing crashes with some windows managers, e.g. Plasma
+   * Improved sizing layout of Hints window
+   * Info bubbles for some parameters
+   * Special combo box for parameter 42, "Note Off Velocity"
+   * **Linux**: built for GTK 2.0. The previous GTK 3.0 was causing crashes with some windows managers, e.g. Plasma
 * v1.0.2  Try a new build method which might give better compatibility with older Windows versions (this version built for Windows only)
 * v1.0.1  Improvements to the appearance of the Hints window under MS Windows
 * v1.0.0  First release
