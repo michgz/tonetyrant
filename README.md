@@ -2,31 +2,28 @@
 
 ![tyrant-64x64](https://user-images.githubusercontent.com/42281265/149575450-a4bce95c-79d1-4836-a40a-6082bbaf9f68.png)
 
-A hex editor and tone editing tool for Casio keyboards. Currently works for keyboards CT-X3000 & CT-X5000.
+A hex editor and tone editing tool for Casio keyboards. Works for all Casio CT-X keyboards, with additional functionality for keyboards which have User Tone memory (e.g. CT-X3000 or X5000).
 
 Features include:
 * Automatically calculates the Casio CRC value
 * Provides "Hints" when editing bytes that are associated with a known parameter. The parameter can be quickly increased/decreased with PAGE UP/PAGE DN buttons.
 * Can generate a random tone
 * Upload and download to User Tone memory locations in a CT-X3000/5000 keyboard
+* **New with V2.0**: "real-time" control of parameters for the currently selected keyboard tone
 
 ### Windows
 
-A pre-built windows executable may be downloaded from here. Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
-
-[https://github.com/michgz/tonetyrant/releases/download/v1.0.1/windows-10-executable-v1.0.1.zip]
+A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
 
 ### Linux
 
-A pre-built executable may be downloaded from here for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
-
-[https://github.com/michgz/tonetyrant/releases/download/v1.0.1/linux-executable-v1.0.1.zip]
+A pre-built executable may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/linux-executable-v2.0.0.zip) for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
 
 ### From source
 
 Running from source code will give the best possible compatibility with your operating system. Clone or download this Github repository and run it by calling ```python run.py```. There are some prerequisites to install which are listed [here](Prerequisites.md).
 
-This method works for Windows, all versions of Linux, and maybe even Mac OS (if you try it on Mac OS, please give some feedback with your experiences using a Github "Issue").
+This method works for all versions of Windows and Linux, and maybe even Mac OS (if you try it on Mac OS, please give some feedback with your experiences using a Github "Issue").
 
 ## Quick start guide
 
@@ -42,6 +39,11 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v1.0.3
+   * Improved sizing layout of Hints window
+   * Info bubbles for some parameters
+   * Special combo box for parameter 42, "Note Off Velocity"
+   * **Linux**: built for GTK 2.0. The previous GTK 3.0 was causing crashes with some windows managers, e.g. Plasma
 * v1.0.2  Try a new build method which might give better compatibility with older Windows versions (this version built for Windows only)
 * v1.0.1  Improvements to the appearance of the Hints window under MS Windows
 * v1.0.0  First release
