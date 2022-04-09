@@ -9,7 +9,7 @@ Features include:
 * Provides "Hints" when editing bytes that are associated with a known parameter. The parameter can be quickly increased/decreased with PAGE UP/PAGE DN buttons.
 * Can generate a random tone
 * Upload and download to User Tone memory locations in a CT-X3000/5000 keyboard
-* **New with V2.0**: "real-time" control of parameters for the currently selected keyboard tone
+* **New with V2.0**: "real-time" control of parameters for the currently selected keyboard tone, using SysEx commands over MIDI USB to the keyboard
 
 ### Windows
 
