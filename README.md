@@ -9,11 +9,11 @@ Features include:
 * Provides "Hints" when editing bytes that are associated with a known parameter. The parameter can be quickly increased/decreased with PAGE UP/PAGE DN buttons.
 * Can generate a random tone
 * Upload and download to User Tone memory locations in a CT-X3000/5000 keyboard
-* **New with V2.0**: "real-time" control of parameters for the currently selected keyboard tone
+* **New with V2.0**: "real-time" control of parameters for the currently selected keyboard tone, using SysEx commands over MIDI USB to the keyboard
 
 ### Windows
 
-A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
+A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-11-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
 
 ### Linux
 
@@ -39,6 +39,7 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v2.0.0  Real-time parameter control over MIDI SysEx
 * v1.0.3
    * Improved sizing layout of Hints window
    * Info bubbles for some parameters
