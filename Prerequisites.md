@@ -7,5 +7,5 @@ To run from source, the following should be installed. This doesn't apply to the
 - [python-rtmidi](https://pypi.org/project/python-rtmidi/), version 1.4.9 or newer. Can be installed with pip: `pip install python-rtmidi`
 - [wxPython](https://pypi.org/project/wxPython/), version 4.1.1 or newer. Under Windows this is fairly easy to install with pip, but under Linux I found a more complex command was required.
   - Windows: `pip install wxPython`
-  - Ubuntu 18.04: `pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython --no-cache-dir`
-  - Ubuntu 20.04: `pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-20.04 wxPython --no-cache-dir`
+  - Ubuntu 18.04: `pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-18.04 wxPython --no-cache-dir`
+  - Ubuntu 20.04: `pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk2/ubuntu-20.04 wxPython --no-cache-dir`
