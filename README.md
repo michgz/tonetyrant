@@ -13,7 +13,7 @@ Features include:
 
 ### Windows
 
-A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
+A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-11-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
 
 ### Linux
 
