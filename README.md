@@ -2,7 +2,7 @@
 
 ![tyrant-64x64](https://user-images.githubusercontent.com/42281265/149575450-a4bce95c-79d1-4836-a40a-6082bbaf9f68.png)
 
-A hex editor and tone editing tool for Casio keyboards. Works for all Casio CT-X keyboards, with additional functionality possible on keyboards which have User Tone memory (e.g. CT-X3000 or X5000).
+A hex editor and tone editing tool for Casio keyboards. "Real-time" parameter control works on all Casio CT-X keyboards, and upload/download of User Tones is possible with keyboards which have User Tone memory (e.g. CT-X3000 or X5000).
 
 Features include:
 * Automatically calculates the Casio CRC value
