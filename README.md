@@ -19,7 +19,7 @@ A pre-built executable for Windows 10 & 11 may be downloaded from [here](https:/
 
 A pre-built executable may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/linux-executable-v2.0.0.zip) for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
 
-Note: older versions might need a GTK 2.0 build, which can be downloaded [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.1/linux-gtk2-executable-v2.0.1.zip) 
+Note: newer versions might work better with a GTK 3.0 build, which can be downloaded [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.1/linux-gtk3-executable-v2.0.1.zip) 
 
 ### From source
 
