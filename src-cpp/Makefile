@@ -174,7 +174,7 @@ $(OBJS)\tonetyrant_view.o: $(srcdir)/view.cpp
 $(OBJS)\tonetyrant_hintview.o: $(srcdir)/hintview.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
-$(OBJS)\rtmidi.o: /home/michael/Downloads/rtmidi-5.0.0/RtMidi.cpp
+$(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	g++ -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp $(EXTRALIBS_FOR_RTMIDI) -I${rtmidi_srcdir}
 
 ##$(OBJS)\tyrant_docview_rc.o: ./docview.rc
