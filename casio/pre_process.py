@@ -151,7 +151,7 @@ for i in elem.find("parameters"):
              ))
     
 
-with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_py:
+with open(p.parent.parent.resolve().joinpath("python", "parameters.py"), "w") as f_py:
 
     f_py.write("## Automatically generated file. Time of processing: {0}\n\n".format( datetime.datetime.now().isoformat() ))
     f_py.write(textwrap.dedent("""
