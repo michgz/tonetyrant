@@ -56,7 +56,8 @@ TONETYRANT_OBJECTS =  \
 	$(OBJS)\tonetyrant_tyrant.o \
 	$(OBJS)\tonetyrant_doc.o \
 	$(OBJS)\tonetyrant_view.o \
-	$(OBJS)\tonetyrant_hintview.o
+	$(OBJS)\tonetyrant_hintview.o \
+	$(OBJS)\tonetyrant_midi_comms.o
 CPPDEPS = -MT$@ -MF$@.d -MD -MP
 
 
@@ -174,8 +175,13 @@ $(OBJS)\tonetyrant_view.o: $(srcdir)/view.cpp
 $(OBJS)\tonetyrant_hintview.o: $(srcdir)/hintview.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
+$(OBJS)\tonetyrant_midi_comms.o: $(srcdir)/midi_comms.cpp
+	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+
 $(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	g++ -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp $(EXTRALIBS_FOR_RTMIDI) -I${rtmidi_srcdir}
+
+
 
 ##$(OBJS)\tyrant_docview_rc.o: ./docview.rc
 ##	$(WINDRES) -i$< -o$@    --define __WXMSW__ $(__WXUNIV_DEFINE_p_1) $(__DEBUG_DEFINE_p_1) $(__NDEBUG_DEFINE_p_1) $(__EXCEPTIONS_DEFINE_p_1) $(__RTTI_DEFINE_p_1) $(__THREAD_DEFINE_p_1) $(__UNICODE_DEFINE_p_1) $(__MSLU_DEFINE_p_1) --include-dir $(SETUPHDIR) --include-dir ./../../include $(__CAIRO_INCLUDEDIR_p) --include-dir . $(__DLLFLAG_p_1) --include-dir ./../../samples --define NOPCH
