@@ -1,15 +1,284 @@
 
 
-
+#include <wx/wxprec.h>
 
 #include "RtMidi.h"
 #include <vector>
 
 
+#include "midi_comms.h"
+
 #define wxTrue true
 #ifndef wxFalse
 #define wxFalse false
 #endif
+
+
+
+
+/*
+
+    def __init__(self):
+        cfg = configparser.ConfigParser()
+        cfg.read('tyrant.cfg')
+        self._input_name = cfg.get('Midi', 'InPort', fallback="")
+        self._output_name = cfg.get('Midi', 'OutPort', fallback="")
+        self._realtime_channel = int(cfg.get('Midi Real-Time', 'Channel', fallback="0"))
+        self._realtime_enable = cfg.get('Midi Real-Time', 'Enable', fallback="False").lower() in ['true', '1', 't', 'y', 'yes']
+        self._logging_level = 0
+        if cfg.get("Logging", "Level", fallback="").lower() in ['on', '1']:
+            self._logging_level = 1
+        elif cfg.get("Logging", "Level", fallback="").lower() in ['2']:
+            self._logging_level = 2
+        # Translate the logging levels to Python logging levels as follows:
+        #   0 = no logging of interest to user. (WARNING)
+        #   1 = logging of each SysEx message, for use by user. (INFO)
+        #   2 = logging of each SysEx message, as well as other extraneous stuff. (DEBUG)
+        if self._logging_level == 1:
+            logging.getLogger().setLevel(logging.INFO)
+        elif self._logging_level == 2:
+            logging.getLogger().setLevel(logging.DEBUG)
+        
+        self._queue = queue.Queue()
+        self._thread = MidiComms.MidiThread(self)
+        self._thread.start()
+
+        
+ 
+    def QueueParamVal(self, P : parameters.Param, p_val):
+        if self._realtime_enable:
+            self._queue.put( (P.number, P.block0, P.midiBytes, self._realtime_channel, p_val), block=False )
+ 
+    def Close(self):
+        self._queue.put( MidiComms.MidiThread.StopSignal(), block=False)
+        self._thread.join(1.0)  # Time out after 1 second
+ 
+    def SetParamTo(self, P : parameters.Param, p_val):
+        self.set_single_parameter(P.number, p_val, midi_bytes=P.midiBytes, category=3, memory=3, parameter_set=self._realtime_channel, block0=P.block0)
+        return True
+
+*/
+
+const wxString SEP("  ");
+
+MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
+            wxDialog(parent, wxID_ANY, _("MIDI Setup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+{
+
+ wxWindowID INPUT_PORT_SEL_ID = wxWindow::NewControlId();
+ wxWindowID OUTPUT_PORT_SEL_ID = wxWindow::NewControlId();
+ wxWindowID RT_CHANNEL_ID = wxWindow::NewControlId();
+ wxWindowID RT_ENABLE_ID = wxWindow::NewControlId();
+
+
+
+
+
+
+    wxBoxSizer * sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->Add(new wxStaticText(this, wxID_ANY, _("Input ports:"), wxDefaultPosition, wxSize(200, 22), 0));
+
+
+    RtMidiIn * midi_in = new RtMidiIn();
+
+    wxListBox * lst_1 = new wxListBox(this, INPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE);
+ 
+   
+   
+    int i;
+    int j = midi_in->getPortCount();
+
+    for (i = 0; i < j; i ++)
+    {
+        wxString s(midi_in->getPortName(i));
+        lst_1->InsertItems(1, &s, i);
+    }
+    lst_1->SetSelection(wxNOT_FOUND);  // Clear selection
+
+            /*
+            for i, x in enumerate(input_ports):
+                if input_name != "" and input_name == x:
+                    lst_1.SetSelection(i)
+                    break
+            */
+
+    delete midi_in;
+
+
+
+    sizer->Add(lst_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+
+    sizer->Add(new wxStaticText(this, wxID_ANY, _("Output ports:"), wxDefaultPosition, wxSize(200, 22), 0)     /* ?? options */);
+    
+    RtMidiOut * midi_out = new RtMidiOut();
+            
+            
+            
+    wxListBox * lst_2 = new wxListBox(this, OUTPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE);
+ 
+   
+   
+    j = midi_out->getPortCount();
+
+    for (i = 0; i < j; i ++)
+    {
+        wxString s(midi_out->getPortName(i));
+        lst_2->InsertItems(1, &s, i);
+    }
+    lst_2->SetSelection(wxNOT_FOUND);  // Clear selection
+
+            /*
+            for i, x in enumerate(output_ports):
+                if output_name != "" and output_name == x:
+                    lst_2.SetSelection(i)
+                    break
+            */
+
+    delete midi_out;
+            
+    sizer->Add(lst_2, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+
+
+
+    wxStaticBoxSizer * _pnl = new wxStaticBoxSizer(wxHORIZONTAL, this, "");
+            
+            
+   wxCheckBox       *  w_1 = new wxCheckBox(this, RT_ENABLE_ID, _("Enable"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE, wxDefaultValidator, "MidiRealTimeEnable");
+   
+const bool realtime_enable = false;
+         const int realtime_channel = 0;
+   _pnl->Add(w_1, 0, wxALIGN_CENTRE, 5);
+            
+            w_1->SetValue(realtime_enable);
+            
+
+            
+            wxString choices[2]= {wxString("0") + SEP + "Upper keyboard 1", wxString("32") + SEP + "MIDI In 1"};
+            
+            
+           wxComboBox * w_2 = new wxComboBox(this, RT_CHANNEL_ID, "", wxDefaultPosition, wxDefaultSize, 2, choices, 0, wxDefaultValidator, "MidiRealTimeChannel");
+            
+
+      
+            
+            _pnl->Add(w_2, 0, wxBOTTOM, 5);
+            
+            if (realtime_channel == 32)
+                w_2->SetSelection(1);
+            else
+                w_2->SetSelection(0);
+            
+            
+       wxStaticText*     w_3 =             new wxStaticText(this, wxID_ANY, _("Channel"));
+            _pnl->Add(w_3, 0, wxLEFT, 5);
+            
+            
+         wxStaticText*     w_4 = new wxStaticText(this, wxID_ANY, _("Real-Time Control:"));
+            sizer->Add(w_4, 0, wxTOP | wxLEFT, 15);
+            
+            sizer->Add(_pnl, 0, wxEXPAND, 5);
+
+
+
+
+            
+            sizer->Add(new wxButton(this, wxID_OK), 0, wxALIGN_CENTRE|wxALL, 5);
+            sizer->Add(new wxButton(this, wxID_CANCEL), 0, wxALIGN_CENTRE|wxALL, 5);
+
+            SetSizer(sizer);
+            sizer->Fit(this);
+}
+/*
+    def AllowMidi(self):
+        """
+        Return True if MIDI operations are possible
+        """
+        return True
+
+
+    def ShowMidiSetup(self, parent):
+        """
+        Show the MidiSetupDialog.
+        """
+        dlg = self.MidiSetupDialog(parent, self._input_name, self._output_name, self._realtime_channel, self._realtime_enable)
+        dlg.CenterOnParent()
+        ok_result = dlg.ShowModal()
+        
+        
+        if ok_result == wx.ID_OK:
+
+            cfg = configparser.ConfigParser()
+            cfg.read('tyrant.cfg')
+
+
+            _lst = dlg.FindWindowById(INPUT_PORT_SEL_ID)
+            _n = _lst.GetSelection()
+            if _n != wx.NOT_FOUND:
+                self._input_name = _lst.GetString(_n)
+                if not cfg.has_section("Midi"):
+                    cfg.add_section("Midi")
+                cfg.set('Midi', 'InPort', self._input_name)
+
+            _lst = dlg.FindWindowById(OUTPUT_PORT_SEL_ID)
+            _n = _lst.GetSelection()
+            if _n != wx.NOT_FOUND:
+                self._output_name = _lst.GetString(_n)
+                if not cfg.has_section("Midi"):
+                    cfg.add_section("Midi")
+                cfg.set('Midi', 'OutPort', self._output_name)
+        
+            _w1 = dlg.FindWindowById(RT_ENABLE_ID)
+            _n1 = bool(_w1.GetValue())
+            self._realtime_enable = _n1
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Enable", str(_n1))
+        
+            _w2 = dlg.FindWindowById(RT_CHANNEL_ID)
+            _n2 = 32 if _w2.GetSelection() == 1 else 0
+            self._realtime_channel = _n2
+            if not cfg.has_section("Midi Real-Time"):
+                cfg.add_section("Midi Real-Time")
+            cfg.set("Midi Real-Time", "Channel", str(_n2))
+        
+            if not cfg.has_section("Logging"):
+                cfg.add_section("Logging")
+            cfg.set("Logging", "Level", str(self._logging_level))
+        
+        
+            with open('tyrant.cfg', 'w') as cfg_file:
+                cfg.write(cfg_file)
+        
+        dlg.Destroy()
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 std::vector<unsigned char> midi_7bit_to_8bit(std::vector<unsigned char> b)

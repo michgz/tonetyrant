@@ -53,6 +53,7 @@
 #include "tyrant.h"
 #include "doc.h"
 #include "view.h"
+#include "midi_comms.h"
 
 #include "wx/cmdline.h"
 #include "wx/config.h"
@@ -91,6 +92,10 @@ MyApp::MyApp()
     m_canvas = NULL;
     m_menuEdit = NULL;
 }
+
+
+static wxWindowID SETUP_MIDI_ID = wxID_ANY;
+
 
 
 void MyApp::OnInitCmdLine(wxCmdLineParser& parser)
@@ -173,7 +178,13 @@ bool MyApp::OnInit()
     m_menuEdit = CreateDrawingEditMenu();
     docManager->CreateNewDocument();
 
-    CreateMenuBarForFrame(frame, menuFile, m_menuEdit);
+    SETUP_MIDI_ID = wxWindow::NewControlId();
+    wxMenu * const m_menuMidi = new wxMenu;
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, SETUP_MIDI_ID, _("Setup")));
+
+    CreateMenuBarForFrame(frame, menuFile, m_menuEdit, m_menuMidi);
+    
+    Bind(wxEVT_MENU, &MyApp::OnMidiSetup, this, SETUP_MIDI_ID);
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     frame->SetIcon(wxICON(doc));
@@ -231,7 +242,7 @@ wxMenu *MyApp::CreateDrawingEditMenu()
     return menu;
 }
 
-void MyApp::CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit)
+void MyApp::CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit, wxMenu *midi)
 {
     wxMenuBar *menubar = new wxMenuBar;
 
@@ -239,6 +250,9 @@ void MyApp::CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit)
 
     if ( edit )
         menubar->Append(edit, wxGetStockLabel(wxID_EDIT));
+
+    if ( midi )
+        menubar->Append(midi, _("MIDI"));
 
     wxMenu *help= new wxMenu;
     help->Append(wxID_ABOUT);
@@ -277,6 +291,14 @@ void MyApp::ShowAbout(void)
     dlg->Destroy();
 }
 
+
+
+void MyApp::OnMidiSetup(wxCommandEvent& WXUNUSED(event))
+{
+    wxDialog *dlg = new MidiSetupDialog(GetTopWindow());
+    dlg->ShowModal();
+    
+}
 
 void MyApp::OnAbout(wxCommandEvent& WXUNUSED(event))
 {

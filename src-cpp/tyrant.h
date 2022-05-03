@@ -70,7 +70,7 @@ private:
     // create and associate with the given frame the menu bar containing the
     // given file and edit (possibly NULL) menus as well as the standard help
     // one
-    void CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit);
+    void CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit, wxMenu*);
 
 
     // show the about box: as we can have different frames it's more
@@ -80,6 +80,8 @@ private:
 
     // Show an about box
     void ShowAbout(void);
+    
+    void OnMidiSetup(wxCommandEvent& );
 
 bool ShowRandomise(void);
 
