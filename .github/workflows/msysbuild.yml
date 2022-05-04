@@ -41,6 +41,7 @@ jobs:
           repository: WxWidgets/WxWidgets
           ref: v3.1.6
           path: wxWidgets-3.1.6
+          submodules: 'true'
 
       # This must be done as a separate step from the next one
       - name: Setup MSYS
