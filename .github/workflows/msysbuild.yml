@@ -19,6 +19,11 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Set up MSYS
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
