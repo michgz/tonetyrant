@@ -27,7 +27,7 @@ jobs:
         id: cache-wx
         uses: actions/cache@v3
         with:
-          path: ${{ GITHUB_WORKSPACE }}/wx-build-dir/lib
+          path: $GITHUB_WORKSPACE/wx-build-dir/lib
           key: wx-build-windows
       
       - name: Checkout WX
