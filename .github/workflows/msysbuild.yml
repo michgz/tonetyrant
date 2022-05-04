@@ -20,7 +20,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      
       - uses: actions/checkout@v2
       
       - name: Cache WX
@@ -41,12 +40,12 @@ jobs:
       # This must be done as a separate step from the next one
       - name: Setup MSYS
         if: steps.cache-wx.outputs.cache-hit != 'true'
-        shell: msys2
+        shell: msys2 {0}
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
       - name: Build
         if: steps.cache-wx.outputs.cache-hit != 'true'
-        shell: msys2
+        shell: msys2 {0}
         run: |
           mkdir wx-build-dir
           cd wx-build-dir
@@ -55,7 +54,7 @@ jobs:
       
       - name: Build Sample
         if: steps.cache-wx.outputs.cache-hit != 'true'
-        shell: msys2
+        shell: msys2 {0}
         run: |
           cd wx-build-dir/samples/docview
           make all LDFLAGS="-shared"
