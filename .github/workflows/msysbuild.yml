@@ -26,16 +26,8 @@ jobs:
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      - name: Cache WX
-        id: cache-wx
-        uses: actions/cache@v3
-        with:
-          path: $GITHUB_WORKSPACE/wx-build-dir/lib
-          key: wx-build-windows
-      
+
       - name: Checkout WX
-        if: steps.cache-wx.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: WxWidgets/WxWidgets
@@ -43,13 +35,28 @@ jobs:
           path: wxWidgets-3.1.6
           submodules: 'true'
 
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi
+          submodules: 'false'
+
+      - name: Cache WX
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: $GITHUB_WORKSPACE/wx-build-dir/lib
+          key: wx-build-windows
+       
       # This must be done as a separate step from the next one
       - name: Setup MSYS
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
-      - name: Build
+      - name: Build WX
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
@@ -64,3 +71,9 @@ jobs:
         run: |
           cd wx-build-dir/samples/docview
           make all LDFLAGS="-shared"
+
+      - name: Build Tyrant
+        shell: msys2 {0}
+        run: |
+          cd src-cpp
+          make all -f Makefile.windows wx_top_builddir=../wx-build-dir top_srcdir=../wxWidgets-3.1.6 rtmidi_srcdir=../RtMidi
