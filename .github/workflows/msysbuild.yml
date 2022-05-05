@@ -65,13 +65,14 @@ jobs:
           make all
       
       - name: Build Sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
-          cd wx-build-dir/samples/docview
+          cd $GITHUB_WORKSPACE/wx-build-dir/samples/docview
           make all LDFLAGS="-shared"
 
       - name: Build Tyrant
         shell: msys2 {0}
         run: |
-          cd src-cpp
+          cd $GITHUB_WORKSPACE/src-cpp
           make all -f Makefile.windows wx_top_builddir=../wx-build-dir top_srcdir=../wxWidgets-3.1.6 rtmidi_srcdir=../RtMidi
