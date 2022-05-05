@@ -75,4 +75,8 @@ jobs:
         shell: msys2 {0}
         run: |
           cd $GITHUB_WORKSPACE/src-cpp
+          ls ..
+          ls ../RtMidi
+          ls ../wx-build-dir
+          ls ../wx-build-dir/lib
           make all -f Makefile.windows wx_top_builddir=../wx-build-dir top_srcdir=../wxWidgets-3.1.6 rtmidi_srcdir=../RtMidi
