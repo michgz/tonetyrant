@@ -52,7 +52,6 @@ jobs:
        
       # This must be done as a separate step from the next one
       - name: Setup MSYS
-        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
@@ -66,7 +65,6 @@ jobs:
           make all
       
       - name: Build Sample
-        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           cd wx-build-dir/samples/docview
