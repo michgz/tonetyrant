@@ -32,9 +32,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: play-build-dir/lib
-          key: play-build-windows-${{ hashfiles('play-build-dir/lib/**') }}
+          key: play-build-windows-${{ hashFiles('play-build-dir/lib/**') }}
           restore-keys: |
-            play-build-windows-${{ hashfiles('play-build-dir/lib/**') }}
+            play-build-windows-${{ hashFiles('play-build-dir/lib/**') }}
             play-build-windows-
           
       # Make files to cache
