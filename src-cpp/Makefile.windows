@@ -160,7 +160,7 @@ $(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o
 
 
 $(OBJS)\tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
 
 $(OBJS)\tonetyrant_doc.o: $(srcdir)/doc.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<

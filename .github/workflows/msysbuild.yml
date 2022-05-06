@@ -82,17 +82,16 @@ jobs:
 
       # Build our program
       - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
         shell: msys2 {0}
         run: |
           cd tonetyrant/src-cpp
-          ls -l ../..
-          ls -l ../../RtMidi
-          ls -l ../../wx-build
-          ls -lR ../../wx-build/lib
           make all -f Makefile.windows wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi LDFLAGS="-shared"
 
       # Upload the two artifacts
       - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-windows-executable-artifact
           path: tonetyrant/src-cpp/tyrant.exe
