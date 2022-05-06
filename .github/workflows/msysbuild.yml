@@ -19,20 +19,25 @@ jobs:
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+
+      # We'll use the MSYS shell
       - name: Set up MSYS
         uses: msys2/setup-msys2@v2
         with:
           msystem: mingw64
     
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout Tone Tyrant
+        uses: actions/checkout@v2
+        with:
+          path: tonetyrant
 
       - name: Checkout WX
         uses: actions/checkout@v2
         with:
           repository: WxWidgets/WxWidgets
           ref: v3.1.6
-          path: wxWidgets-3.1.6
+          path: wxWidgets
           submodules: 'true'
 
       - name: Checkout RtMidi
@@ -47,36 +52,51 @@ jobs:
         id: cache-wx
         uses: actions/cache@v3
         with:
-          path: $GITHUB_WORKSPACE/wx-build-dir/lib
-          key: wx-build-windows
-       
+          path: wx-build/lib
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.txt') }}
+          restore-keys: |
+            wx-3.1-build-lib-${{ runner.os }}-
+
       # This must be done as a separate step from the next one
       - name: Setup MSYS
         shell: msys2 {0}
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
+      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
       - name: Build WX
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
-          mkdir wx-build-dir
-          cd wx-build-dir
-          ../wxWidgets-3.1.6/configure --without-expat --without-libtiff --disable-shared --with-msw
+          mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
           make all
       
+      # For fun :)
       - name: Build Sample
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
-          cd $GITHUB_WORKSPACE/wx-build-dir/samples/docview
+          cd wx-build/samples/docview
           make all LDFLAGS="-shared"
 
+      # Build our program
       - name: Build Tyrant
         shell: msys2 {0}
         run: |
-          cd $GITHUB_WORKSPACE/src-cpp
-          ls ..
-          ls ../RtMidi
-          ls ../wx-build-dir
-          ls ../wx-build-dir/lib
-          make all -f Makefile.windows wx_top_builddir=../wx-build-dir top_srcdir=../wxWidgets-3.1.6 rtmidi_srcdir=../RtMidi
+          cd tonetyrant/src-cpp
+          ls -l ..
+          ls -l ../RtMidi
+          ls -l ../wx-build
+          ls -lR ../wx-build/lib
+          make all -f Makefile.windows wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi LDFLAGS="-shared"
+
+      # Upload the two artifacts
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tyrant-windows-executable-artifact
+          path: tonetyrant/src-cpp/tyrant.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docview-windows-executable-artifact
+          path: wx-build/samples/docview/*.exe

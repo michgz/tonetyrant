@@ -1,4 +1,4 @@
-prefix = /mingw
+prefix = /mingw64
 exec_prefix = ${prefix}
 datarootdir = ${prefix}/share
 INSTALL = /usr/bin/install -c
@@ -11,9 +11,9 @@ top_srcdir = ..
 LIBS = -lz -lrpcrt4 -loleaut32 -lole32 -luuid -luxtheme -lwinspool -lwinmm -lshell32 -lshlwapi -lcomctl32 -lcomdlg32 -ladvapi32 -lversion -lws2_32 -lgdi32 -loleacc -lwinhttp
 LDFLAGS_GUI = -mwindows
 CXX = g++
-CXXFLAGS = -DWX_PRECOMP -pthread -O2 -fno-strict-aliasing -pthread -I/usr/include/gtk-3.0/unix-print -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/x86_64-linux-gnu -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I${rtmidi_srcdir} -fvisibility=hidden -fvisibility-inlines-hidden
-CPPFLAGS = -D_FILE_OFFSET_BITS=64 -I${wx_top_builddir}/lib/wx/include/gtk3-unicode-3.0 -I${top_srcdir}/include -I${wx_top_builddir}/../include -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng16 -I/usr/include/x86_64-linux-gnu -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
-LDFLAGS = -static  #Only for MINGW!!
+CXXFLAGS = 
+CPPFLAGS = 
+LDFLAGS = 
 USE_DPI_AWARE_MANIFEST = 2
 WX_LIB_FLAVOUR = 
 TOOLKIT = MSW
@@ -24,7 +24,7 @@ EXTRALIBS =  -lz -lrpcrt4 -loleaut32 -lole32 -luuid -luxtheme -lwinspool -lwinmm
 EXTRALIBS_XML = 
 EXTRALIBS_GUI = 
 WX_CPPFLAGS = -I${wx_top_builddir}/lib/wx/include/msw-unicode-static-3.1 -I${top_srcdir}/include -D_FILE_OFFSET_BITS=64
-CXXWARNINGS = -Wall -Wundef -Wunused-parameter -Wno-ctor-dtor-privacy -Woverloaded-virtual
+CXXWARNINGS = -Wall -Wundef -Wunused-parameter -Wno-ctor-dtor-privacy -Woverloaded-virtual -O2
 HOST_SUFFIX = 
 SAMPLES_RPATH_FLAG = 
 CPPDEPS = 
