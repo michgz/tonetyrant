@@ -32,10 +32,10 @@ jobs:
         uses: actions/cache@v3
         with:
           path: play-build-dir/lib
-          key: play4-build-${{ runner.os }}-${{ hashFiles('play-build-dir/lib/**') }}
+          key: play5-build-${{ runner.os }}-${{ hashFiles('play-build-dir/lib/ghi.txt') }}
           restore-keys: |
-            play4-build-${{ runner.os }}-${{ hashFiles('play-build-dir/lib/**') }}
-            play4-build-${{ runner.os }}-
+            play5-build-${{ runner.os }}-${{ hashFiles('play-build-dir/lib/ghi.txt') }}
+            play5-build-${{ runner.os }}-
           
       # Make files to cache
       - name: Put Files
