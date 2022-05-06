@@ -53,7 +53,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.txt') }}
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/wx-config') }}
           restore-keys: |
             wx-3.1-build-lib-${{ runner.os }}-
 
@@ -74,11 +74,11 @@ jobs:
       
       # For fun :)
       - name: Build Sample
-        if: steps.cache-wx.outputs.cache-hit != 'true'
+        id: build-sample
         shell: msys2 {0}
         run: |
           cd wx-build/samples/docview
-          make all LDFLAGS="-shared"
+          make all LDFLAGS="-static"
 
       # Build our program
       - name: Build Tyrant
@@ -87,16 +87,16 @@ jobs:
         shell: msys2 {0}
         run: |
           cd tonetyrant/src-cpp
-          make all -f Makefile.windows wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi LDFLAGS="-shared"
+          make all -f Makefile.windows wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi LDFLAGS="-static"
 
       # Upload the two artifacts
       - uses: actions/upload-artifact@v2
         if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-windows-executable-artifact
-          path: tonetyrant/src-cpp/tyrant.exe
+          path: tonetyrant/src-cpp/*.exe
       - uses: actions/upload-artifact@v2
-        if: steps.cache-wx.outputs.cache-hit != 'true'
+        if: steps.build-sample.outcome == 'success'
         with:
           name: docview-windows-executable-artifact
           path: wx-build/samples/docview/*.exe
