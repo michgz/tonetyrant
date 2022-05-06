@@ -1,0 +1,59 @@
+name: Play Build
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  # ... commented for now ...
+  #push:
+  #  branches: [ master ]
+  #pull_request:
+  #  branches: [ master ]
+
+  # Runs this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+
+    runs-on: windows-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # We'll use the MSYS shell
+      - name: Set up MSYS
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+
+      # Set up the cache
+      - name: Cache Play
+        id: cache-play
+        uses: actions/cache@v3
+        with:
+          path: play-build-dir/lib
+          key: play-build-windows-${{ hashfiles('play-build-dir/lib/**') }}
+          restore-keys: |
+            play-build-windows-${{ hashfiles('play-build-dir/lib/**') }}
+            play-build-windows-
+          
+      # Make files to cache
+      - name: Put Files
+        if: steps.cache-play.outputs.cache-hit != 'true'
+        shell: msys {0}
+        run: |
+          mkdir play-build-dir
+          cd play-build-dir
+          mkdir lib
+          cd lib
+          cat "ABC" > abc.txt
+          mkdir subdir
+          cd subdir
+          cat "DEF" > def.txt
+          cat "GHI" > ../ghi.txt
+    
+      # Do a recursive directory listing to see if the cache has been restored or not
+      - name: Check Files
+        shell: msys {0}
+        run: |
+          ls -alR
