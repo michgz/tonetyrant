@@ -46,11 +46,11 @@ jobs:
           cd play-build-dir
           mkdir lib
           cd lib
-          cat "ABC" > abc.txt
+          echo "ABC" > abc.txt
           mkdir subdir
           cd subdir
-          cat "DEF" > def.txt
-          cat "GHI" > ../ghi.txt
+          echo "DEF" > def.txt
+          echo "GHI" > ../ghi.txt
     
       # Do a recursive directory listing to see if the cache has been restored or not
       - name: Check Files
