@@ -40,7 +40,7 @@ jobs:
       # Make files to cache
       - name: Put Files
         if: steps.cache-play.outputs.cache-hit != 'true'
-        shell: msys {0}
+        shell: msys2 {0}
         run: |
           mkdir play-build-dir
           cd play-build-dir
@@ -54,6 +54,6 @@ jobs:
     
       # Do a recursive directory listing to see if the cache has been restored or not
       - name: Check Files
-        shell: msys {0}
+        shell: msys2 {0}
         run: |
           ls -alR
