@@ -63,10 +63,19 @@ jobs:
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
-      - name: Build WX
+      - name: Build WX no Cache
+        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
+          make all
+
+      - name: Build WX with Cache
+        if: steps.cache-wx.outputs.cache-hit == 'true'
+        shell: msys2 {0}
+        run: |
           cd wx-build
           ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
       
