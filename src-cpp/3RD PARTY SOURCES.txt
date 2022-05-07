@@ -1,0 +1,5 @@
+https://github.com/jtilly/inih
+4a6fde9 on 21 Feb 2022
+
+https://github.com/stbrumme/crc32
+7a02813 on 29 Sep 2021
