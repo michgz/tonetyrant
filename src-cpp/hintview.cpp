@@ -3,6 +3,7 @@
 #include "wx/docview.h"
 #include "wx/docmdi.h"
 #include "wx/spinctrl.h"
+#include <wx/artprov.h>
 
 #include "hintview.h"
 #include "tyrant.h"
@@ -25,7 +26,7 @@
 //IMPLEMENT_DYNAMIC_CLASS(HintsPanelGeneric, wxPanel)
 
 
-int PVtype(int PP)
+int PVtype(PP_ID PP)
 {
 
     int type_ = 0;
@@ -59,6 +60,117 @@ int PVtype(int PP)
     return type_;
 }
 
+int HintsDialog::SuggestStep(PP_ID PP)
+{
+    int type_ = PVtype(PP);
+    
+    
+    if (type_ == 1)
+        return 1;
+    else if (type_ == 4 || type_ == 9 || type_ == 10)
+        return -1;  // Non-numeric
+    else
+    {
+        if (Parameters[PP].recommendedStep >= 1)
+            return Parameters[PP].recommendedStep;
+        return 10;
+    }
+}
+
+bool ParamInOffsets(int offset_, PP_ID PP)
+{
+    if ((offset_ >= Parameters[PP].byteOffset) && (offset_ < Parameters[PP].byteOffset + Parameters[PP].byteCount))
+    {
+        return wxTrue;
+    }
+    return wxFalse;
+}
+
+
+
+void HintsDialog::UpDown(CtrlVals ctrl_val)
+{
+    /*
+    Process a "increase" or "decrease" key stroke.
+    */
+    if (_current_offset >= 0 && _current_cluster >= 0 && _panel != NULL)
+    {
+        for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter ++)
+        {
+            PP_ID PP = *iter;
+            if (ParamInOffsets(_current_offset, PP))
+            {
+
+                int CURR = 0;
+                if (_view != NULL)
+                {
+                    if (_view->GetDocument() != NULL)
+                    {
+                        CURR = static_cast<ToneDocument *>(_view->GetDocument())->GetParamFrom(PP);
+                    }
+                }
+                int STEP = SuggestStep(PP);
+                    
+                if (STEP <= 0)
+                {
+                    return;   // No action possible
+                }
+                    
+                int X = -999;
+                    
+                if (ctrl_val == CtrlVals::MINIMUM)
+                {
+                    X = Parameters[PP].recommendedLimits[0];
+                }
+                else if (ctrl_val == CtrlVals::MAXIMUM)
+                {
+                    X = Parameters[PP].recommendedLimits[1];
+                }
+                else if (ctrl_val == CtrlVals::INCREASE)
+                {
+                    X = CURR + STEP;
+                    if (X > Parameters[PP].recommendedLimits[1])
+                    {
+                        X = Parameters[PP].recommendedLimits[1];
+                    }
+                }
+                else if (ctrl_val == CtrlVals::DECREASE)
+                {
+                    X = CURR - STEP;
+                    if (X < Parameters[PP].recommendedLimits[0])
+                    {
+                        X = Parameters[PP].recommendedLimits[0];
+                    }
+                }
+                if ((X != -999) && (X != CURR))
+                {
+                    if (_panel != NULL)
+                    {
+                        _panel->SetNewVal(PP, X);
+                    }
+                    if (_view != NULL)
+                    {
+                        if (_view->GetDocument() != NULL)
+                        {
+                            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(PP, X);
+                            _view->GetDocument()->Modify(wxTrue);
+                        }
+                    }
+                }
+                    
+                /*# Leave the loop after the first parameter has been processed.
+                # That prevents multiple parameters being changed when they
+                # share a byte offset.
+                #
+                # For shared parameters, only one at a time will be bolded within
+                # hints window. Is it the same one that is change here?? At the
+                # moment it's left undefined, and may not necessarily behave as
+                # expected.*/
+                break;
+            }
+        }
+    }
+}
 
 // A separator to place between numbers and letters in a ComboBox. Tab works well
 // for linux, but looks wierd on Windows. Go with this as a compromise.
@@ -233,203 +345,204 @@ void HintsPanelGeneric::OnTextChanged(wxCommandEvent& event)
 
 HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, int>> params) : wxPanel(parent, wxID_ANY)
 {
-/*
-        self.NAMES = []
-        self.PARAMS = PVList
-        self.TYPES = []*/
+    wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(3, wxSize(5,5));
+    _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
 
-        wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(2, wxSize(5,5));
-        _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
+    PARAMS.clear();
 
-
-
-        int PP = 0;
-        int i = 0;
+    PP_ID PP = 0;
+    int i = 0;
+    
+    for (auto PV = params.begin(); PV != params.end(); PV ++)
+    {
         
-        for (auto PV = params.begin(); PV != params.end(); PV ++)
+        for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
         {
-            
-            for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
-            {
             if (Parameters[PP].number == PV->first && Parameters[PP].block0 == PV->second)
             {
             
-            int PVtype_ = PVtype(PP);
-            unsigned int PVid_ = PP;
+                int PVtype_ = PVtype(PP);
+                PARAMS.push_back(PP);
+
+                wxControl * w_;
 
 
-
-
-            wxControl * w_;
-
-
-            if (PVtype_ == 1)
-            {
-                w_ = new wxCheckBox(this, wxID_ANY, "");
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 2)
-            {
-                w_ = new CustomListBox_FilterType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 3)
-            {
-                w_ = new CustomListBox_WavetableTimbre(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 4 || PVtype_ == 9 || PVtype_ == 10)
-            {
-                w_ = new CustomListBox_WavetableTimbre(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-                // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
-                // and we need to ignore for them.
-                Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
-            }
-            else if (PVtype_ == 5)
-            {
-                w_ = new CustomListBox_DSPType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 6)
-            {
-                w_ = new CustomListBox_LFOType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 7)
-            {
-                w_ = new CustomListBox_Portamento(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 8)
-            {
-                w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 11)
-            {
-                w_ = new CustomListBox_NoteOffVelocity(this);
-                w_->SetPosition(wxPoint(5, 5+i*40));
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else
-            {
-                //if PV.param.bitCount > 16:
-                //    # Put some arbitrary limit on the maximum field
-                //    w_ = wx.SpinCtrl(self, min=0,max=1023,initial=0, name="C_P{0}".format(PV.id_))
-                //else:
-                
-                w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-
-              //  wxSpinCtrl *w_ = new wxSpinCtrl(_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
+                if (PVtype_ == 1)
+                {
+                    w_ = new wxCheckBox(this, wxID_ANY, "");
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 2)
+                {
+                    w_ = new CustomListBox_FilterType(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 3)
+                {
+                    w_ = new CustomListBox_WavetableTimbre(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 4 || PVtype_ == 9 || PVtype_ == 10)
+                {
+                    w_ = new CustomText_ToneName(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                    // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
+                    // and we need to ignore for them.
+                    Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
+                }
+                else if (PVtype_ == 5)
+                {
+                    w_ = new CustomListBox_DSPType(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 6)
+                {
+                    w_ = new CustomListBox_LFOType(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 7)
+                {
+                    w_ = new CustomListBox_Portamento(this);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 8)
+                {
+                    w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else if (PVtype_ == 11)
+                {
+                    w_ = new CustomListBox_NoteOffVelocity(this);
+                    w_->SetPosition(wxPoint(5, 5+i*40));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
+                else
+                {
+                    if (Parameters[PP].bitCount > 16)
+                    {
+                        // Put some arbitrary limit on the maximum field
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1023, 0);
+                    }
+                    else
+                    {
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, (1 << Parameters[PP].bitCount)-1, 0);
+                    }
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
+                }
 
                 _sizer_2->Add(w_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
 
                 wxStaticText*   u_ = new wxStaticText(this, wxID_ANY, Parameters[PP].name, wxDefaultPosition, wxDefaultSize, 0, "name");
-    
                 _sizer_2->Add(u_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-                
-                
+            
+                wxStaticBitmap *v_ = new wxStaticBitmap(this, wxID_ANY, wxBitmap());
+                if (! Parameters[PP].helpStr.IsEmpty())
+                {
+                    v_->SetIcon(wxArtProvider::GetIcon(wxART_HELP));
+                    v_->SetToolTip(Parameters[PP].helpStr);
+                }
+                _sizer_2->Add(v_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
+
                 i ++;
                 break;
             }
 
-
         }
+    }
 
-        }
+    SetSizer(_sizer_2);
+    _sizer_2->Fit(this);
 
-
-
-
-        SetSizer(_sizer_2);
-        _sizer_2->Fit(this);
-
-    
 }
   
 
+static bool PARAM_IS_STR(int X) {return (X==0 || X==84 || X==87);}
 
 
-
-void HintsDialog::UpDown(int ctrl_val)
+void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 {
-    /*
-    Process a "increase" or "decrease" key stroke.
-    */
 
-    if (_current_cluster >= 0 && _current_offset >= 0)
+    for (auto iter = PARAMS.begin(); iter != PARAMS.end(); iter ++)
     {
-        int i;
-        std::map<std::string, std::list<std::pair<int, int>>>::iterator CC;
-        for (CC = CLUSTERS_.begin(); CC != CLUSTERS_.end(); CC++)
-        {
-            if (i == _current_cluster)
-            {
-                break;
-            }
-            i ++;
-        }
+        int PP = *iter;
         
-        if (CC == CLUSTERS_.end())
+       
+        wxWindow * W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
+
+        if (PARAM_IS_STR(Parameters[PP].number))
         {
-            // Error! What to do?
+            static_cast<wxTextCtrl *>(W_)->SetValue(doc_->GetParamFromStr(PP));
         }
         else
         {
-        
-        
-#if 0
-            for (auto PV = CC->second().begin(); PV != CC->second().end(); PV++)
+            int V_ = doc_->GetParamFrom(PP);
+
+            if (PVtype(PP) == 1)
             {
-                if self._current_offset in PV.offsets
+                static_cast<wxCheckBox *>(W_)->SetValue(V_);
+            }
+            else if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
+            {
+                static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+                
+            }
+            else
+            {
+                if (PVtype(PP) == 3)
                 {
-                    
-                    CURR = self._buffer.GetParamFrom(PV.param)
-                    STEP = self.SuggestStep(PV)
-                    
-                    if STEP is None:
-                        return   # No action possible
-                    
-                    X = None
-                    
-                    if ctrl_val == hexeditview.CtrlVals.MINIMUM:
-                        X = PV.param.recommendedLimits[0]
-                    elif ctrl_val == hexeditview.CtrlVals.MAXIMUM:
-                        X = PV.param.recommendedLimits[1]
-                    elif ctrl_val == hexeditview.CtrlVals.INCREASE:
-                        X = CURR + STEP
-                        if X > PV.param.recommendedLimits[1]:
-                            X = PV.param.recommendedLimits[1]
-                    elif ctrl_val == hexeditview.CtrlVals.DECREASE:
-                        X = CURR - STEP
-                        if X < PV.param.recommendedLimits[0]:
-                            X = PV.param.recommendedLimits[0]
-                    
-                    if X is not None and X != CURR:
-                        if self._panel is not None:
-                            self._panel.SetNewVal(PV, X)
-                        self._buffer.SetParamTo(PV.param, X)
-                        self._buffer.Modify(True)
-                        
-                    /* Leave the loop after the first parameter has been processed.
-                    * That prevents multiple parameters being changed when they
-                    * share a byte offset.
-                    *
-                    * For shared parameters, only one at a time will be bolded within
-                    * hints window. Is it the same one that is change here?? At the
-                    * moment it's left undefined, and may not necessarily behave as
-                    * expected.   */
-                    break;
+                    V_ /= 2;
+                }
+                else if (PVtype(PP) == 8)
+                {
+                    V_ -= 4;
+                }
+                
+                if (PVtype(PP) == 2 ||
+                        PVtype(PP) == 3 ||
+                        PVtype(PP) == 5 ||
+                        PVtype(PP) == 6 ||
+                        PVtype(PP) == 7 ||
+                        PVtype(PP) == 11)
+                {
+                    static_cast<wxComboBox *>(W_)->SetSelection(V_);
+                }
+                else
+                {
+                    static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
                 }
             }
-#endif
         }
     }
+
+
 }
 
+
+void HintsPanelGeneric::SetNewVal(PP_ID PP, wxString val_)
+{
+    wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
+    //int type_ = PVtype(PP);
+    static_cast<wxTextCtrl *>(W_)->SetValue(val_);
+}
+
+void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
+{
+    wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
+    int type_ = PVtype(PP);
+    if (type_ == 1)
+        static_cast<wxCheckBox *>(W_)->SetValue((bool)val_);
+    else if (type_ == 2 || type_ == 5 || type_ == 6 || type_ == 7 || type_ == 11)
+        static_cast<wxComboBox *>(W_)->SetSelection(val_);
+    else if (type_ == 3)
+        static_cast<wxComboBox *>(W_)->SetSelection(val_ / 2);
+    else if (type_ == 8)
+        static_cast<wxSpinCtrl *>(W_)->SetValue(val_ - 4);
+    else
+        static_cast<wxSpinCtrl *>(W_)->SetValue(val_);
+   // Parent._view->Update();
+}
+
+#if 0
 void HintsDialog::OnChar(wxKeyEvent& event)
 {
     bool _redraw = wxFalse;
@@ -457,7 +570,7 @@ void HintsDialog::OnChar(wxKeyEvent& event)
     }
 
 }
-  
+#endif
   
   
   
@@ -577,7 +690,6 @@ HintsDialog::HintsDialog(wxWindow *parent) :
     _sizer.SetMinSize( wxSize(100, 100) );
     SetSizer(&_sizer);
     _sizer.Fit(this);
-    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Want to adjust the starting position relative to the parent
     
     _is_1B6 = wxFalse;
     _panel = NULL;
@@ -635,12 +747,18 @@ HintsDialog::HintsDialog(wxWindow *parent) :
             }
         }
     }
+    
+    _highlight_list.clear();
 
         
 
     
     
-    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this);
+    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Want to adjust the starting position relative to the parent
+
+    Bind(wxEVT_SPINCTRL, &HintsDialog::OnValueChanged, this);
+    Bind(wxEVT_CHECKBOX, &HintsDialog::OnCheckChanged, this);
+    Bind(wxEVT_COMBOBOX, &HintsDialog::OnComboBoxSelected, this);
 }
 
 HintsDialog::~HintsDialog()
@@ -656,13 +774,122 @@ void HintsDialog::OnIdle(wxIdleEvent& event)
     event.Skip(true);
 }
 
+void HintsDialog::OnValueChanged(wxSpinEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.GetPosition();
+            if (PVtype(*iter) == 8)
+            {
+                V_ += 4;
+            }
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+void HintsDialog::OnCheckChanged(wxCommandEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.IsChecked() ? 1 : 0;
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+void HintsDialog::OnComboBoxSelected(wxCommandEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.GetSelection();
+            if (PVtype(*iter) == 3)
+                V_ = 2*V_;
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+void HintsDialog::OnTextChanged(wxCommandEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            wxString V_ = event.GetString();
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+
 void HintsDialog::UpdateValues(wxDocument* doc_)
 {
     if (_panel != NULL)
     {
-        //_panel->ReadValues(doc_);
+        _panel->ReadValues(static_cast<ToneDocument *>(doc_));
     }
 }
+
+
 
 /*
 void HintsDialog::MakeParamViewList(numlist)
@@ -716,23 +943,35 @@ void HintsDialog::MakeParamViewList(numlist)
 
 
 
+std::set<unsigned short> HintsDialog::GetHighlightList(void)
+{
+    return _highlight_list;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void HintsDialog::MakeHighlightList(std::list<std::pair<int, int>> params)
+{
+    PP_ID PP = 0;
+    int i = 0;
+    
+    _highlight_list.clear();
+    for (auto PV = params.begin(); PV != params.end(); PV ++)
+    {
+        
+        for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+        {
+            if (Parameters[PP].number == PV->first && Parameters[PP].block0 == PV->second)
+            {
+                unsigned short int i;
+                
+                for (i = Parameters[PP].byteOffset+0x20; i <  Parameters[PP].byteOffset+0x20+Parameters[PP].byteCount; i ++)
+                {
+                    _highlight_list.insert(i);
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -744,7 +983,7 @@ void HintsDialog::SetSelected(int offset_in_file)
         int offset = offset_in_file - 0x20;
         
         if (offset >= 0)
-            wxFrame::SetTitle(wxString(_("Hints")) + wxString(": %03Xh", offset));
+            wxFrame::SetTitle(wxString(_("Hints")) + wxString::Format(": %03Xh", offset));
         else
             wxFrame::SetTitle(_("Hints"));
 
@@ -786,6 +1025,7 @@ void HintsDialog::SetSelected(int offset_in_file)
             //self._paramviewlist = None
             _current_cluster = -1;
             _sizer.GetStaticBox()->SetLabelText("");
+            _highlight_list.clear();
         }
             
         if (_enter >= 0)
@@ -811,14 +1051,14 @@ void HintsDialog::SetSelected(int offset_in_file)
             if (CC == CLUSTERS_.end())
             {
                 // Error! What to do?
+                wxLogError("Reached end of clusters");
             }
             else
             {
-            
-            
-                //self._paramviewlist = self.MakeParamViewList(list(self.CLUSTERS.items())[_enter][1])
 
                 _panel = new HintsPanelGeneric(this, CC->second);
+                
+                MakeHighlightList(CC->second);
                 
                 
                 //new wxPanel(this, wxID_ANY);
@@ -862,7 +1102,7 @@ void HintsDialog::SetSelected(int offset_in_file)
                         break
                 if self._panel is not None:
                     self._panel.Update(sel_id)*/
-
+            }
         }
         
         
@@ -875,53 +1115,6 @@ void HintsDialog::SetSelected(int offset_in_file)
         }
 
     }
-if (offset == 0x47)
-{
-    
-    wxPanel * _panel = new wxPanel(this, wxID_ANY);
-    
-    
-    
-    wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(2, wxSize(5,5));
-        _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
-        
 
-    wxSpinCtrl *w_ = new wxSpinCtrl(_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-
-            _sizer_2->Add(w_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-          
-
-         wxStaticText*   u_ = new wxStaticText(_panel, wxID_ANY, "TheLabel", wxDefaultPosition, wxDefaultSize, 0, "name");
-            
-            _sizer_2->Add(u_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-            
-            
-          
-
-        _panel->SetSizer(_sizer_2);
-        _sizer_2->Fit(_panel);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //wxSpinCtrl h1(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-
-    _sizer.Add(_panel);
-    
-    _sizer.Fit(this);
-    Layout();
-    
-}
-
-
-
-    }
 }
 

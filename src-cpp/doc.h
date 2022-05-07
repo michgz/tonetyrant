@@ -34,6 +34,8 @@
     typedef wxOutputStream DocumentOstream;
 #endif // wxUSE_STD_IOSTREAM/!wxUSE_STD_IOSTREAM
 
+typedef int PP_ID;
+
 // ----------------------------------------------------------------------------
 // The document class and its helpers
 // ----------------------------------------------------------------------------
@@ -50,12 +52,22 @@ public:
 
 
     virtual bool OnOpenDocument(const wxString& file);
+    
+    
+    int GetParamFrom(PP_ID PP);
+    wxString GetParamFromStr(PP_ID PP);
+    void SetParamTo(PP_ID PP, unsigned int p_val);
+    void SetParamTo(PP_ID PP, wxString p_val);
 
+    virtual void Modify(bool );
+    
+    std::vector<unsigned short int> change_list;
 
 protected:
     virtual bool DoOpenDocument(const wxString& file);
 
 private:
+public:
     void DoUpdate();
     
     
@@ -70,17 +82,29 @@ class HexEditCommand : public wxCommand
 public:
     HexEditCommand(ToneDocument *doc,
                    const wxString& name,
-                   const int info)
-        : wxCommand(true, name)
+                   const int info,
+                   bool canUndo=true)
+        : wxCommand(canUndo, " ")   // if an empty string, shows as "Unnamed command" for some reason. So use a space.
     {
     }
-
+    
+private:
+    int _type;
+    int _new_nibble, _old_nibble;
+    int _new_byte, _old_byte;
+    ToneDocument * _document;
+    int _offset;
+    std::vector<unsigned char> _old_vals;
+    std::vector<unsigned char> _new_vals;
 
 public:
 
+    static HexEditCommand * ChangeNibble(ToneDocument * document, int offset, int new_nibble);
+    static HexEditCommand * ChangeByte(ToneDocument * document, int offset, int new_byte);
+    static HexEditCommand * CompletelyChange(ToneDocument * document, std::vector<unsigned char> old_vals, std::vector<unsigned char> new_vals);
 
-    virtual bool Do() { return true; }
-    virtual bool Undo() { return true; }
+    virtual bool Do();
+    virtual bool Undo();
 };
 
 #endif // _WX_SAMPLES_DOCVIEW_DOC_H_
