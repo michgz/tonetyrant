@@ -54,7 +54,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/wx-config') }}
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
             wx-3.1-build-lib-${{ runner.os }}-
 
@@ -64,7 +64,7 @@ jobs:
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
-      - name: Build WX no Cache
+      - name: Build WX
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
@@ -73,13 +73,6 @@ jobs:
           ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
           make all
 
-      - name: Build WX with Cache
-        if: steps.cache-wx.outputs.cache-hit == 'true'
-        shell: msys2 {0}
-        run: |
-          cd wx-build
-          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
-      
       # For fun :)
       - name: Build Sample
         id: build-sample
@@ -151,11 +144,11 @@ jobs:
       - name: Build WX if no Cache
         if: steps.cache-wx.outputs.cache-hit != 'true'
         run: |
-          sudo apt-get install -y libgtk2.0
-          sudo apt-get install -y build-essential libgtk2.0-dev
+          sudo apt-get install -y gtk3.0
+          sudo apt-get install -y build-essential libgtk3.0-dev
           mkdir wx-build
           cd wx-build
-          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=2
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=3
           make all
 
       # For fun :)
