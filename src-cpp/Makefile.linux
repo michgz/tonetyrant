@@ -27,10 +27,10 @@ HOST_SUFFIX =
 SAMPLES_RPATH_FLAG = -Wl,-rpath,$(wx_top_builddir)/lib
 
 # Change this!!
-wx_top_builddir = $(HOME)/Downloads/wxWidgets-3.0.5/buildgtk
+wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.0.5/buildgtk
 
 # Change this!!
-rtmidi_srcdir = $(HOME)/Downloads/rtmidi-5.0.0
+rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 
 
 ### Variables: ###
@@ -154,7 +154,7 @@ $(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o
 
 
 $(OBJS)\tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
 
 $(OBJS)\tonetyrant_doc.o: $(srcdir)/doc.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<

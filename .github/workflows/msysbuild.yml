@@ -53,7 +53,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/wx-config') }}
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
             wx-3.1-build-lib-${{ runner.os }}-
 
@@ -63,7 +63,7 @@ jobs:
         run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
-      - name: Build WX no Cache
+      - name: Build WX if no Cache
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
@@ -72,16 +72,10 @@ jobs:
           ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
           make all
 
-      - name: Build WX with Cache
-        if: steps.cache-wx.outputs.cache-hit == 'true'
-        shell: msys2 {0}
-        run: |
-          cd wx-build
-          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
-      
       # For fun :)
       - name: Build Sample
         id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           cd wx-build/samples/docview
@@ -103,7 +97,82 @@ jobs:
           name: tyrant-windows-executable-artifact
           path: tonetyrant/src-cpp/*.exe
       - uses: actions/upload-artifact@v2
-        if: steps.build-sample.outcome == 'success'
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
           name: docview-windows-executable-artifact
+          path: wx-build/samples/docview/*.exe
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Tone Tyrant
+        uses: actions/checkout@v2
+        with:
+          path: tonetyrant
+
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.1.6
+          path: wxWidgets
+          submodules: 'true'
+
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi
+          submodules: 'false'
+
+      - name: Cache WX
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: wx-build/lib
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          restore-keys: |
+            wx-3.1-build-lib-${{ runner.os }}-
+    
+      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
+      - name: Build WX if no Cache
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=3
+          make all
+
+      # For fun :)
+      - name: Build Sample
+        id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          cd wx-build/samples/docview
+          make all
+
+      # Build our program
+      - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
+        run: |
+          cd tonetyrant/src-cpp
+          make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+
+      # Upload the two artifacts
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-executable-artifact
+          path: tonetyrant/src-cpp/*.exe
+      - uses: actions/upload-artifact@v2
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
+        with:
+          name: docview-${{ runner.os }}-executable-artifact
           path: wx-build/samples/docview/*.exe
