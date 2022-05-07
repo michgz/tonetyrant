@@ -165,6 +165,7 @@ jobs:
         id: build-tyrant
         continue-on-error: true
         run: |
+          ls -lR wx-build/lib
           cd tonetyrant/src-cpp
           make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
