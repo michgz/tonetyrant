@@ -84,7 +84,7 @@ jobs:
         if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-${{ runner.os }}-executable-artifact
-          path: tonetyrant/src-cpp/*.exe
+          path: tonetyrant/src-cpp/tyrant
       - uses: actions/upload-artifact@v2
         if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
