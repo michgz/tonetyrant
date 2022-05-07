@@ -76,6 +76,7 @@ jobs:
       # For fun :)
       - name: Build Sample
         id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           cd wx-build/samples/docview
@@ -97,7 +98,7 @@ jobs:
           name: tyrant-${{ runner.os }}-executable-artifact
           path: tonetyrant/src-cpp/*.exe
       - uses: actions/upload-artifact@v2
-        if: steps.build-sample.outcome == 'success'
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
           name: docview-${{ runner.os }}-executable-artifact
           path: wx-build/samples/docview/*.exe
@@ -136,9 +137,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
-            wx-3.1-build-lib-${{ runner.os }}-
+            wx-3.1-build-lib-gtk3-${{ runner.os }}-
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
       - name: Build WX if no Cache
