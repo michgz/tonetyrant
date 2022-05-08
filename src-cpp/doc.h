@@ -56,6 +56,8 @@ public:
     
     int GetParamFrom(PP_ID PP);
     wxString GetParamFromStr(PP_ID PP);
+    void SetParamTo(PP_ID PP, unsigned int p_val);
+    void SetParamTo(PP_ID PP, wxString p_val);
 
 protected:
     virtual bool DoOpenDocument(const wxString& file);

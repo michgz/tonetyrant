@@ -116,6 +116,85 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 
 
 
+void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
+{
+    if (p_val >= (1 << Parameters[PP].bitCount))
+    {
+        wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
+        return;
+    }
+            
+    unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
+    unsigned long int MASK = ((1 << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+        
+    X = X & ~MASK;
+    X = X | (p_val << Parameters[PP].bitOffset);
+        
+        
+    *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
+        
+    //self._docManager.SetParamTo(P, p_val)
+}
+
+void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
+{
+    int number_ = Parameters[PP].number;
+    
+    if (number_ == 0 || number_ == 84)
+    {
+        const char * c = p_val.ToAscii();
+        int offset_ = Parameters[PP].byteOffset + 0x20;
+        int i;
+        for (i = 0; i < 16; i ++)
+        {
+            if (c[i] == '\0')
+            {
+                this->at(i) = ' ';
+                break;
+            }
+            else
+            {
+                this->at(i) = c[i];
+            }
+        }
+        for (; i < 16; i ++)
+        {
+            this->at(i) = ' ';
+        }
+
+        return;
+    }
+    if (number_ == 87)
+    {
+        const char * c = p_val.ToAscii();
+        int offset_ = Parameters[PP].byteOffset + 0x20;
+        int i;
+        for (i = 0; i < 14; i ++)
+        {
+            if (c[i] == '\0')
+            {
+                this->at(i) = ' ';
+                break;
+            }
+            else
+            {
+                this->at(i) = c[i];
+            }
+        }
+        for (; i < 14; i ++)
+        {
+            this->at(i) = ' ';
+        }
+
+        return;
+    }
+    
+    wxLogError("Not a string parameter: parameter %d", number_);
+        
+    //self._docManager.SetParamTo(P, p_val)
+}
+
+
 wxString ToneDocument::GetParamFromStr(PP_ID PP)
 {
     if (Parameters[PP].number == 0)
