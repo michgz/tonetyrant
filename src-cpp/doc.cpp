@@ -39,6 +39,8 @@
 #include "view.h"
 #include "Crc32.h"
 
+#include "parameters.h"
+
 #define wxTrue true
 
 IMPLEMENT_DYNAMIC_CLASS(ToneDocument, wxDocument)
@@ -110,6 +112,45 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
     // Do something
 
     return true;
+}
+
+
+int ToneDocument::GetParamFrom(PP_ID PP)
+{
+    if (Parameters[PP].number == 0)
+    {
+        /*offset_ = P.byteOffset + 0x20;
+        STR_ = self._data[offset_:offset_+16].decode('ascii');*/
+        //return STR_;
+        return 0;
+    }
+  
+    if (Parameters[PP].number == 84)
+    {
+        /*offset_ = P.byteOffset + 0x20
+        STR_ = self._data[offset_:offset_+16].decode('ascii')
+        return STR_*/
+    }
+  
+    if (Parameters[PP].number == 87)
+    {
+        /*offset_ = P.byteOffset + 0x20
+        STR_ = self._data[offset_:offset_+14].hex(" ").upper()
+        return STR_*/
+        
+    }
+      
+  
+  
+    unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
+    
+    
+    X = X >> (Parameters[PP].bitOffset);
+    X = X & ((1 << Parameters[PP].bitCount) - 1);
+    
+    return X;
+
+    
 }
 
 

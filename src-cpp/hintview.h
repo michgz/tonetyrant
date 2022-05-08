@@ -7,12 +7,16 @@
 
 #include "wx/docview.h"
 #include "view.h"
+#include "doc.h"
 #include "tyrant.h"
 
 #include <map>
 #include <utility>
 #include <string>
+#include <list>
 
+
+typedef int PP_ID;   // This represents an offset into the Parameters table
 
 
 class HintsPanelGeneric : public wxPanel
@@ -20,6 +24,14 @@ class HintsPanelGeneric : public wxPanel
     public:
     HintsPanelGeneric(wxWindow *parent,  std::list<std::pair<int, int>> params);
     void OnTextChanged(wxCommandEvent& event);
+    
+    
+    
+    void ReadValues(ToneDocument * doc_);
+    
+    //std::list<std::pair<int, int>> PARAMS;
+    std::list<PP_ID> PARAMS;
+    
 };
 
 class CtrlVals

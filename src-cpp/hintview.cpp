@@ -242,8 +242,10 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
         _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
 
 
+        PARAMS.clear();
 
-        int PP = 0;
+
+        PP_ID PP = 0;
         int i = 0;
         
         for (auto PV = params.begin(); PV != params.end(); PV ++)
@@ -255,7 +257,10 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
             {
             
             int PVtype_ = PVtype(PP);
-            unsigned int PVid_ = PP;
+            //unsigned int PVid_ = PP;
+            
+            
+            PARAMS.push_back(PP);
 
 
 
@@ -350,6 +355,57 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
     
 }
   
+
+
+
+//static int GetNumber(std::pair<int, int> x) { return 5;}
+
+
+void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
+{
+
+    for (auto iter = PARAMS.begin(); iter != PARAMS.end(); iter ++)
+    {
+        int PP = *iter;
+        wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
+        int V_ = doc_->GetParamFrom(PP);
+
+
+        if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
+        {
+            static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+            
+        }
+        else
+        {
+            if (PVtype(PP) == 3)
+            {
+                V_ /= 2;
+            }
+            else if (PVtype(PP) == 8)
+            {
+                V_ -= 4;
+            }
+            
+            if (PVtype(PP) == 2 ||
+                    PVtype(PP) == 3 ||
+                    PVtype(PP) == 5 ||
+                    PVtype(PP) == 6 ||
+                    PVtype(PP) == 7 ||
+                    PVtype(PP) == 11)
+            {
+                static_cast<wxComboBox *>(W_)->SetSelection(V_);
+            }
+            else
+            {
+                static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+            }
+        }
+    }
+
+
+}
+
 
 
 
@@ -713,15 +769,6 @@ void HintsDialog::MakeParamViewList(numlist)
 
 
 */
-
-
-
-
-
-
-
-
-
 
 
 

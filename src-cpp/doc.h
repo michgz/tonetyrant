@@ -34,6 +34,8 @@
     typedef wxOutputStream DocumentOstream;
 #endif // wxUSE_STD_IOSTREAM/!wxUSE_STD_IOSTREAM
 
+typedef int PP_ID;
+
 // ----------------------------------------------------------------------------
 // The document class and its helpers
 // ----------------------------------------------------------------------------
@@ -50,6 +52,9 @@ public:
 
 
     virtual bool OnOpenDocument(const wxString& file);
+    
+    
+    int GetParamFrom(PP_ID PP);
 
 
 protected:
