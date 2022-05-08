@@ -187,7 +187,7 @@ HexEditCommand * HexEditCommand::ChangeNibble(ToneDocument * document, int offse
     res->_document = document;
     res->_offset = offset;
         
-    if (offset ^ 1 == 0)
+    if ((offset ^ 1) == 0)
         res->_old_nibble = ((document->at(offset/2)) & 0xF0) >> 4;
     else
         res->_old_nibble = document->at(offset/2) & 0x0F;

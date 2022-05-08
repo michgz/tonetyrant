@@ -58,7 +58,7 @@ class HintsDialog : public wxFrame
 
     void SetSelected(int);
     bool    _is_1B6;
-    wxPanel *   _panel ;
+    HintsPanelGeneric *   _panel ;
     wxView *  _view ;
     wxFont   _font1 ;
     wxFont   _font2 ;

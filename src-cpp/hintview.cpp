@@ -370,45 +370,45 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
         wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
 
 
-    if (PARAM_IS_STR(Parameters[PP].number))
-    {
-        static_cast<wxTextCtrl *>(W_)->SetValue(doc_->GetParamFromStr(PP));
-    }
-    else{
-        int V_ = doc_->GetParamFrom(PP);
-
-        if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
+        if (PARAM_IS_STR(Parameters[PP].number))
         {
-            static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
-            
+            static_cast<wxTextCtrl *>(W_)->SetValue(doc_->GetParamFromStr(PP));
         }
-        else
-        {
-            if (PVtype(PP) == 3)
+        else{
+            int V_ = doc_->GetParamFrom(PP);
+
+            if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
             {
-                V_ /= 2;
-            }
-            else if (PVtype(PP) == 8)
-            {
-                V_ -= 4;
-            }
-            
-            if (PVtype(PP) == 2 ||
-                    PVtype(PP) == 3 ||
-                    PVtype(PP) == 5 ||
-                    PVtype(PP) == 6 ||
-                    PVtype(PP) == 7 ||
-                    PVtype(PP) == 11)
-            {
-                static_cast<wxComboBox *>(W_)->SetSelection(V_);
+                static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+                
             }
             else
             {
-                static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+                if (PVtype(PP) == 3)
+                {
+                    V_ /= 2;
+                }
+                else if (PVtype(PP) == 8)
+                {
+                    V_ -= 4;
+                }
+                
+                if (PVtype(PP) == 2 ||
+                        PVtype(PP) == 3 ||
+                        PVtype(PP) == 5 ||
+                        PVtype(PP) == 6 ||
+                        PVtype(PP) == 7 ||
+                        PVtype(PP) == 11)
+                {
+                    static_cast<wxComboBox *>(W_)->SetSelection(V_);
+                }
+                else
+                {
+                    static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+                }
             }
         }
     }
-}
 
 
 }
@@ -723,7 +723,7 @@ void HintsDialog::UpdateValues(wxDocument* doc_)
 {
     if (_panel != NULL)
     {
-        //_panel->ReadValues(doc_);
+        _panel->ReadValues(static_cast<ToneDocument *>(doc_));
     }
 }
 
