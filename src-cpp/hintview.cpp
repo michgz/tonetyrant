@@ -860,7 +860,7 @@ void HintsDialog::SetSelected(int offset_in_file)
         int offset = offset_in_file - 0x20;
         
         if (offset >= 0)
-            wxFrame::SetTitle(wxString(_("Hints")) + wxString(": %03Xh", offset));
+            wxFrame::SetTitle(wxString(_("Hints")) + wxString::Format(": %03Xh", offset));
         else
             wxFrame::SetTitle(_("Hints"));
 
