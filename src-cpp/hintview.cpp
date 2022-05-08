@@ -356,7 +356,7 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
 }
   
 
-
+static bool PARAM_IS_STR(int X) {return (X==0 || X == 84 || X == 87);}
 
 //static int GetNumber(std::pair<int, int> x) { return 5;}
 
@@ -368,8 +368,14 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
     {
         int PP = *iter;
         wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
-        int V_ = doc_->GetParamFrom(PP);
 
+
+    if (PARAM_IS_STR(Parameters[PP].number))
+    {
+        static_cast<wxTextCtrl *>(W_)->SetValue(doc_->GetParamFromStr(PP));
+    }
+    else{
+        int V_ = doc_->GetParamFrom(PP);
 
         if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
         {
@@ -402,6 +408,7 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
             }
         }
     }
+}
 
 
 }

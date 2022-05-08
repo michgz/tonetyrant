@@ -115,6 +115,30 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 }
 
 
+
+wxString ToneDocument::GetParamFromStr(PP_ID PP)
+{
+    if (Parameters[PP].number == 0)
+    {
+        return wxString::FromAscii(&this->data()[Parameters[PP].byteOffset + 0x20], 16);
+    }
+  
+    if (Parameters[PP].number == 84)
+    {
+        return wxString::FromAscii(&this->data()[Parameters[PP].byteOffset + 0x20], 16);
+    }
+  
+    if (Parameters[PP].number == 87)
+    {
+        return wxString::FromAscii(&this->data()[Parameters[PP].byteOffset + 0x20], 14);
+    }
+    
+    return ""; // Error
+    
+    
+}
+
+
 int ToneDocument::GetParamFrom(PP_ID PP)
 {
     if (Parameters[PP].number == 0)
@@ -122,7 +146,7 @@ int ToneDocument::GetParamFrom(PP_ID PP)
         /*offset_ = P.byteOffset + 0x20;
         STR_ = self._data[offset_:offset_+16].decode('ascii');*/
         //return STR_;
-        return 0;
+        return 0;  // Error!
     }
   
     if (Parameters[PP].number == 84)
@@ -130,6 +154,7 @@ int ToneDocument::GetParamFrom(PP_ID PP)
         /*offset_ = P.byteOffset + 0x20
         STR_ = self._data[offset_:offset_+16].decode('ascii')
         return STR_*/
+        return 0;  // Error!
     }
   
     if (Parameters[PP].number == 87)
@@ -137,7 +162,7 @@ int ToneDocument::GetParamFrom(PP_ID PP)
         /*offset_ = P.byteOffset + 0x20
         STR_ = self._data[offset_:offset_+14].hex(" ").upper()
         return STR_*/
-        
+        return 0;  // Error!
     }
       
   
@@ -149,7 +174,6 @@ int ToneDocument::GetParamFrom(PP_ID PP)
     X = X & ((1 << Parameters[PP].bitCount) - 1);
     
     return X;
-
     
 }
 
