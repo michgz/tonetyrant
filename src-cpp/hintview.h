@@ -25,7 +25,8 @@ class HintsPanelGeneric : public wxPanel
     HintsPanelGeneric(wxWindow *parent,  std::list<std::pair<int, int>> params);
     void OnTextChanged(wxCommandEvent& event);
     
-    
+    void SetNewVal(PP_ID PP, wxString val_);
+    void SetNewVal(PP_ID PP, int val_);
     
     void ReadValues(ToneDocument * doc_);
     
@@ -64,8 +65,7 @@ class HintsDialog : public wxFrame
     
     void SetView(wxView * __view) {_view = __view;}
     void ResetView(void) {_view = NULL;}
-    
-    
+        
     std::map<std::string, std::list<std::pair<int, int>>> CLUSTERS_;
     
     std::map<int, int> OFFSETS_;

@@ -529,10 +529,29 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 }
 
 
+void HintsPanelGeneric::SetNewVal(PP_ID PP, wxString val_)
+{
+    wxWindow *W_ = FindWindowByName(wxString("C_P%d", PP));
+    //int type_ = PVtype(PP);
+    static_cast<wxTextCtrl *>(W_)->SetValue(val_);
+}
 
-
-
-
+void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
+{
+    wxWindow *W_ = FindWindowByName(wxString("C_P%d", PP));
+    int type_ = PVtype(PP);
+    if (type_ == 1)
+        static_cast<wxCheckBox *>(W_)->SetValue((bool)val_);
+    else if (type_ == 2 || type_ == 5 || type_ == 6 || type_ == 7 || type_ == 11)
+        static_cast<wxComboBox *>(W_)->SetSelection(val_);
+    else if (type_ == 3)
+        static_cast<wxComboBox *>(W_)->SetSelection(val_ / 2);
+    else if (type_ == 8)
+        static_cast<wxSpinCtrl *>(W_)->SetValue(val_ - 4);
+    else
+        static_cast<wxSpinCtrl *>(W_)->SetValue(val_);
+   // Parent._view->Update();
+}
 
 void HintsDialog::OnChar(wxKeyEvent& event)
 {
