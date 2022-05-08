@@ -494,18 +494,18 @@ void ToneView::OnChar(wxKeyEvent& event )
             break; 
         case WXK_PAGEUP:
         case WXK_NUMPAD_PAGEUP:
-            //_callback_window.UpDown(CtrlVals.INCREASE);
+            _callback_window->UpDown(CtrlVals::INCREASE);
             break;
         case WXK_PAGEDOWN:
         case WXK_NUMPAD_PAGEDOWN:
-            //_callback_window.UpDown(CtrlVals.DECREASE);
+            _callback_window->UpDown(CtrlVals::DECREASE);
             break;
         case WXK_END:
-            //_callback_window.UpDown(CtrlVals.MINIMUM);
+            _callback_window->UpDown(CtrlVals::MINIMUM);
             break;
         case WXK_HOME:
         case WXK_NUMPAD_BEGIN:
-            //_callback_window.UpDown(CtrlVals.MAXIMUM);
+            _callback_window->UpDown(CtrlVals::MAXIMUM);
             break;
         default:
             break;
