@@ -145,7 +145,7 @@ void HintsDialog::UpDown(CtrlVals ctrl_val)
                 {
                     if (_panel != NULL)
                     {
-                        //_panel->SetNewVal(PP, X);
+                        _panel->SetNewVal(PP, X);
                     }
                     if (_view != NULL)
                     {
