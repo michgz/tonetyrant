@@ -140,6 +140,9 @@ __LIB_REGEX_p = $(COND_wxUSE_REGEX_builtin___LIB_REGEX_p)
 #__LIB_EXPAT_p = \
 #	-lwxexpat$(WXDEBUGFLAG)$(WX_LIB_FLAVOUR)-$(WX_RELEASE)$(HOST_SUFFIX)
 
+LIBS_FOR_CRC32      = -lrt
+FLAGS_FOR_CRC32     = -O3 -Wall -Wextra -pedantic -s
+
 ### Targets: ###
 
 all: $(OBJS)\tyrant$(EXEEXT) $(__text_bundle___depname)
@@ -159,8 +162,8 @@ clean:
 distclean: clean
 	rm -f config.cache config.log config.status bk-deps bk-make-pch shared-ld-sh Makefile
 
-$(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o
-	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o -L$(LIBDIRNAME) $(LDFLAGS_GUI) $(SAMPLES_RPATH_FLAG) $(LDFLAGS)  $(__WXLIB_CORE_p)  $(__WXLIB_BASE_p)  $(__WXLIB_MONO_p) $(__LIB_SCINTILLA_IF_MONO_p) $(__LIB_TIFF_p) $(__LIB_JPEG_p) $(__LIB_PNG_p)  $(EXTRALIBS_FOR_GUI) $(__LIB_ZLIB_p) $(__LIB_REGEX_p) $(__LIB_EXPAT_p) $(EXTRALIBS_FOR_BASE) $(LIBS) -lasound -lpthread $(__text___os2_emxbindcmd)
+$(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o $(OBJS)\crc32.o
+	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o -L$(LIBDIRNAME) $(LDFLAGS_GUI) $(SAMPLES_RPATH_FLAG) $(LDFLAGS)  $(__WXLIB_CORE_p)  $(__WXLIB_BASE_p)  $(__WXLIB_MONO_p) $(__LIB_SCINTILLA_IF_MONO_p) $(__LIB_TIFF_p) $(__LIB_JPEG_p) $(__LIB_PNG_p)  $(EXTRALIBS_FOR_GUI) $(__LIB_ZLIB_p) $(__LIB_REGEX_p) $(__LIB_EXPAT_p) $(EXTRALIBS_FOR_BASE) $(LIBS_FOR_CRC32) $(LIBS) -lasound -lpthread $(__text___os2_emxbindcmd)
 
 
 $(OBJS)\tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
@@ -181,6 +184,8 @@ $(OBJS)\tonetyrant_midi_comms.o: $(srcdir)/midi_comms.cpp
 $(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	g++ -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp $(EXTRALIBS_FOR_RTMIDI) -I${rtmidi_srcdir}
 
+$(OBJS)\crc32.o: $(srcdir)/crc32/Crc32.cpp $(srcdir)/crc32/Crc32.h
+	g++ -c $(FLAGS_FOR_CRC32) -o $@ $(srcdir)/crc32/Crc32.cpp -I$(srcdir)/crc32
 
 
 ##$(OBJS)\tyrant_docview_rc.o: ./docview.rc
