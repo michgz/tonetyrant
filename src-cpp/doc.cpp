@@ -99,7 +99,12 @@ void ToneDocument::DoUpdate()
     UpdateAllViews();
 }
 
-
+void ToneDocument::Modify(bool x)
+{
+    wxDocument::Modify(x);
+}
+ 
+ 
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
     return true;//m_image.LoadFile(file);
@@ -119,6 +124,15 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 {
+    
+    if (p_val == 5)
+    {
+        wxLogError("MMMMMM");
+        
+        
+        
+    }
+    
     if (p_val >= (1 << Parameters[PP].bitCount))
     {
         wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
@@ -132,7 +146,11 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     X = X | (p_val << Parameters[PP].bitOffset);
         
         
-    *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
+    //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
+    this->at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
+    this->at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
+    this->at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
+    this->at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
         
     //self._docManager.SetParamTo(P, p_val)
 }
@@ -305,11 +323,11 @@ bool HexEditCommand::Do(void)
 {
     
     
-    /*
+    
     if (_type == 1)  // Nibble
     {
         unsigned char x;
-        if (_offset ^ 1 == 0)
+        if ((_offset & 1) == 0)
         {
             x = _document->at(_offset/2) & 0x0F;
             x = x + (_new_nibble << 4);
@@ -324,7 +342,7 @@ bool HexEditCommand::Do(void)
         _document->DoUpdate();
 
         return wxTrue;
-    }
+    }/*
     else if (_type == 2)   // Byte
     {
         _document->at(_offset/2) = _new_byte;

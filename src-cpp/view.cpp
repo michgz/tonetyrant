@@ -513,7 +513,9 @@ void ToneView::OnChar(wxKeyEvent& event )
 }
 
 
-if (   event.GetKeyCode() == 'A' )
+int key_ = event.GetKeyCode();
+
+if ( ((   key_ >= '0'  && key_ <= '9') || (   key_ >= 'a'  && key_ <= 'f')||(   key_ >= 'A'  && key_ <= 'F'))  && _edit_region != 3)
 {
     HexEditCommand * cmd = HexEditCommand::ChangeNibble(_buffer, _caret_pos, Hex2Nibble(event.GetKeyCode()));
     _buffer->GetCommandProcessor()->Submit(cmd);
