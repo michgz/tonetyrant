@@ -625,7 +625,8 @@ bool ToneView::UpdateCaretPos(signed int x) {
     if (_callback_window != NULL)
     {
         _callback_window->SetSelected(_caret_pos / 2);
-
+        _callback_window->UpdateValues(GetDocument());
+        //self._highlighted_offsets = self._callback_window.GetHighlightList()
     }
     
     
