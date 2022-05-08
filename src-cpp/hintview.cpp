@@ -3,6 +3,7 @@
 #include "wx/docview.h"
 #include "wx/docmdi.h"
 #include "wx/spinctrl.h"
+#include <wx/artprov.h>
 
 #include "hintview.h"
 #include "tyrant.h"
@@ -344,130 +345,118 @@ void HintsPanelGeneric::OnTextChanged(wxCommandEvent& event)
 
 HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, int>> params) : wxPanel(parent, wxID_ANY)
 {
-/*
-        self.NAMES = []
-        self.PARAMS = PVList
-        self.TYPES = []*/
+    wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(3, wxSize(5,5));
+    _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
 
-        wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(2, wxSize(5,5));
-        _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
+    PARAMS.clear();
 
-
-        PARAMS.clear();
-
-
-        PP_ID PP = 0;
-        int i = 0;
+    PP_ID PP = 0;
+    int i = 0;
+    
+    for (auto PV = params.begin(); PV != params.end(); PV ++)
+    {
         
-        for (auto PV = params.begin(); PV != params.end(); PV ++)
+        for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
         {
-            
-            for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
-            {
             if (Parameters[PP].number == PV->first && Parameters[PP].block0 == PV->second)
             {
             
-            int PVtype_ = PVtype(PP);
-            //unsigned int PVid_ = PP;
-            
-            
-            PARAMS.push_back(PP);
+                int PVtype_ = PVtype(PP);
+                PARAMS.push_back(PP);
+
+                wxControl * w_;
 
 
-
-
-            wxControl * w_;
-
-
-            if (PVtype_ == 1)
-            {
-                w_ = new wxCheckBox(this, wxID_ANY, "");
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 2)
-            {
-                w_ = new CustomListBox_FilterType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 3)
-            {
-                w_ = new CustomListBox_WavetableTimbre(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 4 || PVtype_ == 9 || PVtype_ == 10)
-            {
-                w_ = new CustomListBox_WavetableTimbre(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-                // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
-                // and we need to ignore for them.
-                Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
-            }
-            else if (PVtype_ == 5)
-            {
-                w_ = new CustomListBox_DSPType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 6)
-            {
-                w_ = new CustomListBox_LFOType(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 7)
-            {
-                w_ = new CustomListBox_Portamento(this);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 8)
-            {
-                w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else if (PVtype_ == 11)
-            {
-                w_ = new CustomListBox_NoteOffVelocity(this);
-                w_->SetPosition(wxPoint(5, 5+i*40));
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-            else
-            {
-                //if PV.param.bitCount > 16:
-                //    # Put some arbitrary limit on the maximum field
-                //    w_ = wx.SpinCtrl(self, min=0,max=1023,initial=0, name="C_P{0}".format(PV.id_))
-                //else:
-                
-                w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-                w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
-            }
-
-              //  wxSpinCtrl *w_ = new wxSpinCtrl(_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
+                if (PVtype_ == 1)
+                {
+                    w_ = new wxCheckBox(this, wxID_ANY, "");
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 2)
+                {
+                    w_ = new CustomListBox_FilterType(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 3)
+                {
+                    w_ = new CustomListBox_WavetableTimbre(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 4 || PVtype_ == 9 || PVtype_ == 10)
+                {
+                    w_ = new CustomText_ToneName(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
+                    // and we need to ignore for them.
+                    Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
+                }
+                else if (PVtype_ == 5)
+                {
+                    w_ = new CustomListBox_DSPType(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 6)
+                {
+                    w_ = new CustomListBox_LFOType(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 7)
+                {
+                    w_ = new CustomListBox_Portamento(this);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 8)
+                {
+                    w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else if (PVtype_ == 11)
+                {
+                    w_ = new CustomListBox_NoteOffVelocity(this);
+                    w_->SetPosition(wxPoint(5, 5+i*40));
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
+                else
+                {
+                    if (Parameters[PP].bitCount > 16)
+                    {
+                        // Put some arbitrary limit on the maximum field
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1023, 0);
+                    }
+                    else
+                    {
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, (1 << Parameters[PP].bitCount)-1, 0);
+                    }
+                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                }
 
                 _sizer_2->Add(w_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
 
                 wxStaticText*   u_ = new wxStaticText(this, wxID_ANY, Parameters[PP].name, wxDefaultPosition, wxDefaultSize, 0, "name");
-    
                 _sizer_2->Add(u_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-                
-                
+            
+                wxStaticBitmap *v_ = new wxStaticBitmap(this, wxID_ANY, wxBitmap());
+                if (! Parameters[PP].helpStr.IsEmpty())
+                {
+                    v_->SetIcon(wxArtProvider::GetIcon(wxART_HELP));
+                    v_->SetToolTip(Parameters[PP].helpStr);
+                }
+                _sizer_2->Add(v_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
+
                 i ++;
                 break;
             }
 
-
         }
+    }
 
-        }
+    SetSizer(_sizer_2);
+    _sizer_2->Fit(this);
 
-
-
-
-        SetSizer(_sizer_2);
-        _sizer_2->Fit(this);
-
-    
 }
   
 
-static bool PARAM_IS_STR(int X) {return (X==0 || X == 84 || X == 87);}
+static bool PARAM_IS_STR(int X) {return (X==0 || X==84 || X==87);}
 
 //static int GetNumber(std::pair<int, int> x) { return 5;}
 
