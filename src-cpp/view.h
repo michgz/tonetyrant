@@ -82,6 +82,7 @@ public:
 
     HintsDialog* _callback_window;
 
+    static unsigned char Hex2Nibble(unsigned char h);
 
 private:
     void OnCut(wxCommandEvent& event);

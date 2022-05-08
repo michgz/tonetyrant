@@ -78,6 +78,7 @@ bool ToneView::OnCreate(wxDocument *doc, long flags)
 
 __config();
 _buffer = new ToneDocument();
+_buffer->SetCommandProcessor( _buffer->OnCreateCommandProcessor() );
 
     return true;
 }
@@ -119,6 +120,19 @@ void ToneView::__config(void)
   
 }
 
+
+
+unsigned char ToneView::Hex2Nibble(unsigned char h)
+{
+    if (h >= 0x30 && h <= 0x39)
+        return h - 0x30;
+    if (h >= 0x41 && h <= 0x46)
+        return 10 + h - 0x41;
+    if (h >= 0x61 && h <= 0x66)
+        return 10 + h - 0x61;
+    //    raise Exception
+
+};
 
 
 void ToneView::OnDraw(wxDC *_dc)
@@ -487,6 +501,18 @@ void ToneView::OnChar(wxKeyEvent& event )
         default:
             break;
 
+}
+
+
+if (   event.GetKeyCode() == 'A' )
+{
+    HexEditCommand * cmd = HexEditCommand::ChangeNibble(_buffer, _caret_pos, Hex2Nibble(event.GetKeyCode()));
+    _buffer->GetCommandProcessor()->Submit(cmd);
+  //  _callback_window->PositionChanged();
+    UpdateCaretPos(_caret_pos + 1);
+    _redraw = wxTrue;
+    
+    event.Skip(true);
 }
 
 #if 0

@@ -158,6 +158,9 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
 
 bool HexEditCommand::Do(void)
 {
+    
+    
+    /*
     if (_type == 1)  // Nibble
     {
         unsigned char x;
@@ -195,4 +198,5 @@ bool HexEditCommand::Do(void)
         return wxTrue;
     }
     return wxFalse;
+    * */return true;
 }
