@@ -80,10 +80,11 @@ private:
 
     // Show an about box
     void ShowAbout(void);
-    
+
+    bool ShowRandomise(void);
+    void OnRandomise(wxCommandEvent& );
     void OnMidiSetup(wxCommandEvent& );
 
-bool ShowRandomise(void);
 
     MyCanvas *m_canvas;
     wxMenu *m_menuEdit;

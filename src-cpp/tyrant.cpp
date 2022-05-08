@@ -95,7 +95,11 @@ MyApp::MyApp()
 
 
 static wxWindowID SETUP_MIDI_ID = wxID_ANY;
+static wxWindowID DEFAULT_ID = wxID_ANY;
+static wxWindowID RANDOMISE_ID = wxID_ANY;
 
+static wxWindowID MIDI_UPLOAD_ID = wxID_ANY;
+static wxWindowID MIDI_DOWNLOAD_ID = wxID_ANY;
 
 
 void MyApp::OnInitCmdLine(wxCmdLineParser& parser)
@@ -107,6 +111,8 @@ bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
 {
     return wxApp::OnCmdLineParsed(parser);
 }
+
+const bool AllowMidi(void) {return wxFalse;}
 
 bool MyApp::OnInit()
 {
@@ -180,11 +186,27 @@ bool MyApp::OnInit()
 
     SETUP_MIDI_ID = wxWindow::NewControlId();
     wxMenu * const m_menuMidi = new wxMenu;
-    m_menuMidi->Append(new wxMenuItem(m_menuMidi, SETUP_MIDI_ID, _("Setup")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, SETUP_MIDI_ID, _("&Setup...\tCtrl+M"), _("Sets up the MIDI communications")));
+    
+    m_menuMidi->AppendSeparator();
+
+    RANDOMISE_ID = wxWindow::NewControlId();
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("Randomise")));
+
+    m_menuMidi->AppendSeparator();
+
+    MIDI_UPLOAD_ID = wxWindow::NewControlId();
+    MIDI_DOWNLOAD_ID = wxWindow::NewControlId();
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, MIDI_DOWNLOAD_ID, _("&Download...\tF2"), _("Downloads a tone from the keyboard")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, MIDI_UPLOAD_ID, _("&Upload...\tF3"), _("Uploads a tone from the keyboard")));
+
+    m_menuMidi->Enable(MIDI_DOWNLOAD_ID, AllowMidi());
+    m_menuMidi->Enable(MIDI_UPLOAD_ID, AllowMidi());
 
     CreateMenuBarForFrame(frame, menuFile, m_menuEdit, m_menuMidi);
     
     Bind(wxEVT_MENU, &MyApp::OnMidiSetup, this, SETUP_MIDI_ID);
+    Bind(wxEVT_MENU, &MyApp::OnRandomise, this, RANDOMISE_ID);
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     frame->SetIcon(wxICON(doc));
@@ -252,7 +274,7 @@ void MyApp::CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit, wx
         menubar->Append(edit, wxGetStockLabel(wxID_EDIT));
 
     if ( midi )
-        menubar->Append(midi, _("MIDI"));
+        menubar->Append(midi, _("&MIDI"));
 
     wxMenu *help= new wxMenu;
     help->Append(wxID_ABOUT);
@@ -338,4 +360,9 @@ bool MyApp::ShowRandomise(void)
 
     dlg->SetSizer(NULL, false);
     return res;
+}
+
+void MyApp::OnRandomise(wxCommandEvent& WXUNUSED(event))
+{
+    ShowRandomise();
 }
