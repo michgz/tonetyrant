@@ -37,6 +37,7 @@
 
 #include "doc.h"
 #include "view.h"
+#include "Crc32.h"
 
 #define wxTrue true
 
@@ -81,6 +82,16 @@ ToneDocument::ToneDocument(void) : wxDocument()
 
 void ToneDocument::DoUpdate()
 {
+    // Calculate the CRC. Don't have the __setitem__() method to do that now.
+    
+    
+    unsigned int c = crc32_fast(this->data(), 0x1C4);
+    
+    this->at(0x1C) = ((unsigned char *)&c)[0];
+    this->at(0x1D) = ((unsigned char *)&c)[1];
+    this->at(0x1E) = ((unsigned char *)&c)[2];
+    this->at(0x1F) = ((unsigned char *)&c)[3];
+    
     Modify(true);
     UpdateAllViews();
 }
@@ -162,11 +173,14 @@ bool HexEditCommand::Do(void)
             x = x + (_new_nibble << 0);
             _document->at(_offset/2) = x;
         }
+        _document->DoUpdate();
+
         return wxTrue;
     }
     else if (_type == 2)   // Byte
     {
         _document->at(_offset/2) = _new_byte;
+        _document->DoUpdate();
         return wxTrue;
     }
     else if (_type == 3)   // Complete buffer overwrite
@@ -176,6 +190,8 @@ bool HexEditCommand::Do(void)
         {
             _document->at(i) = _new_vals.at(i - 0x20);
         }
+        _document->DoUpdate();
+
         return wxTrue;
     }
     return wxFalse;

@@ -56,6 +56,7 @@ protected:
     virtual bool DoOpenDocument(const wxString& file);
 
 private:
+public:
     void DoUpdate();
     
     
