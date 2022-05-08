@@ -488,7 +488,11 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
         else{
             int V_ = doc_->GetParamFrom(PP);
 
-            if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
+            if (PVtype(PP) == 1)
+            {
+                static_cast<wxCheckBox *>(W_)->SetValue(V_);
+            }
+            else if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
             {
                 static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
                 
