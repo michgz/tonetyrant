@@ -70,16 +70,28 @@ class HexEditCommand : public wxCommand
 public:
     HexEditCommand(ToneDocument *doc,
                    const wxString& name,
-                   const int info)
+                   const int info,
+                   bool canUndo)
         : wxCommand(true, name)
     {
     }
-
+    
+private:
+    int _type;
+    int _new_nibble, _old_nibble;
+    int _new_byte, _old_byte;
+    ToneDocument * _document;
+    int _offset;
+    std::vector<unsigned char> _old_vals;
+    std::vector<unsigned char> _new_vals;
 
 public:
 
+    static HexEditCommand * ChangeNibble(ToneDocument * document, int offset, int new_nibble);
+    static HexEditCommand * ChangeByte(ToneDocument * document, int offset, int new_byte);
+    static HexEditCommand * CompletelyChange(ToneDocument * document, std::vector<unsigned char> old_vals, std::vector<unsigned char> new_vals);
 
-    virtual bool Do() { return true; }
+    virtual bool Do();
     virtual bool Undo() { return true; }
 };
 

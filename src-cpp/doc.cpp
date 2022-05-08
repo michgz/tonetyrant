@@ -38,7 +38,7 @@
 #include "doc.h"
 #include "view.h"
 
-
+#define wxTrue true
 
 IMPLEMENT_DYNAMIC_CLASS(ToneDocument, wxDocument)
 
@@ -99,4 +99,84 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
     // Do something
 
     return true;
+}
+
+
+HexEditCommand * HexEditCommand::ChangeNibble(ToneDocument * document, int offset, int new_nibble)
+{
+    HexEditCommand * res = new HexEditCommand(document, "", 0, wxTrue);
+    
+    res->_type = 1;
+    res->_new_nibble = new_nibble;
+    res->_document = document;
+    res->_offset = offset;
+        
+    if (offset ^ 1 == 0)
+        res->_old_nibble = ((document->at(offset/2)) & 0xF0) >> 4;
+    else
+        res->_old_nibble = document->at(offset/2) & 0x0F;
+
+    return res;
+}
+
+HexEditCommand * HexEditCommand::ChangeByte(ToneDocument * document, int offset, int new_byte)
+{
+    HexEditCommand * res = new HexEditCommand(document, "", 0, wxTrue);
+    
+    res->_type = 2;
+    res->_new_byte = new_byte;
+    res->_document = document;
+    res->_offset = offset;
+        
+    res->_old_byte = document->at(offset/2);
+
+    return res;
+}
+
+HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::vector<unsigned char> old_vals, std::vector<unsigned char> new_vals)
+{
+    HexEditCommand * res = new HexEditCommand(document, "", 0, wxTrue);
+    
+    res->_type = 3;
+    res->_document = document;
+    res->_old_vals = old_vals;
+    res->_new_vals = new_vals;
+
+    return res;
+}
+
+bool HexEditCommand::Do(void)
+{
+    if (_type == 1)  // Nibble
+    {
+        unsigned char x;
+        if (_offset ^ 1 == 0)
+        {
+            x = _document->at(_offset/2) & 0x0F;
+            x = x + (_new_nibble << 4);
+            _document->at(_offset/2) = x;
+        }
+        else
+        {
+            x = _document->at(_offset/2) & 0xF0;
+            x = x + (_new_nibble << 0);
+            _document->at(_offset/2) = x;
+        }
+        return wxTrue;
+    }
+    else if (_type == 2)   // Byte
+    {
+        _document->at(_offset/2) = _new_byte;
+        return wxTrue;
+    }
+    else if (_type == 3)   // Complete buffer overwrite
+    {
+        int i;
+        for (i = 0x20; i < _document->size()-4; i ++)
+        {
+            _document->at(i) = _new_vals.at(i - 0x20);
+        }
+        return wxTrue;
+    }
+    return wxFalse;
 }
