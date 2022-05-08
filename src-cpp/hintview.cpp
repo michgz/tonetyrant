@@ -25,7 +25,7 @@
 //IMPLEMENT_DYNAMIC_CLASS(HintsPanelGeneric, wxPanel)
 
 
-int PVtype(int PP)
+int PVtype(PP_ID PP)
 {
 
     int type_ = 0;
@@ -59,6 +59,117 @@ int PVtype(int PP)
     return type_;
 }
 
+int HintsDialog::SuggestStep(PP_ID PP)
+{
+    int type_ = PVtype(PP);
+    
+    
+    if (type_ == 1)
+        return 1;
+    else if (type_ == 4 || type_ == 9 || type_ == 10)
+        return -1;  // Non-numeric
+    else
+    {
+        if (Parameters[PP].recommendedStep >= 1)
+            return Parameters[PP].recommendedStep;
+        return 10;
+    }
+}
+
+bool ParamInOffsets(int offset_, PP_ID PP)
+{
+    if ((offset_ >= Parameters[PP].byteOffset) && (offset_ < Parameters[PP].byteOffset + Parameters[PP].byteCount))
+    {
+        return wxTrue;
+    }
+    return wxFalse;
+}
+
+
+
+void HintsDialog::UpDown(CtrlVals ctrl_val)
+{
+    /*
+    Process a "increase" or "decrease" key stroke.
+    */
+    if (_current_offset >= 0 && _current_cluster >= 0 && _panel != NULL)
+    {
+        for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter ++)
+        {
+            PP_ID PP = *iter;
+            if (ParamInOffsets(_current_offset, PP))
+            {
+
+                int CURR = 0;
+                if (_view != NULL)
+                {
+                    if (_view->GetDocument() != NULL)
+                    {
+                        CURR = static_cast<ToneDocument *>(_view->GetDocument())->GetParamFrom(PP);
+                    }
+                }
+                int STEP = SuggestStep(PP);
+                    
+                if (STEP <= 0)
+                {
+                    return;   // No action possible
+                }
+                    
+                int X = -999;
+                    
+                if (ctrl_val == CtrlVals::MINIMUM)
+                {
+                    X = Parameters[PP].recommendedLimits[0];
+                }
+                else if (ctrl_val == CtrlVals::MAXIMUM)
+                {
+                    X = Parameters[PP].recommendedLimits[1];
+                }
+                else if (ctrl_val == CtrlVals::INCREASE)
+                {
+                    X = CURR + STEP;
+                    if (X > Parameters[PP].recommendedLimits[1])
+                    {
+                        X = Parameters[PP].recommendedLimits[1];
+                    }
+                }
+                else if (ctrl_val == CtrlVals::DECREASE)
+                {
+                    X = CURR - STEP;
+                    if (X < Parameters[PP].recommendedLimits[0])
+                    {
+                        X = Parameters[PP].recommendedLimits[0];
+                    }
+                }
+                if ((X != -999) && (X != CURR))
+                {
+                    if (_panel != NULL)
+                    {
+                        //_panel->SetNewVal(PP, X);
+                    }
+                    if (_view != NULL)
+                    {
+                        if (_view->GetDocument() != NULL)
+                        {
+                            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(PP, X);
+                            _view->GetDocument()->Modify(wxTrue);
+                        }
+                    }
+                }
+                    
+                /*# Leave the loop after the first parameter has been processed.
+                # That prevents multiple parameters being changed when they
+                # share a byte offset.
+                #
+                # For shared parameters, only one at a time will be bolded within
+                # hints window. Is it the same one that is change here?? At the
+                # moment it's left undefined, and may not necessarily behave as
+                # expected.*/
+                break;
+            }
+        }
+    }
+}
 
 // A separator to place between numbers and letters in a ComboBox. Tab works well
 // for linux, but looks wierd on Windows. Go with this as a compromise.
@@ -417,81 +528,7 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 
 
 
-void HintsDialog::UpDown(int ctrl_val)
-{
-    /*
-    Process a "increase" or "decrease" key stroke.
-    */
 
-    if (_current_cluster >= 0 && _current_offset >= 0)
-    {
-        int i;
-        std::map<std::string, std::list<std::pair<int, int>>>::iterator CC;
-        for (CC = CLUSTERS_.begin(); CC != CLUSTERS_.end(); CC++)
-        {
-            if (i == _current_cluster)
-            {
-                break;
-            }
-            i ++;
-        }
-        
-        if (CC == CLUSTERS_.end())
-        {
-            // Error! What to do?
-        }
-        else
-        {
-        
-        
-#if 0
-            for (auto PV = CC->second().begin(); PV != CC->second().end(); PV++)
-            {
-                if self._current_offset in PV.offsets
-                {
-                    
-                    CURR = self._buffer.GetParamFrom(PV.param)
-                    STEP = self.SuggestStep(PV)
-                    
-                    if STEP is None:
-                        return   # No action possible
-                    
-                    X = None
-                    
-                    if ctrl_val == hexeditview.CtrlVals.MINIMUM:
-                        X = PV.param.recommendedLimits[0]
-                    elif ctrl_val == hexeditview.CtrlVals.MAXIMUM:
-                        X = PV.param.recommendedLimits[1]
-                    elif ctrl_val == hexeditview.CtrlVals.INCREASE:
-                        X = CURR + STEP
-                        if X > PV.param.recommendedLimits[1]:
-                            X = PV.param.recommendedLimits[1]
-                    elif ctrl_val == hexeditview.CtrlVals.DECREASE:
-                        X = CURR - STEP
-                        if X < PV.param.recommendedLimits[0]:
-                            X = PV.param.recommendedLimits[0]
-                    
-                    if X is not None and X != CURR:
-                        if self._panel is not None:
-                            self._panel.SetNewVal(PV, X)
-                        self._buffer.SetParamTo(PV.param, X)
-                        self._buffer.Modify(True)
-                        
-                    /* Leave the loop after the first parameter has been processed.
-                    * That prevents multiple parameters being changed when they
-                    * share a byte offset.
-                    *
-                    * For shared parameters, only one at a time will be bolded within
-                    * hints window. Is it the same one that is change here?? At the
-                    * moment it's left undefined, and may not necessarily behave as
-                    * expected.   */
-                    break;
-                }
-            }
-#endif
-        }
-    }
-}
 
 void HintsDialog::OnChar(wxKeyEvent& event)
 {
@@ -726,6 +763,8 @@ void HintsDialog::UpdateValues(wxDocument* doc_)
         _panel->ReadValues(static_cast<ToneDocument *>(doc_));
     }
 }
+
+
 
 /*
 void HintsDialog::MakeParamViewList(numlist)

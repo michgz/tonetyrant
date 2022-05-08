@@ -73,6 +73,7 @@ bool ToneView::OnCreate(wxDocument *doc, long flags)
 
 
         _callback_window = app._hintsDlg;
+        _callback_window->SetView(this);
 
     }
 
@@ -394,6 +395,11 @@ bool ToneView::OnClose(bool deleteWindow)
         m_canvas->ClearBackground();
         m_canvas->ResetView();
         m_canvas = NULL;
+        
+        if (_callback_window != NULL)
+        {
+            _callback_window->ResetView();
+        }
 
         if (GetFrame())
             wxStaticCast(GetFrame(), wxFrame)->SetTitle(wxTheApp->GetAppDisplayName());

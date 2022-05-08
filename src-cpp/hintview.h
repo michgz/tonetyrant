@@ -34,13 +34,12 @@ class HintsPanelGeneric : public wxPanel
     
 };
 
-class CtrlVals
+enum CtrlVals
 {
-    public:
-    const static int INCREASE = 0;
-    const static int DECREASE = 1;
-    const static int MAXIMUM = 2;
-    const static int MINIMUM = 3;
+    INCREASE = 0,
+    DECREASE = 1,
+    MAXIMUM = 2,
+    MINIMUM = 3,
 };
 
 class HintsDialog : public wxFrame
@@ -63,6 +62,9 @@ class HintsDialog : public wxFrame
     wxFont   _font1 ;
     wxFont   _font2 ;
     
+    void SetView(wxView * __view) {_view = __view;}
+    void ResetView(void) {_view = NULL;}
+    
     
     std::map<std::string, std::list<std::pair<int, int>>> CLUSTERS_;
     
@@ -72,9 +74,11 @@ class HintsDialog : public wxFrame
     int _current_offset;
 
 
-    void UpDown(int ctrl_val);
+    void UpDown(CtrlVals ctrl_val);
     void OnChar(wxKeyEvent& event);
 
+
+    static int SuggestStep(PP_ID PP);
 
 
   //  wxDECLARE_EVENT_TABLE();
