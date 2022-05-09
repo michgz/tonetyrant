@@ -431,137 +431,108 @@ void ToneView::OnChar(wxKeyEvent& event )
 
     bool _redraw = wxFalse;
     
-    
-    switch (   event.GetKeyCode()  )
+    int key_ = event.GetKeyCode();
+
+
+
+    if ( key_ ==  WXK_LEFT || key_ ==  WXK_NUMPAD_LEFT)
     {
-        case WXK_LEFT:
-        case WXK_NUMPAD_LEFT:
-            if (_edit_region == 3)
-            {
-                if (UpdateCaretPos(_caret_pos - 2))
-                {
-                    _redraw = wxTrue;
-                }
-            }
-            else
-            {
-                if (UpdateCaretPos(_caret_pos - 1))
-                {
-                    _redraw = wxTrue;
-                }
-            }
-            break;
-        case WXK_SPACE:
-            if (_edit_region == 3)
-            {
-                // behave like char
-            }
-            else
-            {
-                // behave like right
-            }
-
-        case WXK_RIGHT:
-        case WXK_NUMPAD_RIGHT:
-            if (_edit_region == 3)
-            {
-                if (UpdateCaretPos(_caret_pos + 2))
-                {
-                   _redraw = wxTrue;
-                }
-            }
-            else
-            {
-                if (UpdateCaretPos(_caret_pos + 1))
-                {
-                    _redraw = wxTrue;
-                }
-            }
-            break;
-        case WXK_UP:
-        case WXK_NUMPAD_UP:
-            if (UpdateCaretPos(_caret_pos - 32))
-            {
-               _redraw = wxTrue;
-            }
-            break;
-        case WXK_DOWN:
-        case WXK_NUMPAD_DOWN:
-            if (UpdateCaretPos(_caret_pos + 32))
-            {
-               _redraw = wxTrue;
-            }
-            break; 
-        case WXK_PAGEUP:
-        case WXK_NUMPAD_PAGEUP:
-            _callback_window->UpDown(CtrlVals::INCREASE);
-            break;
-        case WXK_PAGEDOWN:
-        case WXK_NUMPAD_PAGEDOWN:
-            _callback_window->UpDown(CtrlVals::DECREASE);
-            break;
-        case WXK_END:
-            _callback_window->UpDown(CtrlVals::MINIMUM);
-            break;
-        case WXK_HOME:
-        case WXK_NUMPAD_BEGIN:
-            _callback_window->UpDown(CtrlVals::MAXIMUM);
-            break;
-        default:
-            break;
-
-}
-
-
-int key_ = event.GetKeyCode();
-
-if ( ((   key_ >= '0'  && key_ <= '9') || (   key_ >= 'a'  && key_ <= 'f')||(   key_ >= 'A'  && key_ <= 'F'))  && _edit_region != 3)
-{
-    HexEditCommand * cmd = HexEditCommand::ChangeNibble(_buffer, _caret_pos, Hex2Nibble(event.GetKeyCode()));
-    _buffer->GetCommandProcessor()->Submit(cmd);
-  //  _callback_window->PositionChanged();
-    UpdateCaretPos(_caret_pos + 1);
-    _redraw = wxTrue;
-    
-    event.Skip(true);
-}
-
-#if 0
-
-/*
-
-        elif self._edit_region != 3 and event.KeyCode in [0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
-                                                          0x41, 0x42, 0x43, 0x44, 0x45, 0x46,
-                                                          0x61, 0x62, 0x63, 0x64, 0x65, 0x66 ]:
-                                 
-
-            
-            cmd = HexEditCommand.ChangeNibble(self._buffer, self._caret_pos, self.Hex2Nibble(event.KeyCode))
-            self._buffer.GetCommandProcessor().Submit(cmd)
-            self._callback_window.PositionChanged()
-            self.UpdateCaretPos(self._caret_pos + 1)
-            _redraw = True
-        
-        elif self._edit_region == 3 and event.KeyCode >= 0x20 and event.KeyCode <= 0x7E:
-
-            cmd = HexEditCommand.ChangeByte(self._buffer, self._caret_pos, event.KeyCode)
-            self._buffer.GetCommandProcessor().Submit(cmd)
-            self._callback_window.PositionChanged()
-            self.UpdateCaretPos(self._caret_pos + 2)
-            _redraw = True
-
-        */
-        
-    {
-            event.Skip();
-        }
-#endif
-        if (_redraw)
+        if (_edit_region == 3)
         {
-            m_canvas->Refresh();
+            if (UpdateCaretPos(_caret_pos - 2))
+            {
+                _redraw = wxTrue;
+            }
         }
+        else
+        {
+            if (UpdateCaretPos(_caret_pos - 1))
+            {
+                _redraw = wxTrue;
+            }
+        }
+    }
+    else if (key_ == WXK_RIGHT || key_ ==  WXK_NUMPAD_RIGHT || (key_ == WXK_SPACE && _edit_region != 3))
+    {
+        if (_edit_region == 3)
+        {
+            if (UpdateCaretPos(_caret_pos + 2))
+            {
+               _redraw = wxTrue;
+            }
+        }
+        else
+        {
+            if (UpdateCaretPos(_caret_pos + 1))
+            {
+                _redraw = wxTrue;
+            }
+        }
+    }
+    else if (key_ ==  WXK_UP || key_ ==  WXK_NUMPAD_UP)
+    {
+        if (UpdateCaretPos(_caret_pos - 32))
+        {
+           _redraw = wxTrue;
+        }
+    }
+    else if (key_ ==  WXK_DOWN || key_ ==  WXK_NUMPAD_DOWN)
+    {
+        if (UpdateCaretPos(_caret_pos + 32))
+        {
+           _redraw = wxTrue;
+        }
+    }
+    // For Up/Down controls, call the callback window directly. It should be
+    // possible to do this with WX's event handling, I just haven't seen how.
+    else if (key_ ==  WXK_PAGEUP || key_ ==  WXK_NUMPAD_PAGEUP)
+    {
+        _callback_window->UpDown(CtrlVals::INCREASE);
+    }
+    else if (key_ ==  WXK_PAGEDOWN || key_ ==  WXK_NUMPAD_PAGEDOWN)
+    {
+        _callback_window->UpDown(CtrlVals::DECREASE);
+    }
+    else if (key_ == WXK_END)  // numpad??
+    {
+        _callback_window->UpDown(CtrlVals::MINIMUM);
+    }
+    else if (key_ ==  WXK_HOME || key_ ==  WXK_NUMPAD_BEGIN)
+    {
+        _callback_window->UpDown(CtrlVals::MAXIMUM);
+    }
+
+    else if ( ((   key_ >= '0'  && key_ <= '9') || (   key_ >= 'a'  && key_ <= 'f')||(   key_ >= 'A'  && key_ <= 'F'))  && _edit_region != 3)
+    {
+        HexEditCommand * cmd = HexEditCommand::ChangeNibble(_buffer, _caret_pos, Hex2Nibble(event.GetKeyCode()));
+        _buffer->GetCommandProcessor()->Submit(cmd);
+      //  _callback_window->PositionChanged();
+        UpdateCaretPos(_caret_pos + 1);
+        _redraw = wxTrue;
+        
+        //event.Skip(true);
+    }
+
+    else if ( (   key_ >= 0x20  && key_ <= 0x7E   )   && _edit_region == 3)
+    {
+        HexEditCommand * cmd = HexEditCommand::ChangeByte(_buffer, _caret_pos, key_);
+        _buffer->GetCommandProcessor()->Submit(cmd);
+      //  _callback_window->PositionChanged();
+        UpdateCaretPos(_caret_pos + 2);
+        _redraw = wxTrue;
+    
+    }
+
+    else
+    {
+        event.Skip(true);
+    }
 
 
+    if (_redraw)
+    {
+        m_canvas->Refresh();
+    }
 
 }
 

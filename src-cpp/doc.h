@@ -102,7 +102,7 @@ public:
     static HexEditCommand * CompletelyChange(ToneDocument * document, std::vector<unsigned char> old_vals, std::vector<unsigned char> new_vals);
 
     virtual bool Do();
-    virtual bool Undo() { return true; }
+    virtual bool Undo();
 };
 
 #endif // _WX_SAMPLES_DOCVIEW_DOC_H_

@@ -321,9 +321,7 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
 
 bool HexEditCommand::Do(void)
 {
-    
-    
-    
+
     if (_type == 1)  // Nibble
     {
         unsigned char x;
@@ -342,13 +340,13 @@ bool HexEditCommand::Do(void)
         _document->DoUpdate();
 
         return wxTrue;
-    }/*
+    }
     else if (_type == 2)   // Byte
     {
         _document->at(_offset/2) = _new_byte;
         _document->DoUpdate();
         return wxTrue;
-    }
+    }/*
     else if (_type == 3)   // Complete buffer overwrite
     {
         int i;
@@ -363,3 +361,51 @@ bool HexEditCommand::Do(void)
     return wxFalse;
     * */return true;
 }
+
+bool HexEditCommand::Undo(void)
+{
+
+    if (_type == 1)  // Nibble
+    {
+        unsigned char x;
+        if ((_offset & 1) == 0)
+        {
+            x = _document->at(_offset/2) & 0x0F;
+            x = x + (_old_nibble << 4);
+            _document->at(_offset/2) = x;
+        }
+        else
+        {
+            x = _document->at(_offset/2) & 0xF0;
+            x = x + (_old_nibble << 0);
+            _document->at(_offset/2) = x;
+        }
+        _document->DoUpdate();
+
+        return wxTrue;
+    }
+    else if (_type == 2)   // Byte
+    {
+        _document->at(_offset/2) = _old_byte;
+        _document->DoUpdate();
+        return wxTrue;
+    }/*
+    else if (_type == 3)   // Complete buffer overwrite
+    {
+        int i;
+        for (i = 0x20; i < _document->size()-4; i ++)
+        {
+            _document->at(i) = _new_vals.at(i - 0x20);
+        }
+        _document->DoUpdate();
+
+        return wxTrue;
+    }
+    return wxFalse;
+    * */return true;
+}
+
+
+
+
+
