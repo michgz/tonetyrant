@@ -81,8 +81,8 @@ public:
     HexEditCommand(ToneDocument *doc,
                    const wxString& name,
                    const int info,
-                   bool canUndo)
-        : wxCommand(true, name)
+                   bool canUndo=true)
+        : wxCommand(canUndo)
     {
     }
     

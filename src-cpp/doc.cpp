@@ -88,12 +88,12 @@ void ToneDocument::DoUpdate()
     // Calculate the CRC. Don't have the __setitem__() method to do that now.
     
     
-    unsigned int c = crc32_fast(this->data(), 0x1C4);
+    unsigned int crc = crc32_fast(&this->data()[0x20], 0x1C8);
     
-    this->at(0x1C) = ((unsigned char *)&c)[0];
-    this->at(0x1D) = ((unsigned char *)&c)[1];
-    this->at(0x1E) = ((unsigned char *)&c)[2];
-    this->at(0x1F) = ((unsigned char *)&c)[3];
+    this->at(0x18) = ((unsigned char *)&crc)[0];
+    this->at(0x19) = ((unsigned char *)&crc)[1];
+    this->at(0x1A) = ((unsigned char *)&crc)[2];
+    this->at(0x1B) = ((unsigned char *)&crc)[3];
     
     Modify(true);
     UpdateAllViews();
