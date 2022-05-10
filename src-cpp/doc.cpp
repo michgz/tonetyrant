@@ -277,7 +277,7 @@ HexEditCommand * HexEditCommand::ChangeNibble(ToneDocument * document, int offse
     res->_document = document;
     res->_offset = offset;
         
-    if ((offset ^ 1) == 0)
+    if ((offset & 1) == 0)
         res->_old_nibble = ((document->at(offset/2)) & 0xF0) >> 4;
     else
         res->_old_nibble = document->at(offset/2) & 0x0F;
@@ -313,15 +313,9 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
 
 bool HexEditCommand::Do(void)
 {
-
-
-
     if (_type == 1)  // Nibble
     {
         unsigned char x;
-
-
-std::cout << "U: " << _document->at(_offset/2) << std::endl;
 
         if ((_offset & 1) == 0)
         {
@@ -336,7 +330,6 @@ std::cout << "U: " << _document->at(_offset/2) << std::endl;
             _document->at(_offset/2) = x;
         }
 
-std::cout << "V: " << _document->at(_offset/2) << std::endl;
         _document->DoUpdate();
 
         return wxTrue;
@@ -364,10 +357,10 @@ std::cout << "V: " << _document->at(_offset/2) << std::endl;
 
 bool HexEditCommand::Undo(void)
 {
-
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+
         if ((_offset & 1) == 0)
         {
             x = _document->at(_offset/2) & 0x0F;

@@ -458,32 +458,23 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
 
 static bool PARAM_IS_STR(int X) {return (X==0 || X==84 || X==87);}
 
-//static int GetNumber(std::pair<int, int> x) { return 5;}
-
 
 void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 {
-
-
-std::cout << "AAAAA" << std::endl;
 
     for (auto iter = PARAMS.begin(); iter != PARAMS.end(); iter ++)
     {
         int PP = *iter;
         
-        
-        std::cout << PP << std::endl;
-        
+       
         wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
-
-if (W_ != NULL) {std::cout << "B" << std::endl;}
-
 
         if (PARAM_IS_STR(Parameters[PP].number))
         {
             static_cast<wxTextCtrl *>(W_)->SetValue(doc_->GetParamFromStr(PP));
         }
-        else{
+        else
+        {
             int V_ = doc_->GetParamFrom(PP);
 
             if (PVtype(PP) == 1)
@@ -517,10 +508,6 @@ if (W_ != NULL) {std::cout << "B" << std::endl;}
                 }
                 else
                 {
-                    std::cout << "Setting ";
-                    std::cout << PP;
-                    std::cout << " to ";
-                    std::cout << V_ << std::endl;
                     static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
                 }
             }
@@ -555,6 +542,7 @@ void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
    // Parent._view->Update();
 }
 
+#if 0
 void HintsDialog::OnChar(wxKeyEvent& event)
 {
     bool _redraw = wxFalse;
@@ -582,7 +570,7 @@ void HintsDialog::OnChar(wxKeyEvent& event)
     }
 
 }
-  
+#endif
   
   
   
@@ -929,12 +917,10 @@ void HintsDialog::SetSelected(int offset_in_file)
             if (CC == CLUSTERS_.end())
             {
                 // Error! What to do?
+                wxLogError("Reached end of clusters");
             }
             else
             {
-            
-            
-                //self._paramviewlist = self.MakeParamViewList(list(self.CLUSTERS.items())[_enter][1])
 
                 _panel = new HintsPanelGeneric(this, CC->second);
                 
@@ -980,7 +966,7 @@ void HintsDialog::SetSelected(int offset_in_file)
                         break
                 if self._panel is not None:
                     self._panel.Update(sel_id)*/
-
+            }
         }
         
         
@@ -993,53 +979,6 @@ void HintsDialog::SetSelected(int offset_in_file)
         }
 
     }
-if (offset == 0x47)
-{
-    
-    wxPanel * _panel = new wxPanel(this, wxID_ANY);
-    
-    
-    
-    wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(2, wxSize(5,5));
-        _sizer_2->SetFlexibleDirection(wxHORIZONTAL);
-        
 
-    wxSpinCtrl *w_ = new wxSpinCtrl(_panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-
-            _sizer_2->Add(w_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-          
-
-         wxStaticText*   u_ = new wxStaticText(_panel, wxID_ANY, "TheLabel", wxDefaultPosition, wxDefaultSize, 0, "name");
-            
-            _sizer_2->Add(u_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
-            
-            
-          
-
-        _panel->SetSizer(_sizer_2);
-        _sizer_2->Fit(_panel);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //wxSpinCtrl h1(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 127, 0);
-
-    _sizer.Add(_panel);
-    
-    _sizer.Fit(this);
-    Layout();
-    
-}
-
-
-
-    }
 }
 

@@ -82,7 +82,7 @@ public:
                    const wxString& name,
                    const int info,
                    bool canUndo=true)
-        : wxCommand(canUndo)
+        : wxCommand(canUndo, " ")   // if an empty string, shows as "Unnamed command" for some reason. So use a space.
     {
     }
     
