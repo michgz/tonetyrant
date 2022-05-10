@@ -370,22 +370,22 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                 if (PVtype_ == 1)
                 {
                     w_ = new wxCheckBox(this, wxID_ANY, "");
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 2)
                 {
                     w_ = new CustomListBox_FilterType(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 3)
                 {
                     w_ = new CustomListBox_WavetableTimbre(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 4 || PVtype_ == 9 || PVtype_ == 10)
                 {
                     w_ = new CustomText_ToneName(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                     // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
                     // and we need to ignore for them.
                     Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
@@ -393,28 +393,28 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                 else if (PVtype_ == 5)
                 {
                     w_ = new CustomListBox_DSPType(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 6)
                 {
                     w_ = new CustomListBox_LFOType(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 7)
                 {
                     w_ = new CustomListBox_Portamento(this);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 8)
                 {
                     w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 11)
                 {
                     w_ = new CustomListBox_NoteOffVelocity(this);
                     w_->SetPosition(wxPoint(5, 5+i*40));
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else
                 {
@@ -427,7 +427,7 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                     {
                         w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, (1 << Parameters[PP].bitCount)-1, 0);
                     }
-                    w_->SetName(wxString("C_P%d", /*PV.id_*/PP));
+                    w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
 
                 _sizer_2->Add(w_, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, 5);
@@ -467,7 +467,7 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
         int PP = *iter;
         
        
-        wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
+        wxWindow * W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
 
         if (PARAM_IS_STR(Parameters[PP].number))
         {
@@ -520,14 +520,14 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 
 void HintsPanelGeneric::SetNewVal(PP_ID PP, wxString val_)
 {
-    wxWindow *W_ = FindWindowByName(wxString("C_P%d", PP));
+    wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
     //int type_ = PVtype(PP);
     static_cast<wxTextCtrl *>(W_)->SetValue(val_);
 }
 
 void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
 {
-    wxWindow *W_ = FindWindowByName(wxString("C_P%d", PP));
+    wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
     int type_ = PVtype(PP);
     if (type_ == 1)
         static_cast<wxCheckBox *>(W_)->SetValue((bool)val_);
@@ -787,7 +787,7 @@ void HintsDialog::OnValueChanged(wxSpinEvent& event)
     
     for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
     {
-        if (wxString::Format("C_P%d", *iter).IsSameAs(w_->GetName()))
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
         {
             int V_ = event.GetPosition();
             if (PVtype(*iter) == 8)
