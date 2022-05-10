@@ -464,10 +464,19 @@ static bool PARAM_IS_STR(int X) {return (X==0 || X==84 || X==87);}
 void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 {
 
+
+std::cout << "AAAAA" << std::endl;
+
     for (auto iter = PARAMS.begin(); iter != PARAMS.end(); iter ++)
     {
         int PP = *iter;
+        
+        
+        std::cout << PP << std::endl;
+        
         wxWindow * W_ = FindWindowByName(wxString("C_P%d", PP));
+
+if (W_ != NULL) {std::cout << "B" << std::endl;}
 
 
         if (PARAM_IS_STR(Parameters[PP].number))
@@ -508,6 +517,10 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
                 }
                 else
                 {
+                    std::cout << "Setting ";
+                    std::cout << PP;
+                    std::cout << " to ";
+                    std::cout << V_ << std::endl;
                     static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
                 }
             }

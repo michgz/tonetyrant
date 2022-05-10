@@ -80,9 +80,7 @@ bool ToneView::OnCreate(wxDocument *doc, long flags)
 
     }
 
-__config();
-_buffer = new ToneDocument();
-_buffer->SetCommandProcessor( _buffer->OnCreateCommandProcessor() );
+    __config();
 
     return true;
 }
@@ -141,6 +139,7 @@ unsigned char ToneView::Hex2Nibble(unsigned char h)
 
 void ToneView::OnDraw(wxDC *_dc)
 {
+    ToneDocument * _buffer = GetDocument();
 
     if (!_buffer)
         return;
@@ -504,8 +503,8 @@ void ToneView::OnChar(wxKeyEvent& event )
 
     else if ( ((   key_ >= '0'  && key_ <= '9') || (   key_ >= 'a'  && key_ <= 'f')||(   key_ >= 'A'  && key_ <= 'F'))  && _edit_region != 3)
     {
-        HexEditCommand * cmd = HexEditCommand::ChangeNibble(_buffer, _caret_pos, Hex2Nibble(event.GetKeyCode()));
-        _buffer->GetCommandProcessor()->Submit(cmd);
+        HexEditCommand * cmd = HexEditCommand::ChangeNibble(GetDocument(), _caret_pos, Hex2Nibble(event.GetKeyCode()));
+        GetDocument()->GetCommandProcessor()->Submit(cmd);
       //  _callback_window->PositionChanged();
         UpdateCaretPos(_caret_pos + 1);
         _redraw = wxTrue;
@@ -515,8 +514,8 @@ void ToneView::OnChar(wxKeyEvent& event )
 
     else if ( (   key_ >= 0x20  && key_ <= 0x7E   )   && _edit_region == 3)
     {
-        HexEditCommand * cmd = HexEditCommand::ChangeByte(_buffer, _caret_pos, key_);
-        _buffer->GetCommandProcessor()->Submit(cmd);
+        HexEditCommand * cmd = HexEditCommand::ChangeByte(GetDocument(), _caret_pos, key_);
+        GetDocument()->GetCommandProcessor()->Submit(cmd);
       //  _callback_window->PositionChanged();
         UpdateCaretPos(_caret_pos + 2);
         _redraw = wxTrue;

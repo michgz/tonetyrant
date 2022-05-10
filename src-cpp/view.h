@@ -103,9 +103,6 @@ void __config(void);
     unsigned int _edit_region;
     
     bool UpdateCaretPos(signed int x);
-    
-    ToneDocument * _buffer;
-
 
     MyCanvas *m_canvas;
 
