@@ -52,6 +52,10 @@ class HintsDialog : public wxFrame
     ~HintsDialog();
     void OnIdle(wxIdleEvent& event);
 
+    void OnValueChanged(wxSpinEvent& event);
+    void OnCheckChanged(wxCommandEvent& event);
+    void OnComboBoxSelected(wxCommandEvent& event);
+
     void UpdateValues(wxDocument* doc_);
 
     wxStaticBoxSizer    _sizer;

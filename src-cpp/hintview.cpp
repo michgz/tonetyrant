@@ -690,7 +690,6 @@ HintsDialog::HintsDialog(wxWindow *parent) :
     _sizer.SetMinSize( wxSize(100, 100) );
     SetSizer(&_sizer);
     _sizer.Fit(this);
-    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Want to adjust the starting position relative to the parent
     
     _is_1B6 = wxFalse;
     _panel = NULL;
@@ -753,7 +752,11 @@ HintsDialog::HintsDialog(wxWindow *parent) :
 
     
     
-    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this);
+    Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Want to adjust the starting position relative to the parent
+
+    Bind(wxEVT_SPINCTRL, &HintsDialog::OnValueChanged, this);
+    Bind(wxEVT_CHECKBOX, &HintsDialog::OnCheckChanged, this);
+    Bind(wxEVT_COMBOBOX, &HintsDialog::OnComboBoxSelected, this);
 }
 
 HintsDialog::~HintsDialog()
@@ -768,6 +771,43 @@ void HintsDialog::OnIdle(wxIdleEvent& event)
     Unbind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Only do this function once, right at the start. After that, can unbind
     event.Skip(true);
 }
+
+void HintsDialog::OnValueChanged(wxSpinEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", *iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.GetPosition();
+            if (PVtype(*iter) == 8)
+            {
+                V_ += 4;
+            }
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+    void HintsDialog::OnCheckChanged(wxCommandEvent& event)
+    {
+    }
+    void HintsDialog::OnComboBoxSelected(wxCommandEvent& event)
+    {
+    }
+
+
 
 void HintsDialog::UpdateValues(wxDocument* doc_)
 {
