@@ -800,13 +800,62 @@ void HintsDialog::OnValueChanged(wxSpinEvent& event)
         }
     }
 }
-    void HintsDialog::OnCheckChanged(wxCommandEvent& event)
-    {
-    }
-    void HintsDialog::OnComboBoxSelected(wxCommandEvent& event)
-    {
-    }
 
+void HintsDialog::OnCheckChanged(wxCommandEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.IsChecked() ? 1 : 0;
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+void HintsDialog::OnComboBoxSelected(wxCommandEvent& event)
+{
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int V_ = event.GetSelection();
+            if (PVtype(*iter) == 3)
+                V_ = 2*V_;
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
+}
+
+void HintsDialog::OnTextChanged(wxCommandEvent& event)
+{
+}
 
 
 void HintsDialog::UpdateValues(wxDocument* doc_)
