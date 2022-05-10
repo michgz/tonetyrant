@@ -125,14 +125,6 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 {
     
-    if (p_val == 5)
-    {
-        wxLogError("MMMMMM");
-        
-        
-        
-    }
-    
     if (p_val >= (1 << Parameters[PP].bitCount))
     {
         wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
