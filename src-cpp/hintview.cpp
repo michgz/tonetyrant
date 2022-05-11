@@ -855,6 +855,27 @@ void HintsDialog::OnComboBoxSelected(wxCommandEvent& event)
 
 void HintsDialog::OnTextChanged(wxCommandEvent& event)
 {
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            wxString V_ = event.GetString();
+            static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
+            static_cast<ToneView *>(_view)->Update();
+            break;
+        }
+    }
 }
 
 
