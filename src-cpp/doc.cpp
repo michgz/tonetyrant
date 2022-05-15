@@ -390,7 +390,7 @@ bool HexEditCommand::Do(void)
         int i;
         for (i = 0x20; i < _document->size()-4; i ++)
         {
-            _document->at(i) = _new_vals.at(i - 0x20);
+            _document->at(i) = _new_vals.at(i);
         }
         _document->DoUpdate();
 
