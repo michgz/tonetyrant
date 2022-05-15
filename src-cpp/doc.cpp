@@ -125,14 +125,15 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 {
     
-    if (p_val >= (1 << Parameters[PP].bitCount))
+    // "1ULL" to allow for 32-bit parameters.
+    if (p_val >= (1ULL << Parameters[PP].bitCount))
     {
         wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
         return;
     }
             
     unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-    unsigned long int MASK = ((1 << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+    unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
         
     X = X & ~MASK;
     X = X | (p_val << Parameters[PP].bitOffset);
