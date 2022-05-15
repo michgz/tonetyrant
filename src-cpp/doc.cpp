@@ -183,19 +183,19 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
     }
     else if (number_ == 87)
     {
-        const char * c = p_val.ToAscii();
+        // DSP parameters. For now regard as text, although that doesn't make
+        // a lot of sense given the nature of the data.
         int offset_ = Parameters[PP].byteOffset + 0x20;
         int i;
-        for (i = 0; i < 14; i ++)
+        for (i = 0; i < 14 && i < p_val.Length(); i ++)
         {
-            if (c[i] == '\0')
+            if (p_val[i] == '\0')
             {
                 altered_.at(offset_ + i) = ' ';
-                break;
             }
             else
             {
-                altered_.at(offset_ + i) = c[i];
+                altered_.at(offset_ + i) = p_val[i];
             }
         }
         for (; i < 14; i ++)
