@@ -59,7 +59,9 @@ public:
     void SetParamTo(PP_ID PP, unsigned int p_val);
     void SetParamTo(PP_ID PP, wxString p_val);
 
-virtual void Modify(bool );
+    virtual void Modify(bool );
+    
+    std::vector<unsigned short int> change_list;
 
 protected:
     virtual bool DoOpenDocument(const wxString& file);

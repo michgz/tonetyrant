@@ -27,6 +27,8 @@
 #include "doc.h"
 #include "view.h"
 
+#include <algorithm>
+
 // ----------------------------------------------------------------------------
 // DrawingView implementation
 // ----------------------------------------------------------------------------
@@ -280,7 +282,7 @@ void ToneView::OnDraw(wxDC *_dc)
                 wxString ss = wxString::Format("%02X", _buffer->at(i + k));
                 
                
-                if (false)//(i + k) in list_:
+                if (std::find(_buffer->change_list.begin(), _buffer->change_list.end(), (i+k)) != _buffer->change_list.end())
                     _dc->SetTextForeground(_font_colour2 );
                 else
                     _dc->SetTextForeground(_font_colour1 );

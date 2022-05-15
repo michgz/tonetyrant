@@ -326,18 +326,38 @@ bool HexEditCommand::Do(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char old_nibble;
+
+        _document->change_list.clear();
 
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2) & 0x0F;
+            x = _document->at(_offset/2);
+            old_nibble = (x & 0xF0) >> 4;
+            x = x & 0x0F;
             x = x + (_new_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2) & 0xF0;
+            x = _document->at(_offset/2);
+            old_nibble = x & 0x0F;
+            x = x & 0xF0;
             x = x + (_new_nibble << 0);
             _document->at(_offset/2) = x;
+        }
+        
+        if (_new_nibble != old_nibble)
+        {
+            _document->change_list.push_back(_offset/2);
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            {
+                // Now assume every byte of the CRC has changed
+                _document->change_list.push_back(0x18);
+                _document->change_list.push_back(0x19);
+                _document->change_list.push_back(0x1A);
+                _document->change_list.push_back(0x1B);
+            }
         }
 
         _document->DoUpdate();
@@ -346,7 +366,22 @@ bool HexEditCommand::Do(void)
     }
     else if (_type == 2)   // Byte
     {
+        unsigned char old_byte;
+        _document->change_list.clear();
+        old_byte = _document->at(_offset/2);
         _document->at(_offset/2) = _new_byte;
+        if (_new_byte != old_byte)
+        {
+            _document->change_list.push_back(_offset/2);
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            {
+                // Now assume every byte of the CRC has changed
+                _document->change_list.push_back(0x18);
+                _document->change_list.push_back(0x19);
+                _document->change_list.push_back(0x1A);
+                _document->change_list.push_back(0x1B);
+            }
+        }
         _document->DoUpdate();
         return wxTrue;
     }
