@@ -747,6 +747,8 @@ HintsDialog::HintsDialog(wxWindow *parent) :
             }
         }
     }
+    
+    _highlight_list.clear();
 
         
 
@@ -941,14 +943,35 @@ void HintsDialog::MakeParamViewList(numlist)
 
 
 
+std::set<unsigned short> HintsDialog::GetHighlightList(void)
+{
+    return _highlight_list;
+}
 
 
-
-
-
-
-
-
+void HintsDialog::MakeHighlightList(std::list<std::pair<int, int>> params)
+{
+    PP_ID PP = 0;
+    int i = 0;
+    
+    _highlight_list.clear();
+    for (auto PV = params.begin(); PV != params.end(); PV ++)
+    {
+        
+        for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+        {
+            if (Parameters[PP].number == PV->first && Parameters[PP].block0 == PV->second)
+            {
+                unsigned short int i;
+                
+                for (i = Parameters[PP].byteOffset+0x20; i <  Parameters[PP].byteOffset+0x20+Parameters[PP].byteCount; i ++)
+                {
+                    _highlight_list.insert(i);
+                }
+            }
+        }
+    }
+}
 
 
 
@@ -1002,6 +1025,7 @@ void HintsDialog::SetSelected(int offset_in_file)
             //self._paramviewlist = None
             _current_cluster = -1;
             _sizer.GetStaticBox()->SetLabelText("");
+            _highlight_list.clear();
         }
             
         if (_enter >= 0)
@@ -1033,6 +1057,8 @@ void HintsDialog::SetSelected(int offset_in_file)
             {
 
                 _panel = new HintsPanelGeneric(this, CC->second);
+                
+                MakeHighlightList(CC->second);
                 
                 
                 //new wxPanel(this, wxID_ANY);

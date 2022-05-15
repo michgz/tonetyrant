@@ -14,6 +14,7 @@
 #include <utility>
 #include <string>
 #include <list>
+#include <set>
 
 
 typedef int PP_ID;   // This represents an offset into the Parameters table
@@ -74,6 +75,8 @@ class HintsDialog : public wxFrame
     std::map<std::string, std::list<std::pair<int, int>>> CLUSTERS_;
     
     std::map<int, int> OFFSETS_;
+    std::set<unsigned short int> _highlight_list;
+    std::set<unsigned short> GetHighlightList(void);
     
     int _current_cluster;
     int _current_offset;
@@ -85,7 +88,10 @@ class HintsDialog : public wxFrame
 
     static int SuggestStep(PP_ID PP);
 
-
+    private:
+    void MakeHighlightList(std::list<std::pair<int, int>> params);
+    
+    
   //  wxDECLARE_EVENT_TABLE();
   //  wxDECLARE_DYNAMIC_CLASS(HintsDialog);
 };

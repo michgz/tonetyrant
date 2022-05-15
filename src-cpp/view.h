@@ -7,6 +7,7 @@
 
 #include <list>
 #include <vector>
+#include <set>
 
 class HintsDialog;
 
@@ -96,7 +97,7 @@ void Refresh(void);
 void __config(void);
 
 
-    std::list<unsigned int> _highlighted_offsets;
+    std::set<unsigned short int> _highlighted_offsets;
     wxFont _font1, _font2;
     wxColour _font_colour1, _font_colour2;
     wxBrush _brush1, _brush2, _brush3, _brush4;

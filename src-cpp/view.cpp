@@ -253,7 +253,7 @@ void ToneView::OnDraw(wxDC *_dc)
             int k = 0;
             while (i + k < _buffer->size() && k < 16)
             {
-                if (false)//(i + k) in self._highlighted_offsets
+                if (std::find(_highlighted_offsets.begin(), _highlighted_offsets.end(), (i+k)) != _highlighted_offsets.end())
                 {
                     int q = 0;
                     if (k >= 8)
@@ -609,7 +609,7 @@ bool ToneView::UpdateCaretPos(signed int x) {
     {
         _callback_window->SetSelected(_caret_pos / 2);
         _callback_window->UpdateValues(GetDocument());
-        //self._highlighted_offsets = self._callback_window.GetHighlightList()
+        _highlighted_offsets = _callback_window->GetHighlightList();
     }
     
     
