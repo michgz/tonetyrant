@@ -163,19 +163,17 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 
     if (number_ == 0 || number_ == 84)
     {
-        const char * c = p_val.ToAscii();
         int offset_ = Parameters[PP].byteOffset + 0x20;
         int i;
-        for (i = 0; i < 16; i ++)
+        for (i = 0; i < 16 && i < p_val.Length(); i ++)
         {
-            if (c[i] == '\0')
+            if (p_val[i] == '\0')
             {
                 altered_.at(offset_ + i) = ' ';
-                break;
             }
             else
             {
-                altered_.at(offset_ + i) = c[i];
+                altered_.at(offset_ + i) = p_val[i];
             }
         }
         for (; i < 16; i ++)
