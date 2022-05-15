@@ -219,7 +219,7 @@ class CustomText_ToneName : public wxTextCtrl
 {
     public:
     CustomText_ToneName(wxWindow *parent) :
-        wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(192, 30))
+        wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(192, 30), wxTE_PROCESS_ENTER)
     {
     }
   
@@ -388,7 +388,7 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                     w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                     // Bind the EVT_TEXT to this specific control ... ComboBoxs also raise this event,
                     // and we need to ignore for them.
-                    Bind(wxEVT_TEXT, &HintsPanelGeneric::OnTextChanged, this, w_->GetId());
+                    Bind(wxEVT_TEXT_ENTER, &HintsDialog::OnTextChanged, static_cast<HintsDialog*>(this->GetParent()), w_->GetId());
                 }
                 else if (PVtype_ == 5)
                 {
