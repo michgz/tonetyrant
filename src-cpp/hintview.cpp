@@ -320,29 +320,6 @@ class CustomListBox_NoteOffVelocity : public wxComboBox
 
 
 
-void HintsPanelGeneric::OnTextChanged(wxCommandEvent& event)
-{
-    /*
-    auto w = FindWindowById(event.Int);
-    if (strcmp(w.Name[0:3], "C_P", 3))
-    {
-        p_idx = int(w.Name[3:])
-            for PV in self.PARAMS:
-                if PV.id_ == p_idx:
-                    V_ = event.GetSelection()
-                    if PV.type_ == 3:
-                        V_ = 2*V_
-                    self.Parent._buffer.SetParamTo(PV.param, V_)
-                    self.Parent._view.Update()
-                    break;
-    }
-    else
-    {
-        //raise Exception
-    }
-    * */
-}
-
 HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, int>> params) : wxPanel(parent, wxID_ANY)
 {
     wxFlexGridSizer *   _sizer_2 = new wxFlexGridSizer(3, wxSize(5,5));

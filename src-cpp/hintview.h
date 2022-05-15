@@ -24,7 +24,6 @@ class HintsPanelGeneric : public wxPanel
 {
     public:
     HintsPanelGeneric(wxWindow *parent,  std::list<std::pair<int, int>> params);
-    void OnTextChanged(wxCommandEvent& event);
     
     void SetNewVal(PP_ID PP, wxString val_);
     void SetNewVal(PP_ID PP, int val_);
@@ -57,7 +56,7 @@ class HintsDialog : public wxFrame
     void OnCheckChanged(wxCommandEvent& event);
     void OnComboBoxSelected(wxCommandEvent& event);
     void OnTextChanged(wxCommandEvent& event);
-
+    
     void UpdateValues(wxDocument* doc_);
 
     wxStaticBoxSizer    _sizer;
