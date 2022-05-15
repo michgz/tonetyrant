@@ -136,14 +136,21 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
         
     X = X & ~MASK;
     X = X | (p_val << Parameters[PP].bitOffset);
-        
-        
+
+    
+    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    
+    
+    
     //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
-    this->at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
-    this->at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
-    this->at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
-    this->at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+    altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
+    altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
+    altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
+    altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
         
+    
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
 }
 
@@ -305,7 +312,10 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
     
     res->_type = 3;
     res->_document = document;
-    res->_old_vals = old_vals;
+    std::vector<unsigned char>::const_iterator first = old_vals.begin() + 0x20;
+    std::vector<unsigned char>::const_iterator last = old_vals.begin() + 0x1E8;
+    //vector<T> newVec(first, last);
+    res->_old_vals = std::vector<unsigned char>(first, last);
     res->_new_vals = new_vals;
 
     return res;
@@ -339,7 +349,7 @@ bool HexEditCommand::Do(void)
         _document->at(_offset/2) = _new_byte;
         _document->DoUpdate();
         return wxTrue;
-    }/*
+    }
     else if (_type == 3)   // Complete buffer overwrite
     {
         int i;
@@ -352,7 +362,6 @@ bool HexEditCommand::Do(void)
         return wxTrue;
     }
     return wxFalse;
-    * */return true;
 }
 
 bool HexEditCommand::Undo(void)
