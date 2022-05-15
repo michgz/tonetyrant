@@ -157,7 +157,9 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 {
     int number_ = Parameters[PP].number;
-    
+
+    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+
     if (number_ == 0 || number_ == 84)
     {
         const char * c = p_val.ToAscii();
@@ -167,22 +169,20 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
         {
             if (c[i] == '\0')
             {
-                this->at(i) = ' ';
+                altered_.at(offset_ + i) = ' ';
                 break;
             }
             else
             {
-                this->at(i) = c[i];
+                altered_.at(offset_ + i) = c[i];
             }
         }
         for (; i < 16; i ++)
         {
-            this->at(i) = ' ';
+            altered_.at(offset_ + i) = ' ';
         }
-
-        return;
     }
-    if (number_ == 87)
+    else if (number_ == 87)
     {
         const char * c = p_val.ToAscii();
         int offset_ = Parameters[PP].byteOffset + 0x20;
@@ -191,24 +191,27 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
         {
             if (c[i] == '\0')
             {
-                this->at(i) = ' ';
+                altered_.at(offset_ + i) = ' ';
                 break;
             }
             else
             {
-                this->at(i) = c[i];
+                altered_.at(offset_ + i) = c[i];
             }
         }
         for (; i < 14; i ++)
         {
-            this->at(i) = ' ';
+            altered_.at(offset_ + i) = ' ';
         }
-
+    }
+    else
+    {
+        wxLogError("Not a string parameter: parameter %d", number_);
         return;
     }
-    
-    wxLogError("Not a string parameter: parameter %d", number_);
-        
+
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
 }
 
