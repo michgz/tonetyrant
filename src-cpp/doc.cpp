@@ -352,7 +352,7 @@ bool HexEditCommand::Do(void)
             _document->change_list.push_back(_offset/2);
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
             {
-                // Now assume every byte of the CRC has changed
+                // Assume every byte of the CRC has changed
                 _document->change_list.push_back(0x18);
                 _document->change_list.push_back(0x19);
                 _document->change_list.push_back(0x1A);
@@ -375,7 +375,7 @@ bool HexEditCommand::Do(void)
             _document->change_list.push_back(_offset/2);
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
             {
-                // Now assume every byte of the CRC has changed
+                // Assume every byte of the CRC has changed
                 _document->change_list.push_back(0x18);
                 _document->change_list.push_back(0x19);
                 _document->change_list.push_back(0x1A);
@@ -388,10 +388,26 @@ bool HexEditCommand::Do(void)
     else if (_type == 3)   // Complete buffer overwrite
     {
         int i;
+        bool has_changed = false;
+        _document->change_list.clear();
         for (i = 0x20; i < _document->size()-4; i ++)
         {
-            _document->at(i) = _new_vals.at(i);
+            if (_document->at(i) != _new_vals.at(i))
+            {
+                _document->at(i) = _new_vals.at(i);
+                has_changed = true;
+                _document->change_list.push_back(i);
+            }   
         }
+        if (has_changed)
+        {
+            // Assume every byte of the CRC has changed
+            _document->change_list.push_back(0x18);
+            _document->change_list.push_back(0x19);
+            _document->change_list.push_back(0x1A);
+            _document->change_list.push_back(0x1B);
+        }
+        
         _document->DoUpdate();
 
         return wxTrue;
@@ -404,42 +420,92 @@ bool HexEditCommand::Undo(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char now_nibble;
 
+        _document->change_list.clear();
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2) & 0x0F;
+            x = _document->at(_offset/2);
+            now_nibble = (x & 0xF0) >> 4;
+            x = x & 0x0F;
             x = x + (_old_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2) & 0xF0;
+            x = _document->at(_offset/2);
+            now_nibble = x & 0x0F;
+            x = x & 0xF0;
             x = x + (_old_nibble << 0);
             _document->at(_offset/2) = x;
         }
+
+        if (_new_nibble != now_nibble)
+        {
+            _document->change_list.push_back(_offset/2);
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            {
+                // Assume every byte of the CRC has changed
+                _document->change_list.push_back(0x18);
+                _document->change_list.push_back(0x19);
+                _document->change_list.push_back(0x1A);
+                _document->change_list.push_back(0x1B);
+            }
+        }
+
         _document->DoUpdate();
 
         return wxTrue;
     }
     else if (_type == 2)   // Byte
     {
+        unsigned char now_byte;
+        now_byte = _document->at(_offset/2);
         _document->at(_offset/2) = _old_byte;
+        if (_new_byte != now_byte)
+        {
+            _document->change_list.push_back(_offset/2);
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            {
+                // Assume every byte of the CRC has changed
+                _document->change_list.push_back(0x18);
+                _document->change_list.push_back(0x19);
+                _document->change_list.push_back(0x1A);
+                _document->change_list.push_back(0x1B);
+            }
+        }
+        
         _document->DoUpdate();
         return wxTrue;
-    }/*
+    }
     else if (_type == 3)   // Complete buffer overwrite
     {
+        bool has_changed = false;
         int i;
+        _document->change_list.clear();
         for (i = 0x20; i < _document->size()-4; i ++)
         {
-            _document->at(i) = _new_vals.at(i - 0x20);
+            if (_document->at(i) != _old_vals.at(i))
+            {
+                _document->at(i) = _old_vals.at(i);
+                has_changed = true;
+                _document->change_list.push_back(i);
+            }   
         }
+        if (has_changed)
+        {
+            // Assume every byte of the CRC has changed
+            _document->change_list.push_back(0x18);
+            _document->change_list.push_back(0x19);
+            _document->change_list.push_back(0x1A);
+            _document->change_list.push_back(0x1B);
+        }
+
         _document->DoUpdate();
 
         return wxTrue;
     }
     return wxFalse;
-    * */return true;
 }
 
 
