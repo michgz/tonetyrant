@@ -83,6 +83,8 @@ private:
 
     bool ShowRandomise(void);
     void OnRandomise(wxCommandEvent& );
+    bool ShowDefault(void);
+    void OnDefault(wxCommandEvent& );
     void OnMidiSetup(wxCommandEvent& );
 
 
@@ -95,6 +97,10 @@ private:
 public:
 
     HintsDialog *_hintsDlg;
+    
+    // Some configured/long-term values
+    bool randomise_include_wavetable_saved_value;
+    bool default_include_wavetable_saved_value;
 
 };
 
