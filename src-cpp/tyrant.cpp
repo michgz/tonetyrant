@@ -195,9 +195,9 @@ bool MyApp::OnInit()
     m_menuMidi->AppendSeparator();
 
     RANDOMISE_ID = wxWindow::NewControlId();
-    m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("Randomise")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("&Randomise...\tCtrl+R"), _("Sets to randomised values")));
     DEFAULT_ID = wxWindow::NewControlId();
-    m_menuMidi->Append(new wxMenuItem(m_menuMidi, DEFAULT_ID, _("Default")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, DEFAULT_ID, _("&Default...\tCtrl+D"), _("Sets to default values")));
 
     m_menuMidi->AppendSeparator();
 
