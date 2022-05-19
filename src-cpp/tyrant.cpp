@@ -91,6 +91,10 @@ MyApp::MyApp()
 
     m_canvas = NULL;
     m_menuEdit = NULL;
+    
+    
+    randomise_include_wavetable_saved_value = wxFalse;
+    default_include_wavetable_saved_value = wxFalse;
 }
 
 
@@ -192,6 +196,8 @@ bool MyApp::OnInit()
 
     RANDOMISE_ID = wxWindow::NewControlId();
     m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("Randomise")));
+    DEFAULT_ID = wxWindow::NewControlId();
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, DEFAULT_ID, _("Default")));
 
     m_menuMidi->AppendSeparator();
 
@@ -207,6 +213,7 @@ bool MyApp::OnInit()
     
     Bind(wxEVT_MENU, &MyApp::OnMidiSetup, this, SETUP_MIDI_ID);
     Bind(wxEVT_MENU, &MyApp::OnRandomise, this, RANDOMISE_ID);
+    Bind(wxEVT_MENU, &MyApp::OnDefault, this, DEFAULT_ID);
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     frame->SetIcon(wxICON(doc));
@@ -329,9 +336,6 @@ void MyApp::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 bool MyApp::ShowRandomise(void)
 {
-    bool include_wavetable_saved_value = wxFalse;
-    
-    bool _includeWavetable = wxFalse;
 
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("Set to random"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
     wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
@@ -341,7 +345,7 @@ bool MyApp::ShowRandomise(void)
     wxCheckBox cbox_1 = wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
             wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator,
             "IncludeWavetable");
-    cbox_1.SetValue(include_wavetable_saved_value);
+    cbox_1.SetValue(randomise_include_wavetable_saved_value);
 
     sizer.Add(&cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
 
@@ -352,17 +356,69 @@ bool MyApp::ShowRandomise(void)
 
     dlg->SetSizer(&sizer);
     sizer.Fit(dlg);
-    dlg->ShowModal();
+    int retCode = dlg->ShowModal();
 
     wxCheckBox * w = reinterpret_cast<wxCheckBox*>(dlg->FindWindowByName("IncludeWavetable"));
     bool res = w->GetValue();
-    include_wavetable_saved_value = res;  // TODO: make this a class global
+    randomise_include_wavetable_saved_value = res;  // TODO: make this a class global
 
     dlg->SetSizer(NULL, false);
+    dlg->Destroy();
+    res = (retCode == wxID_OK);
     return res;
 }
 
 void MyApp::OnRandomise(wxCommandEvent& WXUNUSED(event))
 {
-    ShowRandomise();
+    if (ShowRandomise())
+    {
+        // TODO: Unsafe!!!!! Need to test every pointer in this sequence!!
+        static_cast<ToneDocument *>(this->m_canvas->m_view->GetDocument())->OnSetToRandomise(randomise_include_wavetable_saved_value);
+    }
 }
+
+bool MyApp::ShowDefault(void)
+{
+
+    wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("Set to default"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
+    wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
+
+    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Set all values in the tone to default values. This will overwrite all current data."));
+    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxCheckBox cbox_1 = wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
+            wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator,
+            "IncludeWavetable");
+    cbox_1.SetValue(default_include_wavetable_saved_value);
+
+    sizer.Add(&cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+
+    wxButton btn_1 = wxButton(dlg, wxID_OK);
+    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
+    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+
+    dlg->SetSizer(&sizer);
+    sizer.Fit(dlg);
+    int retCode = dlg->ShowModal();
+
+    wxCheckBox * w = reinterpret_cast<wxCheckBox*>(dlg->FindWindowByName("IncludeWavetable"));
+    bool res = w->GetValue();
+    default_include_wavetable_saved_value = res;  // TODO: make this a class global
+
+    dlg->SetSizer(NULL, false);
+    dlg->Destroy();
+    res = (retCode == wxID_OK);
+    return res;
+}
+
+void MyApp::OnDefault(wxCommandEvent& WXUNUSED(event))
+{
+    if (ShowDefault())
+    {
+        // TODO: Unsafe!!!!! Need to test every pointer in this sequence!!
+        static_cast<ToneDocument *>(this->m_canvas->m_view->GetDocument())->OnSetToDefault(default_include_wavetable_saved_value);
+    }
+}
+
+
+

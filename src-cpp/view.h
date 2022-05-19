@@ -46,11 +46,12 @@ public:
 
         m_view = NULL;
     }
-
+    wxView *m_view;
+    
 private:
     void OnMouseEvent(wxMouseEvent& event);
 
-    wxView *m_view;
+
 
     // the segment being currently drawn or NULL if none
     //DoodleSegment *m_currentSegment;

@@ -1,6 +1,0 @@
-[submodule "src-cpp/inih"]
-	path = src-cpp/inih
-	url = https://github.com/jtilly/inih
-[submodule "src-cpp/crc32"]
-	path = src-cpp/crc32
-	url = https://github.com/stbrumme/crc32

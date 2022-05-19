@@ -77,6 +77,8 @@ ToneDocument::ToneDocument(void) : wxDocument()
         push_back(CALSINE[i]);
     }
 
+    /* Random seed, for each document */
+    srand( time(NULL) );
 
 
 
@@ -125,14 +127,15 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 {
     
-    if (p_val >= (1 << Parameters[PP].bitCount))
+    // "1ULL" to allow for 32-bit parameters.
+    if (p_val >= (1ULL << Parameters[PP].bitCount))
     {
         wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
         return;
     }
             
     unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-    unsigned long int MASK = ((1 << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+    unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
         
     X = X & ~MASK;
     X = X | (p_val << Parameters[PP].bitOffset);
@@ -154,61 +157,138 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     //self._docManager.SetParamTo(P, p_val)
 }
 
+void ToneDocument::OnSetToRandomise(bool include_wavetable)
+{
+    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    
+    PP_ID PP;
+    for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+    {
+        int number_ = Parameters[PP].number;
+        if (number_ == 0 || number_ == 84 || number_ == 87)
+        {
+            // No action
+        }
+        else if ((number_ == 2 || number_ == 22) && !include_wavetable)
+        {
+            // No action
+        }
+        else
+        {
+            unsigned long int Y = (rand() % (Parameters[PP].recommendedLimits[1] - Parameters[PP].recommendedLimits[0] + 1)) + Parameters[PP].recommendedLimits[0];
+            
+            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset + 0x20]);
+            unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+                
+            X = X & ~MASK;
+            X = X | (Y << Parameters[PP].bitOffset);
+            
+            //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
+            altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
+            altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
+            altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
+            altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+        }
+    }
+    
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    this->GetCommandProcessor()->Submit(cmd_);
+}
+
+void ToneDocument::OnSetToDefault(bool include_wavetable)
+{
+    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    
+    PP_ID PP;
+    for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+    {
+        int number_ = Parameters[PP].number;
+        if (number_ == 0 || number_ == 84 || number_ == 87)
+        {
+            // No action
+        }
+        else if ((number_ == 2 || number_ == 22) && !include_wavetable)
+        {
+            // No action
+        }
+        else
+        {
+            unsigned long int Y = Parameters[PP].defaultValue;
+            
+            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset + 0x20]);
+            unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+                
+            X = X & ~MASK;
+            X = X | (Y << Parameters[PP].bitOffset);
+            
+            //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
+            altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
+            altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
+            altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
+            altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+        }
+    }
+    
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    this->GetCommandProcessor()->Submit(cmd_);
+}
+
 void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 {
     int number_ = Parameters[PP].number;
-    
+
+    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+
     if (number_ == 0 || number_ == 84)
     {
-        const char * c = p_val.ToAscii();
         int offset_ = Parameters[PP].byteOffset + 0x20;
         int i;
-        for (i = 0; i < 16; i ++)
+        for (i = 0; i < 16 && i < p_val.Length(); i ++)
         {
-            if (c[i] == '\0')
+            if (p_val[i] == '\0')
             {
-                this->at(i) = ' ';
-                break;
+                altered_.at(offset_ + i) = ' ';
             }
             else
             {
-                this->at(i) = c[i];
+                altered_.at(offset_ + i) = p_val[i];
             }
         }
         for (; i < 16; i ++)
         {
-            this->at(i) = ' ';
+            altered_.at(offset_ + i) = ' ';
         }
-
-        return;
     }
-    if (number_ == 87)
+    else if (number_ == 87)
     {
-        const char * c = p_val.ToAscii();
+        // DSP parameters. For now regard as text, although that doesn't make
+        // a lot of sense given the nature of the data.
         int offset_ = Parameters[PP].byteOffset + 0x20;
         int i;
-        for (i = 0; i < 14; i ++)
+        for (i = 0; i < 14 && i < p_val.Length(); i ++)
         {
-            if (c[i] == '\0')
+            if (p_val[i] == '\0')
             {
-                this->at(i) = ' ';
-                break;
+                altered_.at(offset_ + i) = ' ';
             }
             else
             {
-                this->at(i) = c[i];
+                altered_.at(offset_ + i) = p_val[i];
             }
         }
         for (; i < 14; i ++)
         {
-            this->at(i) = ' ';
+            altered_.at(offset_ + i) = ' ';
         }
-
+    }
+    else
+    {
+        wxLogError("Not a string parameter: parameter %d", number_);
         return;
     }
-    
-    wxLogError("Not a string parameter: parameter %d", number_);
-        
+
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
 }
 
