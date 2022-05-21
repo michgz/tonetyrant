@@ -141,7 +141,9 @@ static MidiComms _midiComms;
 
 void MidiSetupDialog::DoOk(void)
 {
-    
+    /* Called if the "OK" button is pressed on the dialog. That means we read the selected
+     *  values and store to a config file.
+     * */
     
     bool b = (bool) static_cast<wxCheckBox *>(FindWindow("MidiRealTimeEnable"))->GetValue();
     _midiComms._realtime_enable = b;
