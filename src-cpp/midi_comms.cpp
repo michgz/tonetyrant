@@ -168,7 +168,7 @@ void MidiSetupDialog::DoOk(void)
     {
         _midiComms._input_name = "";
     }
-    else if (k == 1)
+    else
     {
         _midiComms._input_name = static_cast<wxListBox *>(FindWindow("MidiInputPortSel"))->GetString(k);
     }
@@ -178,7 +178,7 @@ void MidiSetupDialog::DoOk(void)
     {
         _midiComms._output_name = "";
     }
-    else if (k == 1)
+    else
     {
         _midiComms._output_name = static_cast<wxListBox *>(FindWindow("MidiOutputPortSel"))->GetString(k);
     }
