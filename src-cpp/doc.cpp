@@ -165,7 +165,42 @@ void ToneDocument::OnSetToRandomise(bool include_wavetable)
     for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
     {
         int number_ = Parameters[PP].number;
-        if (number_ == 0 || number_ == 84 || number_ == 87)
+
+            /*
+            Exclude some parameters:
+                 - Volumes are excluded, since their behaviour is known and not interesting
+                 - String parameters are excluded
+                 - Param 109 seems to have a permanent effect, so exclude it to avoid
+                     that happening.
+                 - Filters. It's possible for these to take on values that result in no sound.
+                 - Gain-related key follows. These can cause apparent silence.
+            */
+        if (number_ == 0
+                || number_ == 84
+                || number_ == 87
+                
+                || number_ == 45
+                || number_ == 46
+                || number_ == 109
+                || number_ == 200
+                || number_ == 115
+                || number_ == 41
+                
+                || number_ == 1
+                || number_ == 21
+                
+                || number_ == 117
+                || number_ == 118
+                || number_ == 119
+                || number_ == 120
+                || number_ == 121
+                || number_ == 122
+
+                || number_ == 47
+                || number_ == 48
+                || number_ == 201
+                || number_ == 202
+                )
         {
             // No action
         }
@@ -203,11 +238,12 @@ void ToneDocument::OnSetToDefault(bool include_wavetable)
     for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
     {
         int number_ = Parameters[PP].number;
-        if (number_ == 0 || number_ == 84 || number_ == 87)
+
+        if (number_ == 0 || number_ == 84 || number_ == 87 || number_ == 41 || number_ == 115)
         {
             // No action
         }
-        else if ((number_ == 2 || number_ == 22) && !include_wavetable)
+        else if ((number_ == 1 || number_ == 2 || number_ == 21 || number_ == 22) && !include_wavetable)
         {
             // No action
         }

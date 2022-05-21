@@ -14,6 +14,9 @@
 #endif
 
 
+#include <fstream>
+#include <iostream>
+#include "inih/INIReader.h"
 
 
 /*
@@ -59,16 +62,145 @@
 
 */
 
+
+
+
+void MidiComms::init(void)
+{
+
+    INIReader reader("tyrant.cfg");
+
+    if (reader.ParseError() != 0) {
+        // Could not load config. Put in some default values and return
+        
+        _input_name = "";
+        _output_name = "";
+        _realtime_channel = 0;
+        _realtime_enable = false;
+        _logging_level = 0;
+
+        return;
+    }
+
+    _input_name = reader.Get("Midi", "InPort", "");
+    _output_name = reader.Get("Midi", "OutPort", "");
+    _realtime_channel = reader.GetInteger("Midi Real-Time", "Channel", 0);
+    _realtime_enable = reader.GetBoolean("Midi Real-Time", "Enable", false);
+    
+    if (reader.Get("Logging", "Level", "") == "2")
+    {
+        _logging_level = 2;
+    }
+    else
+    {
+        _logging_level = (int) reader.GetBoolean("Logging", "Level", false);
+    }
+
+    /* Translate the logging levels to Python logging levels as follows:
+     *   0 = no logging of interest to user. (WARNING)
+     *   1 = logging of each SysEx message, for use by user. (INFO)
+     *   2 = logging of each SysEx message, as well as other extraneous stuff. (DEBUG)   */
+
+}
+
+MidiComms::MidiComms(void)
+{
+    init();
+}
+
+
+int MidiComms::WriteToConfig(void)
+{
+    std::ofstream cfgfile;
+    cfgfile.open ("tyrant.cfg");
+    cfgfile << "[Midi]\nInPort = " << _input_name << "\nOutPort = " << _output_name << "\n\n";
+    cfgfile << "[Midi Real-Time]\nChannel = " << _realtime_channel << "\nEnable = ";
+    if (_realtime_enable)
+    {
+        cfgfile << "on\n\n";
+    }
+    else
+    {
+        cfgfile << "off\n\n";
+    }
+
+    cfgfile << "[Logging]\nLevel = " << _logging_level << "\n";
+    cfgfile.close();
+
+    return 0;
+    
+}
+
+
+
+
+static MidiComms _midiComms;
+
+
+
+
+void MidiSetupDialog::DoOk(void)
+{
+    /* Called if the "OK" button is pressed on the dialog. That means we read the selected
+     *  values and store to a config file.
+     * */
+    
+    bool b = (bool) static_cast<wxCheckBox *>(FindWindow("MidiRealTimeEnable"))->GetValue();
+    _midiComms._realtime_enable = b;
+    
+    
+    int k = static_cast<wxComboBox *>(FindWindow("MidiRealTimeChannel"))->GetSelection();
+    if (k == wxNOT_FOUND)
+    {
+        /* When does this happen?   */
+        _midiComms._realtime_channel = 0;
+    }
+    else if (k == 1)
+    {
+        _midiComms._realtime_channel = 32;
+    }
+    else
+    {
+        _midiComms._realtime_channel = 0;
+    }
+    
+    
+    k = static_cast<wxListBox *>(FindWindow("MidiInputPortSel"))->GetSelection();
+    if (k == wxNOT_FOUND)
+    {
+        _midiComms._input_name = "";
+    }
+    else
+    {
+        _midiComms._input_name = static_cast<wxListBox *>(FindWindow("MidiInputPortSel"))->GetString(k);
+    }
+
+    k = static_cast<wxListBox *>(FindWindow("MidiOutputPortSel"))->GetSelection();
+    if (k == wxNOT_FOUND)
+    {
+        _midiComms._output_name = "";
+    }
+    else
+    {
+        _midiComms._output_name = static_cast<wxListBox *>(FindWindow("MidiOutputPortSel"))->GetString(k);
+    }
+    
+    _midiComms.WriteToConfig();
+}
+
+
+
+
 const wxString SEP("  ");
 
 MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
             wxDialog(parent, wxID_ANY, _("MIDI Setup"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
 
- wxWindowID INPUT_PORT_SEL_ID = wxWindow::NewControlId();
- wxWindowID OUTPUT_PORT_SEL_ID = wxWindow::NewControlId();
- wxWindowID RT_CHANNEL_ID = wxWindow::NewControlId();
- wxWindowID RT_ENABLE_ID = wxWindow::NewControlId();
+    wxWindowID INPUT_PORT_SEL_ID = wxWindow::NewControlId();
+    wxWindowID OUTPUT_PORT_SEL_ID = wxWindow::NewControlId();
+    wxWindowID RT_CHANNEL_ID = wxWindow::NewControlId();
+    wxWindowID RT_ENABLE_ID = wxWindow::NewControlId();
 
 
 
@@ -81,26 +213,32 @@ MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
 
     RtMidiIn * midi_in = new RtMidiIn();
 
-    wxListBox * lst_1 = new wxListBox(this, INPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE);
+    wxListBox * lst_1 = new wxListBox(this, INPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE, wxDefaultValidator, "MidiInputPortSel");
  
    
    
     int i;
     int j = midi_in->getPortCount();
+    int k = -1;
 
     for (i = 0; i < j; i ++)
     {
         wxString s(midi_in->getPortName(i));
         lst_1->InsertItems(1, &s, i);
+        if (s.compare(_midiComms._input_name) == 0)
+        {
+            k = i;
+        }
     }
-    lst_1->SetSelection(wxNOT_FOUND);  // Clear selection
+    if (k >= 0)
+    {
+        lst_1->SetSelection(k);
+    }
+    else
+    {
+        lst_1->SetSelection(wxNOT_FOUND);  // Clear selection
+    }
 
-            /*
-            for i, x in enumerate(input_ports):
-                if input_name != "" and input_name == x:
-                    lst_1.SetSelection(i)
-                    break
-            */
 
     delete midi_in;
 
@@ -114,7 +252,7 @@ MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
             
             
             
-    wxListBox * lst_2 = new wxListBox(this, OUTPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE);
+    wxListBox * lst_2 = new wxListBox(this, OUTPUT_PORT_SEL_ID, wxDefaultPosition, wxSize(400,100), 0, NULL, wxLB_SINGLE, wxDefaultValidator, "MidiOutputPortSel");
  
    
    
@@ -124,15 +262,20 @@ MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
     {
         wxString s(midi_out->getPortName(i));
         lst_2->InsertItems(1, &s, i);
+        if (s.compare(_midiComms._output_name) == 0)
+        {
+            k = i;
+        }
     }
-    lst_2->SetSelection(wxNOT_FOUND);  // Clear selection
+    if (k >= 0)
+    {
+        lst_2->SetSelection(k);
+    }
+    else
+    {
+        lst_2->SetSelection(wxNOT_FOUND);  // Clear selection
+    }
 
-            /*
-            for i, x in enumerate(output_ports):
-                if output_name != "" and output_name == x:
-                    lst_2.SetSelection(i)
-                    break
-            */
 
     delete midi_out;
             
@@ -143,50 +286,53 @@ MidiSetupDialog::MidiSetupDialog(wxWindow * parent) :
     wxStaticBoxSizer * _pnl = new wxStaticBoxSizer(wxHORIZONTAL, this, "");
             
             
-   wxCheckBox       *  w_1 = new wxCheckBox(this, RT_ENABLE_ID, _("Enable"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE, wxDefaultValidator, "MidiRealTimeEnable");
+    wxCheckBox       *  w_1 = new wxCheckBox(this, RT_ENABLE_ID, _("Enable"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE, wxDefaultValidator, "MidiRealTimeEnable");
    
-const bool realtime_enable = false;
-         const int realtime_channel = 0;
-   _pnl->Add(w_1, 0, wxALIGN_CENTRE, 5);
+   
+   
+    const bool realtime_enable = _midiComms._realtime_enable;
+    const int realtime_channel = _midiComms._realtime_channel;
+   
+    _pnl->Add(w_1, 0, wxALIGN_CENTRE, 5);
             
-            w_1->SetValue(realtime_enable);
+    w_1->SetValue(realtime_enable);
             
 
             
-            wxString choices[2]= {wxString("0") + SEP + "Upper keyboard 1", wxString("32") + SEP + "MIDI In 1"};
+    wxString choices[2]= {wxString("0") + SEP + "Upper keyboard 1", wxString("32") + SEP + "MIDI In 1"};
             
             
-           wxComboBox * w_2 = new wxComboBox(this, RT_CHANNEL_ID, "", wxDefaultPosition, wxDefaultSize, 2, choices, 0, wxDefaultValidator, "MidiRealTimeChannel");
+    wxComboBox * w_2 = new wxComboBox(this, RT_CHANNEL_ID, "", wxDefaultPosition, wxDefaultSize, 2, choices, 0, wxDefaultValidator, "MidiRealTimeChannel");
             
 
       
             
-            _pnl->Add(w_2, 0, wxBOTTOM, 5);
+    _pnl->Add(w_2, 0, wxBOTTOM, 5);
             
-            if (realtime_channel == 32)
-                w_2->SetSelection(1);
-            else
-                w_2->SetSelection(0);
-            
-            
-       wxStaticText*     w_3 =             new wxStaticText(this, wxID_ANY, _("Channel"));
-            _pnl->Add(w_3, 0, wxLEFT, 5);
+    if (realtime_channel == 32)
+        w_2->SetSelection(1);
+    else
+        w_2->SetSelection(0);
             
             
-         wxStaticText*     w_4 = new wxStaticText(this, wxID_ANY, _("Real-Time Control:"));
-            sizer->Add(w_4, 0, wxTOP | wxLEFT, 15);
+    wxStaticText*  w_3 = new wxStaticText(this, wxID_ANY, _("Channel"));
+    _pnl->Add(w_3, 0, wxLEFT, 5);
             
-            sizer->Add(_pnl, 0, wxEXPAND, 5);
+           
+    wxStaticText*     w_4 = new wxStaticText(this, wxID_ANY, _("Real-Time Control:"));
+    sizer->Add(w_4, 0, wxTOP | wxLEFT, 15);
+            
+    sizer->Add(_pnl, 0, wxEXPAND, 5);
 
 
 
 
             
-            sizer->Add(new wxButton(this, wxID_OK), 0, wxALIGN_CENTRE|wxALL, 5);
-            sizer->Add(new wxButton(this, wxID_CANCEL), 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(new wxButton(this, wxID_OK), 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(new wxButton(this, wxID_CANCEL), 0, wxALIGN_CENTRE|wxALL, 5);
 
-            SetSizer(sizer);
-            sizer->Fit(this);
+    SetSizer(sizer);
+    sizer->Fit(this);
 }
 /*
     def AllowMidi(self):

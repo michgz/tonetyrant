@@ -195,9 +195,9 @@ bool MyApp::OnInit()
     m_menuMidi->AppendSeparator();
 
     RANDOMISE_ID = wxWindow::NewControlId();
-    m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("Randomise")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, RANDOMISE_ID, _("&Randomise...\tCtrl+R"), _("Sets to randomised values")));
     DEFAULT_ID = wxWindow::NewControlId();
-    m_menuMidi->Append(new wxMenuItem(m_menuMidi, DEFAULT_ID, _("Default")));
+    m_menuMidi->Append(new wxMenuItem(m_menuMidi, DEFAULT_ID, _("&Default...\tCtrl+D"), _("Sets to default values")));
 
     m_menuMidi->AppendSeparator();
 
@@ -325,7 +325,15 @@ void MyApp::ShowAbout(void)
 void MyApp::OnMidiSetup(wxCommandEvent& WXUNUSED(event))
 {
     wxDialog *dlg = new MidiSetupDialog(GetTopWindow());
-    dlg->ShowModal();
+    int resCode = dlg->ShowModal();
+    
+    if (resCode == wxID_OK)
+    {
+        static_cast<MidiSetupDialog *>(dlg)->DoOk();
+    }
+    
+    dlg->Destroy();
+    
     
 }
 
