@@ -325,7 +325,15 @@ void MyApp::ShowAbout(void)
 void MyApp::OnMidiSetup(wxCommandEvent& WXUNUSED(event))
 {
     wxDialog *dlg = new MidiSetupDialog(GetTopWindow());
-    dlg->ShowModal();
+    int resCode = dlg->ShowModal();
+    
+    if (resCode == wxID_OK)
+    {
+        static_cast<MidiSetupDialog *>(dlg)->DoOk();
+    }
+    
+    dlg->Destroy();
+    
     
 }
 

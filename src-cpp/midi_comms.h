@@ -13,7 +13,7 @@ class MidiSetupDialog : public wxDialog
     public:
     MidiSetupDialog(wxWindow * parent);
 
-
+    void DoOk(void);
 
 
     
