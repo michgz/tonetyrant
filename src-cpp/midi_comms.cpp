@@ -14,6 +14,9 @@
 #endif
 
 
+#include <fstream>
+#include <iostream>
+#include "inih/INIReader.h"
 
 
 /*
@@ -58,6 +61,88 @@
         return True
 
 */
+
+
+
+
+void MidiComms::init(void)
+{
+
+    INIReader reader("tyrant.cfg");
+
+    if (reader.ParseError() != 0) {
+        // Could not load config. Put in some default values and return
+        
+        _input_name = "";
+        _output_name = "";
+        _realtime_channel = 0;
+        _realtime_enable = false;
+        _logging_level = 0;
+
+        return;
+    }
+
+    _input_name = reader.Get("Midi", "InPort", "");
+    _output_name = reader.Get("Midi", "OutPort", "");
+    _realtime_channel = reader.GetInteger("Midi Real-Time", "Channel", 0);
+    _realtime_enable = reader.GetBoolean("Midi Real-Time", "Enable", false);
+    
+    if (reader.Get("Logging", "Level", "") == "2")
+    {
+        _logging_level = 2;
+    }
+    else
+    {
+        _logging_level = (int) reader.GetBoolean("Logging", "Level", false);
+    }
+
+    /* Translate the logging levels to Python logging levels as follows:
+     *   0 = no logging of interest to user. (WARNING)
+     *   1 = logging of each SysEx message, for use by user. (INFO)
+     *   2 = logging of each SysEx message, as well as other extraneous stuff. (DEBUG)   */
+
+}
+
+MidiComms::MidiComms(void)
+{
+    init();
+}
+
+
+int MidiComms::WriteToConfig(void)
+{
+    std::ofstream cfgfile;
+    cfgfile.open ("tyrant.cfg");
+    cfgfile << "[Midi]\nInPort = " << _input_name << "\nOutPort = " << _output_name << "\n\n";
+    cfgfile << "[Midi Real-Time]\nChannel = " << _realtime_channel << "\nEnable = ";
+    if (_realtime_enable)
+    {
+        cfgfile << "on\n\n";
+    }
+    else
+    {
+        cfgfile << "off\n\n";
+    }
+
+    cfgfile << "[Logging]\nLevel = " << _logging_level << "\n\n";
+    cfgfile.close();
+
+    return 0;
+    
+}
+
+
+
+
+static MidiComms _midiComms;
+
+
+
+
+
+
+
+
 
 const wxString SEP("  ");
 
