@@ -708,6 +708,32 @@ void set_single_parameter(int parameter,
 
 
 
+    RtMidiOut * midi_out = new RtMidiOut();
+
+    int i;
+    int j = midi_out->getPortCount();
+
+    for (i = 0; i < j; i ++)
+    {
+        wxString s(midi_out->getPortName(i));
+        if (s.compare(_midiComms._output_name) == 0)
+        {
+            break;
+        }
+    }
+    
+    if (i >= j)
+    {
+        // Did not find the port
+        delete midi_out;
+        return;
+    }
+    
+    
+    midi_out->openPort(i);
+    
+
+
     // Flush the input queue
     /* time.sleep(0.01)
     midiin.get_message()*/
@@ -743,7 +769,7 @@ void set_single_parameter(int parameter,
     // Write the parameter
     unsigned short int blocks[4] = {block0,block1, 0, 0};
     auto pkt = make_packet(wxTrue, d, category, memory, parameter_set, blocks, parameter, 0, 1);
- //   midiout.send_message(bytearray(pkt))
+    midi_out.send_message(&pkt);
 
 #if 0
     _logger.info("    " + pkt.hex(" ").upper())
@@ -763,6 +789,10 @@ void set_single_parameter(int parameter,
     midiin.delete()
     midiout.delete()
 #endif
+
+
+    midi_out->closePort();
+    delete midi_out;
 
 }
 
