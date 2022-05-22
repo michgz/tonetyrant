@@ -672,7 +672,7 @@ std::vector<unsigned char> make_packet(bool tx,
 
 
 
-void set_single_parameter(int parameter, 
+int set_single_parameter(int parameter, 
                         unsigned long int data, 
                         int midi_bytes=1, 
                         int category=3, 
@@ -726,7 +726,7 @@ void set_single_parameter(int parameter,
     {
         // Did not find the port
         delete midi_out;
-        return;
+        return -1;
     }
     
     
@@ -769,7 +769,7 @@ void set_single_parameter(int parameter,
     // Write the parameter
     unsigned short int blocks[4] = {block0,block1, 0, 0};
     auto pkt = make_packet(wxTrue, d, category, memory, parameter_set, blocks, parameter, 0, 1);
-    midi_out.send_message(&pkt);
+    midi_out->sendMessage(&pkt);
 
 #if 0
     _logger.info("    " + pkt.hex(" ").upper())
@@ -793,6 +793,72 @@ void set_single_parameter(int parameter,
 
     midi_out->closePort();
     delete midi_out;
+    
+    return 0;
+
+}
+
+
+int download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse)
+{
+    RtMidiIn * midi_in = new RtMidiIn();
+
+    int i_in;
+    int j = midi_in->getPortCount();
+
+    for (i_in = 0; i_in < j; i_in ++)
+    {
+        wxString s(midi_in->getPortName(i_in));
+        if (s.compare(_midiComms._input_name) == 0)
+        {
+            break;
+        }
+    }
+    
+    if (i_in >= j)
+    {
+        // Did not find the port
+        delete midi_in;
+        return -1;
+    }
+
+
+
+    RtMidiOut * midi_out = new RtMidiOut();
+
+    int i_out;
+    j = midi_out->getPortCount();
+
+    for (i_out = 0; i_out < j; i_out ++)
+    {
+        wxString s(midi_out->getPortName(i_out));
+        if (s.compare(_midiComms._output_name) == 0)
+        {
+            break;
+        }
+    }
+    
+    if (i_out >= j)
+    {
+        // Did not find the port
+        delete midi_in;
+        delete midi_out;
+        return -1;
+    }
+    
+    
+    midi_in->openPort(i_in);
+    midi_out->openPort(i_out);
+
+    // Do the exchange ...
+
+    midi_out->closePort();
+    midi_in->closePort();
+
+    delete midi_in;
+    delete midi_out;
+    
+    return 0;
 
 }
 
