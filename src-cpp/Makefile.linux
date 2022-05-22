@@ -47,7 +47,8 @@ TONETYRANT_OBJECTS =  \
 	$(OBJS)\tonetyrant_tyrant.o \
 	$(OBJS)\tonetyrant_doc.o \
 	$(OBJS)\tonetyrant_view.o \
-	$(OBJS)\tonetyrant_hintview.o
+	$(OBJS)\tonetyrant_hintview.o \
+	$(OBJS)\tonetyrant_midicomms.o
 CPPDEPS = -MT$@ -MF$@.d -MD -MP
 
 
@@ -163,6 +164,9 @@ $(OBJS)\tonetyrant_view.o: $(srcdir)/view.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)\tonetyrant_hintview.o: $(srcdir)/hintview.cpp
+	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+
+$(OBJS)\tonetyrant_midicomms.o: $(srcdir)/midi_comms.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
