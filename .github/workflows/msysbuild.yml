@@ -1,0 +1,182 @@
+name: MSYS-Build
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  # ... commented for now ...
+  #push:
+  #  branches: [ master ]
+  #pull_request:
+  #  branches: [ master ]
+
+  # Runs this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  build-windows:
+
+    runs-on: windows-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # We'll use the MSYS shell
+      - name: Set up MSYS
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Tone Tyrant
+        uses: actions/checkout@v2
+        with:
+          path: tonetyrant
+
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.1.6
+          path: wxWidgets
+          submodules: 'true'
+
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi
+          submodules: 'false'
+
+      - name: Cache WX
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: wx-build/lib
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          restore-keys: |
+            wx-3.1-build-lib-${{ runner.os }}-
+
+      # This must be done as a separate step from the next one
+      - name: Setup MSYS
+        shell: msys2 {0}
+        run: pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc
+    
+      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
+      - name: Build WX
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        run: |
+          mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-msw
+          make all
+
+      # For fun :)
+      - name: Build Sample
+        id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        run: |
+          cd wx-build/samples/docview
+          make all LDFLAGS="-static"
+
+      # Build our program
+      - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
+        shell: msys2 {0}
+        run: |
+          cd tonetyrant/src-cpp
+          make all -f Makefile.windows wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi LDFLAGS="-static"
+
+      # Upload the two artifacts
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-executable-artifact
+          path: tonetyrant/src-cpp/*.exe
+      - uses: actions/upload-artifact@v2
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
+        with:
+          name: docview-${{ runner.os }}-executable-artifact
+          path: wx-build/samples/docview/*.exe
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Tone Tyrant
+        uses: actions/checkout@v2
+        with:
+          path: tonetyrant
+
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.1.6
+          path: wxWidgets
+          submodules: 'true'
+
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi
+          submodules: 'false'
+
+      - name: Cache WX
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: wx-build/lib
+          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          restore-keys: |
+            wx-3.1-build-lib-gtk3-${{ runner.os }}-
+    
+      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
+      - name: Build WX if no Cache
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install -y gtk3.0
+          sudo apt-get install -y build-essential libgtk-3-dev
+          mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=3
+          make all
+
+      # For fun :)
+      - name: Build Sample
+        id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          cd wx-build/samples/docview
+          make all
+
+      # Build our program
+      - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
+        run: |
+          ls -lR wx-build/lib
+          cd tonetyrant/src-cpp
+          make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+
+      # Upload the two artifacts
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-executable-artifact
+          path: tonetyrant/src-cpp/tyrant
+      - uses: actions/upload-artifact@v2
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
+        with:
+          name: docview-${{ runner.os }}-executable-artifact
+          path: wx-build/samples/docview/docview
