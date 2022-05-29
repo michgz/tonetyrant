@@ -991,7 +991,7 @@ static void wait_for_ack(RtMidiIn * midi_in)
 
 
 
-int download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse)
+std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse)
 {
     RtMidiIn * midi_in = new RtMidiIn();
 
@@ -1011,7 +1011,7 @@ int download_ac7_internal(int param_set, int memory=1, int category=30, bool _de
     {
         // Did not find the port
         delete midi_in;
-        return -1;
+        return EMPTY_VEC;
     }
 
 
@@ -1035,7 +1035,7 @@ int download_ac7_internal(int param_set, int memory=1, int category=30, bool _de
         // Did not find the port
         delete midi_in;
         delete midi_out;
-        return -1;
+        return EMPTY_VEC;
     }
     
     
@@ -1047,7 +1047,7 @@ int download_ac7_internal(int param_set, int memory=1, int category=30, bool _de
 
 
 
-    //  total_rxed = b''
+    total_rxed.clear();
 
 
     // Send the SBS command
@@ -1100,7 +1100,7 @@ int download_ac7_internal(int param_set, int memory=1, int category=30, bool _de
     delete midi_in;
     delete midi_out;
     
-    return 0;
+    return total_rxed;
 
 }
 
