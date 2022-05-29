@@ -14,6 +14,7 @@
 #endif
 
 
+#include <stdlib.h>
 #include <fstream>
 #include <iostream>
 #include "inih/INIReader.h"
@@ -579,7 +580,7 @@ std::vector<unsigned char> make_packet(bool tx,
                                         unsigned short int category=30,
                                         unsigned short int memory=1,
                                         unsigned short int parameter_set=0,
-                                        unsigned short int block[4] = (unsigned short int[]){0,0,0,0},
+                                        const unsigned short int block[4] = (const unsigned short int[]){0,0,0,0},
                                         unsigned short int parameter=0,
                                         unsigned char      index=0,
                                         int                length=1,
@@ -799,6 +800,197 @@ int set_single_parameter(int parameter,
 }
 
 
+static bool have_got_ack;
+static std::vector<unsigned char> so_far;
+static bool is_busy;
+static bool must_send_ack;
+static bool have_got_ess;
+static std::vector<unsigned char> total_rxed;
+
+
+static void handle_pkt(std::vector<unsigned char> p)
+{
+    /*
+    Handle a complete packet as received from the MIDI port. It is assumed that
+    each packet will be in Casio SYSEX format.
+    */
+    unsigned char type_of_pkt;
+      
+    //print(p.hex(" "))
+    if (p.size() < 7)
+    {
+        //print("BAD PACKET!!")
+        return;
+    }
+    if ((p[0] != 0xF0) || (p[1] != 0x44) || (p[4] != 0x7F) || (p[p.size()-1] != 0xF7))
+    {
+        //print("BAD PACKET!!")
+        return;
+    }
+    type_of_pkt = p[5];
+    if (type_of_pkt == 0xB)
+    {
+        is_busy = wxTrue;
+    }
+    else
+    {
+        is_busy = wxFalse;
+        if (type_of_pkt == 0xA)
+        {
+            have_got_ack = wxTrue;
+        }
+        if (type_of_pkt == 0xD)
+        {
+            have_got_ack = wxTrue;
+            have_got_ess = wxTrue;
+        }
+    }
+          
+    if ((type_of_pkt == 3) || (type_of_pkt == 5))   // This takes a CRC
+    {
+        //c = struct.unpack('<5B', p[-6:-1])
+        uint32_t crc_compare =    (uint32_t) p[p.size()-6]
+                                + (((uint32_t) p[p.size()-5])<<7)
+                                + (((uint32_t) p[p.size()-4])<<14)
+                                + (((uint32_t) p[p.size()-3])<<21)
+                                + (((uint32_t) p[p.size()-2])<<28);
+        if (wxTrue)   //binascii.crc32(p[1:-6]) == crc_compare:
+        {
+            must_send_ack = wxTrue;
+            if (type_of_pkt == 5)
+            {
+                have_got_ack = wxTrue; // This one must look like an ACK
+                std::vector<unsigned char> temp;
+                int i;
+                for (i = 12; i < p.size()-6; i ++)
+                {
+                    temp.push_back(p[i]);
+                }
+                auto mm = midi_7bit_to_8bit(temp);
+                for (i = 0; i < mm.size(); i ++)
+                {
+                    total_rxed.push_back(mm[i]);
+                }
+            }
+        }
+        else
+        {
+            //print("BAD CRC!!!")
+        }
+          
+    }
+
+
+    if (type_of_pkt == 1)
+    {
+        //v = p[24:-1]
+        //type_1_rxed = v;
+    }
+}
+
+
+void parse_response(std::vector<unsigned char> b, bool _debug=wxFalse)
+{
+    /*
+    Parse bytes received from the MIDI port, collating them into SYSEX packets.
+    */
+      
+    bool in_pkt = wxTrue;
+    if (so_far.size() == 0)
+    {
+        in_pkt = wxFalse;
+    }
+    
+    int i;
+    for (i = 0; i < b.size(); i ++)
+    {
+        unsigned char x = b[i];
+        if (in_pkt)
+        {
+            if (x == 0xF7)
+            {
+                so_far.push_back(0xf7);
+                // Have completed. Do something!
+                if (_debug)
+                {
+                    //print(so_far.hex(" ").upper())
+                }
+                handle_pkt(so_far);
+                in_pkt = wxFalse;
+                so_far.clear();
+            }
+            else if (x == 0xF0)
+            {
+                // Error! but start a new packet
+                so_far.clear();
+                so_far.push_back(0xf0);
+            }
+            else if (x >= 0x80)
+            {
+                // Error!
+                in_pkt = wxFalse;
+                so_far.clear();
+            }
+            else
+            {
+                so_far.push_back(x);
+            }
+        }
+        else
+        {
+            if (x == 0xF0)
+            {
+                so_far.clear();
+                so_far.push_back(0xf0);
+                in_pkt = wxTrue;
+            }
+        }
+    }
+
+}
+
+
+static const std::vector<unsigned char> EMPTY_VEC = std::vector<unsigned char>();
+static const unsigned short int EMPTY_BLOCKS[4] = {0,0,0,0};
+
+
+
+static void wait_for_ack(RtMidiIn * midi_in)
+{
+    /*
+    Receive bytes from the MIDI port and parse them until an ACK packet has
+    been seen. If more than 4 seconds passes then an exception will be raised.
+    */
+    //global have_got_ack
+    have_got_ack = wxFalse;
+    //st = time.monotonic()
+    while (wxTrue)
+    {
+        std::vector<unsigned char> msg;
+        (void) midi_in->getMessage(&msg);
+        if (msg.size() > 0)
+        {
+            // print("<    " + bytes(msg[0]).hex(" "))
+            parse_response(msg);
+        }
+        if (have_got_ack)
+        {
+            // Success!
+            return;
+        }
+        sleep(20);
+        //if time.monotonic() > st + 4.0:
+        //  # Clean up. We're exiting with an exception, but just in case a higher-
+        //  # level process catches the exception we should have the port closed.
+        //  #os.close(f)
+        //  # Timed out. Completely exit the program
+        //  raise self.SysexTimeoutError("SYSEX communication timed out. Exiting ...")
+    }
+
+}
+
+
+
 int download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse)
 {
     RtMidiIn * midi_in = new RtMidiIn();
@@ -851,6 +1043,56 @@ int download_ac7_internal(int param_set, int memory=1, int category=30, bool _de
     midi_out->openPort(i_out);
 
     // Do the exchange ...
+
+
+
+
+    //  total_rxed = b''
+
+
+    // Send the SBS command
+
+    {
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 8, 2);
+    midi_out->sendMessage(&pkt);  // SBS(HBR)
+    }
+
+    wait_for_ack(midi_in);
+
+
+    {
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 4);
+    midi_out->sendMessage(&pkt);  // HBR
+    }
+
+
+    have_got_ess = wxFalse;
+
+
+    while(wxTrue)
+    {
+
+        wait_for_ack(midi_in);
+        
+        if (have_got_ess)
+            break;
+        
+        
+        {
+        auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xa);
+        midi_out->sendMessage(&pkt);
+        }
+
+    }
+
+    // Send EBS (no ACK expected)
+    {
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xe);
+    midi_out->sendMessage(&pkt);
+    sleep(300);
+    }
+
+
 
     midi_out->closePort();
     midi_in->closePort();
