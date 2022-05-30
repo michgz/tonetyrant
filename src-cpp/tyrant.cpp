@@ -117,7 +117,7 @@ bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxApp::OnCmdLineParsed(parser);
 }
 
-const bool AllowMidi(void) {return wxFalse;}
+const bool AllowMidi(void) {return wxTrue;}
 
 bool MyApp::OnInit()
 {
