@@ -1042,10 +1042,10 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, in
     midi_in->openPort(i_in);
     midi_out->openPort(i_out);
 
-    // Do the exchange ...
 
-
-
+    midi_in->ignoreTypes(false, true, true);
+    
+    
 
     total_rxed.clear();
 
@@ -1101,6 +1101,131 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, in
     delete midi_out;
     
     return total_rxed;
+
+}
+
+
+
+void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int memory=1, int category=30, bool _debug=wxFalse)
+{
+    RtMidiIn * midi_in = new RtMidiIn();
+
+    int i_in;
+    int j = midi_in->getPortCount();
+
+    for (i_in = 0; i_in < j; i_in ++)
+    {
+        wxString s(midi_in->getPortName(i_in));
+        if (s.compare(_midiComms._input_name) == 0)
+        {
+            break;
+        }
+    }
+    
+    if (i_in >= j)
+    {
+        // Did not find the port
+        delete midi_in;
+        return;
+    }
+
+
+
+    RtMidiOut * midi_out = new RtMidiOut();
+
+    int i_out;
+    j = midi_out->getPortCount();
+
+    for (i_out = 0; i_out < j; i_out ++)
+    {
+        wxString s(midi_out->getPortName(i_out));
+        if (s.compare(_midiComms._output_name) == 0)
+        {
+            break;
+        }
+    }
+    
+    if (i_out >= j)
+    {
+        // Did not find the port
+        delete midi_in;
+        delete midi_out;
+        return;
+    }
+    
+    
+    midi_in->openPort(i_in);
+    midi_out->openPort(i_out);
+
+
+    midi_in->ignoreTypes(false, true, true);
+
+
+    {
+    // Send the SBS command
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 8, 3);
+    midi_out->sendMessage(&pkt);
+    wait_for_ack(midi_in);
+    }
+
+    
+
+
+    int i = 0;
+    while (i < data.size())
+    {
+        // Send a HBS packet:
+        // Category 30 = Rhythms
+        // Parameter set: indicates the specific rhythm
+        // Memory 1 = user rhythm space
+        
+        int len_remaining = data.size() - i;
+        if (len_remaining > 0x80)
+        {
+            len_remaining = 0x80;
+        }
+        
+        // Create a sub-vector. Should be a better way of doing it than this
+        std::vector<unsigned char> sub_data = std::vector<unsigned char>();
+        int j;
+        for (j = 0; j < len_remaining; j ++)
+        {
+            sub_data.push_back(data[i + j]);
+        }
+        
+        
+        auto pkt = make_packet(wxFalse, sub_data, category, memory, param_set, EMPTY_BLOCKS, 0, 0, len_remaining, 5);
+        midi_out->sendMessage(&pkt);
+        wait_for_ack(midi_in);
+        i += len_remaining;
+        
+        
+    }
+
+    {
+    // Sending ESS (no ACK expected)
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xD);
+    midi_out->sendMessage(&pkt);
+    sleep(300);
+    }
+    
+    {
+    // Sending EBS (no ACK expected)
+    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xE);
+    midi_out->sendMessage(&pkt);
+    sleep(300);
+    }
+    
+
+
+
+    midi_out->closePort();
+    midi_in->closePort();
+
+    delete midi_in;
+    delete midi_out;
+    
+    return;
 
 }
 
