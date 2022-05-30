@@ -469,7 +469,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
     dlg->CenterOnParent();
     int retCode = dlg->ShowModal();
 
-    wxSpinCtrl * w = reinterpret_cast<wxSpinCtrl*>(dlg->FindWindowByName("IncludeWavetable"));
+    wxSpinCtrl * w = reinterpret_cast<wxSpinCtrl*>(dlg->FindWindowByName("TargetValue"));
     bool res = w->GetValue();
     target_saved_value = res;  // TODO: make this a class global
 
