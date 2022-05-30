@@ -86,6 +86,8 @@ private:
     bool ShowDefault(void);
     void OnDefault(wxCommandEvent& );
     void OnMidiSetup(wxCommandEvent& );
+    void OnMidiDownload(wxCommandEvent& );
+    void OnMidiUpload(wxCommandEvent& );
 
 
     MyCanvas *m_canvas;

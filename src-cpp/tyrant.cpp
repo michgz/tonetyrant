@@ -57,6 +57,7 @@
 
 #include "wx/cmdline.h"
 #include "wx/config.h"
+#include "wx/progdlg.h"
 
 #ifdef __WXMAC__
     #include "wx/filename.h"
@@ -116,7 +117,7 @@ bool MyApp::OnCmdLineParsed(wxCmdLineParser& parser)
     return wxApp::OnCmdLineParsed(parser);
 }
 
-const bool AllowMidi(void) {return wxFalse;}
+const bool AllowMidi(void) {return wxTrue;}
 
 bool MyApp::OnInit()
 {
@@ -214,6 +215,10 @@ bool MyApp::OnInit()
     Bind(wxEVT_MENU, &MyApp::OnMidiSetup, this, SETUP_MIDI_ID);
     Bind(wxEVT_MENU, &MyApp::OnRandomise, this, RANDOMISE_ID);
     Bind(wxEVT_MENU, &MyApp::OnDefault, this, DEFAULT_ID);
+    Bind(wxEVT_MENU, &MyApp::OnMidiDownload, this, MIDI_DOWNLOAD_ID);
+    Bind(wxEVT_MENU, &MyApp::OnMidiUpload, this, MIDI_UPLOAD_ID);
+
+
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     frame->SetIcon(wxICON(doc));
@@ -429,4 +434,85 @@ void MyApp::OnDefault(wxCommandEvent& WXUNUSED(event))
 }
 
 
+void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
+{
+    // TODO:
+}
 
+void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
+{
+        /*
+        Show the MidiUploadDialog, and perform any operations which were requested.
+        */
+
+
+    int target_saved_value = 801;
+
+    wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("MIDI Upload"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
+    wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
+
+    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Write to User Tone:"), wxDefaultPosition, wxSize(140, 22));
+    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    
+    wxString s_1 = wxString("%d", target_saved_value);
+    wxSpinCtrl spn_1 = wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
+    sizer.Add(&spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    
+    
+    wxButton btn_1 = wxButton(dlg, wxID_OK);
+    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
+    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+
+    dlg->SetSizer(&sizer);
+    sizer.Fit(dlg);
+    dlg->CenterOnParent();
+    int retCode = dlg->ShowModal();
+
+    wxSpinCtrl * w = reinterpret_cast<wxSpinCtrl*>(dlg->FindWindowByName("IncludeWavetable"));
+    bool res = w->GetValue();
+    target_saved_value = res;  // TODO: make this a class global
+
+    dlg->SetSizer(NULL, false);
+    dlg->Destroy();
+    if (retCode == wxID_OK)
+    {
+        
+        if (target_saved_value >= 801 && target_saved_value <= 900)
+        {
+        
+            wxGenericProgressDialog *dlg_2 = new wxGenericProgressDialog (_("Uploading..."), "Progress:", 100, GetTopWindow());
+            dlg_2->Show();
+            
+            
+            // TODO: Unsafe!!!!! Need to test every pointer in this sequence!!
+            std::vector<unsigned char> * src_doc = static_cast<std::vector<unsigned char> *>(static_cast<ToneDocument *>(this->m_canvas->m_view->GetDocument()));
+            
+            // Copy a subset. Should be able to do this better!
+            std::vector<unsigned char> dest_doc = std::vector<unsigned char>();
+            int j;
+            for (j = 0x20; j < 0x1E8; j ++)
+            {
+                dest_doc.push_back(src_doc->at(j));
+            }
+            
+            upload_ac7_internal(dest_doc, target_saved_value - 801, 1, 3);
+            
+
+            // Now a "fake" progress indication
+            sleep(300);
+            dlg_2->Update(44);
+            sleep(300);
+            dlg_2->Update(96);
+            sleep(300);
+           
+            
+            
+            dlg_2->Destroy();
+        }
+            
+         
+
+    }
+
+}
