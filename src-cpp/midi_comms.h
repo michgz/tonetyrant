@@ -43,6 +43,9 @@ class MidiComms
 };
 
 
+
+void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int memory=1, int category=30, bool _debug=wxFalse);
+
 #endif // _MIDI_COMMS_H_
 
 

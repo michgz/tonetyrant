@@ -1106,7 +1106,7 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, in
 
 
 
-void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int memory=1, int category=30, bool _debug=wxFalse)
+void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int memory, int category, bool _debug)
 {
     RtMidiIn * midi_in = new RtMidiIn();
 
