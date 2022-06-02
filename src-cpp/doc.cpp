@@ -497,23 +497,24 @@ bool HexEditCommand::Do(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char y;
         unsigned char old_nibble;
 
         _document->change_list.clear();
 
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2);
-            old_nibble = (x & 0xF0) >> 4;
-            x = x & 0x0F;
+            y = _document->at(_offset/2);
+            old_nibble = (y & 0xF0) >> 4;
+            x = y & 0x0F;
             x = x + (_new_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2);
-            old_nibble = x & 0x0F;
-            x = x & 0xF0;
+            y = _document->at(_offset/2);
+            old_nibble = y & 0x0F;
+            x = y & 0xF0;
             x = x + (_new_nibble << 0);
             _document->at(_offset/2) = x;
         }
@@ -530,7 +531,7 @@ bool HexEditCommand::Do(void)
                 _document->change_list.push_back(0x1B);
             }
             
-            _document->InformByteChanged(_offset/2, 0x00, 0xFF);
+            _document->InformByteChanged(_offset/2, x, y);
         }
 
         _document->DoUpdate();
@@ -594,22 +595,23 @@ bool HexEditCommand::Undo(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char y;
         unsigned char now_nibble;
 
         _document->change_list.clear();
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2);
-            now_nibble = (x & 0xF0) >> 4;
-            x = x & 0x0F;
+            y = _document->at(_offset/2);
+            now_nibble = (y & 0xF0) >> 4;
+            x = y & 0x0F;
             x = x + (_old_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2);
-            now_nibble = x & 0x0F;
-            x = x & 0xF0;
+            y = _document->at(_offset/2);
+            now_nibble = y & 0x0F;
+            x = y & 0xF0;
             x = x + (_old_nibble << 0);
             _document->at(_offset/2) = x;
         }
@@ -625,7 +627,7 @@ bool HexEditCommand::Undo(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
-            _document->InformByteChanged(_offset/2, 0x00, 0xFF);
+            _document->InformByteChanged(_offset/2, x, y);
         }
 
         _document->DoUpdate();
