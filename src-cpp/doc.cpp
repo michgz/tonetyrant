@@ -123,6 +123,49 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
     return true;
 }
 
+extern void midi_comms_set_param(PP_ID P, int p_val);
+
+void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned char old_val)
+{
+    PP_ID PP;
+    
+    for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+    {
+        if ((Parameters[PP].byteOffset + 0x20 <= offset) && (Parameters[PP].byteOffset + 0x20 + Parameters[PP].byteCount > offset))
+        {
+            std::cout << "U" << std::endl;
+            if (Parameters[PP].bitOffset + Parameters[PP].bitCount <= 8)
+            {
+                // Fits into a byte
+
+                std::cout << "V" << std::endl;
+
+                unsigned char a = (new_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
+                unsigned char b = (old_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
+                std::cout << static_cast<int>(a) << "," << static_cast<int>(b) << std::endl;
+                if (a != b)
+                {
+                    midi_comms_set_param(PP, a);
+                }
+            }
+            else
+            {
+                // Needs full 32 bits
+
+                std::cout << "W" << std::endl;
+
+
+                unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
+                unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
+
+                midi_comms_set_param(PP, (X & MASK) << Parameters[PP].bitOffset);
+            }
+        }
+        
+    }
+    
+    
+}
 
 
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
@@ -136,10 +179,10 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     }
             
     unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-    unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+    unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
         
     X = X & ~MASK;
-    X = X | (p_val << Parameters[PP].bitOffset);
+    X = X | (p_val >> Parameters[PP].bitOffset);
 
     
     std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
@@ -486,6 +529,8 @@ bool HexEditCommand::Do(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            
+            _document->InformByteChanged(_offset/2, 0x00, 0xFF);
         }
 
         _document->DoUpdate();
@@ -509,6 +554,7 @@ bool HexEditCommand::Do(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, _new_byte, old_byte);
         }
         _document->DoUpdate();
         return wxTrue;
@@ -579,6 +625,7 @@ bool HexEditCommand::Undo(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, 0x00, 0xFF);
         }
 
         _document->DoUpdate();
@@ -601,6 +648,7 @@ bool HexEditCommand::Undo(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, _new_byte, now_byte);
         }
         
         _document->DoUpdate();

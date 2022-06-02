@@ -457,17 +457,13 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
             if (PVtype(PP) == 1)
             {
                 static_cast<wxCheckBox *>(W_)->SetValue(V_);
-                midi_comms_set_param(PP, V_);
             }
             else if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
             {
                 static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
-                midi_comms_set_param(PP, V_);
             }
             else
             {
-                int VV_ = V_;
-                
                 if (PVtype(PP) == 3)
                 {
                     V_ /= 2;
@@ -491,7 +487,6 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
                     static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
 
                 }
-                midi_comms_set_param(PP, VV_);
             }
         }
     }
