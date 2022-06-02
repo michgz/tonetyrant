@@ -159,6 +159,20 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
 }
 
 
+std::vector<unsigned char> ToneDocument::GetSubsetData(void)
+{
+    std::vector<unsigned char> res = std::vector<unsigned char>();
+    
+    int j;
+    for (j = 0x20; j < 0x1E8; j ++)
+    {
+        res.push_back(this->at(j));
+    }
+    
+    return res;
+}
+
+
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 {
     
@@ -176,18 +190,18 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     X = X | (p_val << Parameters[PP].bitOffset);
 
     
-    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    std::vector<unsigned char> altered_ = this->GetSubsetData();
     
     
     
     //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
-    altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
-    altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
-    altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
-    altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+    altered_.at(Parameters[PP].byteOffset + 0x0) = ((unsigned char *) &X)[0];
+    altered_.at(Parameters[PP].byteOffset + 0x1) = ((unsigned char *) &X)[1];
+    altered_.at(Parameters[PP].byteOffset + 0x2) = ((unsigned char *) &X)[2];
+    altered_.at(Parameters[PP].byteOffset + 0x3) = ((unsigned char *) &X)[3];
         
     
-    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, this->GetSubsetData(), altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
 
@@ -198,7 +212,7 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
 
 void ToneDocument::OnSetToRandomise(bool include_wavetable)
 {
-    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    std::vector<unsigned char> altered_ = this->GetSubsetData();
     
     PP_ID PP;
     for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
@@ -258,20 +272,20 @@ void ToneDocument::OnSetToRandomise(bool include_wavetable)
             X = X | (Y << Parameters[PP].bitOffset);
             
             //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
-            altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
-            altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
-            altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
-            altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+            altered_.at(Parameters[PP].byteOffset + 0x0) = ((unsigned char *) &X)[0];
+            altered_.at(Parameters[PP].byteOffset + 0x1) = ((unsigned char *) &X)[1];
+            altered_.at(Parameters[PP].byteOffset + 0x2) = ((unsigned char *) &X)[2];
+            altered_.at(Parameters[PP].byteOffset + 0x3) = ((unsigned char *) &X)[3];
         }
     }
     
-    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, this->GetSubsetData(), altered_);
     this->GetCommandProcessor()->Submit(cmd_);
 }
 
 void ToneDocument::OnSetToDefault(bool include_wavetable)
 {
-    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    std::vector<unsigned char> altered_ = this->GetSubsetData();
     
     PP_ID PP;
     for (PP = 0; PP <  sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
@@ -297,14 +311,14 @@ void ToneDocument::OnSetToDefault(bool include_wavetable)
             X = X | (Y << Parameters[PP].bitOffset);
             
             //*((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]) = X;
-            altered_.at(Parameters[PP].byteOffset + 0x20) = ((unsigned char *) &X)[0];
-            altered_.at(Parameters[PP].byteOffset + 0x21) = ((unsigned char *) &X)[1];
-            altered_.at(Parameters[PP].byteOffset + 0x22) = ((unsigned char *) &X)[2];
-            altered_.at(Parameters[PP].byteOffset + 0x23) = ((unsigned char *) &X)[3];
+            altered_.at(Parameters[PP].byteOffset + 0x0) = ((unsigned char *) &X)[0];
+            altered_.at(Parameters[PP].byteOffset + 0x1) = ((unsigned char *) &X)[1];
+            altered_.at(Parameters[PP].byteOffset + 0x2) = ((unsigned char *) &X)[2];
+            altered_.at(Parameters[PP].byteOffset + 0x3) = ((unsigned char *) &X)[3];
         }
     }
     
-    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, this->GetSubsetData(), altered_);
     this->GetCommandProcessor()->Submit(cmd_);
 }
 
@@ -312,11 +326,11 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 {
     int number_ = Parameters[PP].number;
 
-    std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
+    std::vector<unsigned char> altered_ = this->GetSubsetData();
 
     if (number_ == 0 || number_ == 84)
     {
-        int offset_ = Parameters[PP].byteOffset + 0x20;
+        int offset_ = Parameters[PP].byteOffset;
         int i;
         for (i = 0; i < 16 && i < p_val.Length(); i ++)
         {
@@ -338,7 +352,7 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
     {
         // DSP parameters. For now regard as text, although that doesn't make
         // a lot of sense given the nature of the data.
-        int offset_ = Parameters[PP].byteOffset + 0x20;
+        int offset_ = Parameters[PP].byteOffset;
         int i;
         for (i = 0; i < 14 && i < p_val.Length(); i ++)
         {
@@ -362,7 +376,7 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
         return;
     }
 
-    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
+    HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, this->GetSubsetData(), altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
 }

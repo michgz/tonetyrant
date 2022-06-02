@@ -509,6 +509,12 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
             
             
             dlg_2->Destroy();
+            
+            
+            // We have (probably) updated the document.
+            src_doc->DoUpdate();
+            
+            
         }
             
          

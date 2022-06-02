@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iostream>
 #include "inih/INIReader.h"
+#include "Crc32.h"
 
 
 /*
@@ -635,9 +636,23 @@ std::vector<unsigned char> make_packet(bool tx,
     {
         w.push_back((unsigned char) (length & 0x007F));
         w.push_back((unsigned char) (length/128));
-        //w += self.midi_8bit_to_7bit(data)
-        //crc_val = binascii.crc32(w[1:])
-        //w += self.midi_8bit_to_7bit(struct.pack('<I', crc_val))
+        int k;
+        std::vector<unsigned char> to_append = midi_8bit_to_7bit(data);
+        for (k = 0; k < to_append.size(); k ++)
+        {
+            w.push_back(to_append[k]);
+        }
+        uint32_t crc_val = crc32_fast(&(*(w.begin() + 1)), w.size() - 1);
+        std::vector<unsigned char> crc_vec = std::vector<unsigned char>();
+        crc_vec.push_back(((unsigned char *) &crc_val)[0]);
+        crc_vec.push_back(((unsigned char *) &crc_val)[1]);
+        crc_vec.push_back(((unsigned char *) &crc_val)[2]);
+        crc_vec.push_back(((unsigned char *) &crc_val)[3]);
+        to_append = midi_8bit_to_7bit(crc_vec);
+        for (k = 0; k < to_append.size(); k ++)
+        {
+            w.push_back(to_append[k]);
+        }
         w.push_back(0xF7);
         return w;
     }
@@ -1180,6 +1195,12 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
 
 
     midi_in->ignoreTypes(false, true, true);
+
+    
+    // Flush the input
+    wxMilliSleep(40);
+    std::vector<unsigned char> unused_pkt = std::vector<unsigned char>();
+    midi_in->getMessage(&unused_pkt);
 
 
     {

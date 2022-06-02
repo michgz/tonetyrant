@@ -71,6 +71,8 @@ protected:
     virtual bool DoOpenDocument(const wxString& file);
 
 private:
+    // Gets the subset 0x20 - 0x1E8
+    std::vector<unsigned char> GetSubsetData(void);
 public:
     void DoUpdate();
     
