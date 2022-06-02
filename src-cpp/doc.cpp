@@ -133,12 +133,9 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
     {
         if ((Parameters[PP].byteOffset + 0x20 <= offset) && (Parameters[PP].byteOffset + 0x20 + Parameters[PP].byteCount > offset))
         {
-            std::cout << "U" << std::endl;
             if (Parameters[PP].bitOffset + Parameters[PP].bitCount <= 8)
             {
                 // Fits into a byte
-
-                std::cout << "V" << std::endl;
 
                 unsigned char a = (new_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
                 unsigned char b = (old_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
@@ -151,9 +148,6 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
             else
             {
                 // Needs full 32 bits
-
-                std::cout << "W" << std::endl;
-
 
                 unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
                 unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
@@ -201,8 +195,7 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     //self._docManager.SetParamTo(P, p_val)
 
 
-std::cout << "A" << std::endl;
-midi_comms_set_param(PP, p_val);
+    midi_comms_set_param(PP, p_val);
 
 }
 
@@ -318,8 +311,6 @@ void ToneDocument::OnSetToDefault(bool include_wavetable)
     this->GetCommandProcessor()->Submit(cmd_);
 }
 
-
-
 void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 {
     int number_ = Parameters[PP].number;
@@ -377,10 +368,6 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
     HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
-
-
-    
-    
 }
 
 

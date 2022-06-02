@@ -673,8 +673,6 @@ std::vector<unsigned char> make_packet(bool tx,
 
 }
 
-#include <iomanip>
-
 
 
 int set_single_parameter(int parameter, 
@@ -694,7 +692,7 @@ int set_single_parameter(int parameter,
     //_logger = logging.getLogger()
     //_logger.info(f" parameter {parameter}, block {block0} <- {str(data)}:")
 
-std::cout << "RRRR" << std::endl;
+
 
 
     // Open the device (if needed)
@@ -738,8 +736,6 @@ std::cout << "RRRR" << std::endl;
     midi_out->openPort(i);
     
 
-std::cout << "B" << std::endl;
-
 
     // Flush the input queue
     /* time.sleep(0.01)
@@ -777,16 +773,6 @@ std::cout << "B" << std::endl;
     unsigned short int blocks[4] = {block0,block1, 0, 0};
     auto pkt = make_packet(wxTrue, d, category, memory, parameter_set, blocks, parameter, 0, 1);
     midi_out->sendMessage(&pkt);
-
-int ii;
-for (ii = 0 ; ii < pkt.size(); ii ++)
-{
-    std::cout << " " << std::hex <<  std::setfill('0') << std::setw(2) << static_cast<int>(pkt[ii]);
-}
-std::cout << std::endl;
-
-
-std::cout << "C" << std::endl;
 
 #if 0
     _logger.info("    " + pkt.hex(" ").upper())

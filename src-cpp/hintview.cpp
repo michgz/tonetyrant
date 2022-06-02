@@ -434,7 +434,7 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
   
 
 static bool PARAM_IS_STR(int X) {return (X==0 || X==84 || X==87);}
-extern void midi_comms_set_param(PP_ID P, int p_val);
+
 
 void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 {
@@ -461,6 +461,7 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
             else if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
             {
                 static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
+                
             }
             else
             {
@@ -485,7 +486,6 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
                 else
                 {
                     static_cast<wxSpinCtrl *>(W_)->SetValue(V_);
-
                 }
             }
         }
@@ -500,13 +500,7 @@ void HintsPanelGeneric::SetNewVal(PP_ID PP, wxString val_)
     wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
     //int type_ = PVtype(PP);
     static_cast<wxTextCtrl *>(W_)->SetValue(val_);
-    
-    
-
-    
 }
-
-extern void midi_comms_set_param(PP_ID P, int p_val);
 
 void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
 {
@@ -523,11 +517,6 @@ void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
     else
         static_cast<wxSpinCtrl *>(W_)->SetValue(val_);
    // Parent._view->Update();
-
-
-std::cout << "D" << std::endl;
-//midi_comms_set_param(PP, val_);
-
 }
 
 #if 0
@@ -785,7 +774,6 @@ void HintsDialog::OnValueChanged(wxSpinEvent& event)
                 V_ += 4;
             }
             static_cast<ToneDocument *>(_view->GetDocument())->SetParamTo(*iter, V_);
-            std::cout << "E" << std::endl;
             static_cast<ToneView *>(_view)->Update();
             break;
         }
@@ -872,7 +860,6 @@ void HintsDialog::OnTextChanged(wxCommandEvent& event)
 
 void HintsDialog::UpdateValues(wxDocument* doc_)
 {
-    std::cout << "F" << std::endl;
     if (_panel != NULL)
     {
         _panel->ReadValues(static_cast<ToneDocument *>(doc_));
