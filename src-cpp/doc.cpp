@@ -37,6 +37,7 @@
 
 #include "doc.h"
 #include "view.h"
+#include "midi_comms.h"
 #include "Crc32.h"
 
 #include "parameters.h"
@@ -106,8 +107,6 @@ void ToneDocument::Modify(bool x)
     wxDocument::Modify(x);
 }
  
-extern void midi_comms_set_param(PP_ID P, int p_val);
- 
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
     return true;//m_image.LoadFile(file);
@@ -123,8 +122,6 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
     return true;
 }
 
-extern void midi_comms_set_param(PP_ID P, int p_val);
-
 void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned char old_val)
 {
     PP_ID PP;
@@ -139,10 +136,10 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
 
                 unsigned char a = (new_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
                 unsigned char b = (old_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
-                std::cout << static_cast<int>(a) << "," << static_cast<int>(b) << std::endl;
+
                 if (a != b)
                 {
-                    midi_comms_set_param(PP, a);
+                    midi_comms_set_param_to(PP, a);
                 }
             }
             else
@@ -152,7 +149,7 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
                 unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
                 unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
 
-                midi_comms_set_param(PP, (X & MASK) << Parameters[PP].bitOffset);
+                midi_comms_set_param_to(PP, (X & MASK) << Parameters[PP].bitOffset);
             }
         }
         
@@ -195,7 +192,7 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     //self._docManager.SetParamTo(P, p_val)
 
 
-    midi_comms_set_param(PP, p_val);
+    midi_comms_set_param_to(PP, p_val);
 
 }
 

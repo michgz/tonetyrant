@@ -7,6 +7,7 @@
 
 
 #include "midi_comms.h"
+#include "parameters.h"
 
 #define wxTrue true
 #ifndef wxFalse
@@ -801,13 +802,20 @@ int set_single_parameter(int parameter,
 
 }
 
-#include "doc.h"
-#include "parameters.h"
-
-void midi_comms_set_param(PP_ID P, int p_val)
+void MidiComms::SetParamTo(PP_ID P, unsigned int p_val)
 {
-    set_single_parameter(Parameters[P].number, p_val, Parameters[P].midiBytes, 3, 3, 0, Parameters[P].block0, 0);
+    if (_realtime_enable)
+    {
+        set_single_parameter(Parameters[P].number, p_val, Parameters[P].midiBytes, 3, 3, _realtime_channel, Parameters[P].block0, 0);
+    }
 }
+
+void midi_comms_set_param_to(PP_ID PP, unsigned int p_val)
+{
+    _midiComms.SetParamTo(PP, p_val);
+}
+
+
 
 static bool have_got_ack;
 static std::vector<unsigned char> so_far;
