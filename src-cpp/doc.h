@@ -58,6 +58,8 @@ public:
     wxString GetParamFromStr(PP_ID PP);
     void SetParamTo(PP_ID PP, unsigned int p_val);
     void SetParamTo(PP_ID PP, wxString p_val);
+    void InformByteChanged(int offset, unsigned char new_val, unsigned char old_val);
+    
     void OnSetToRandomise(bool include_wavetable);
     void OnSetToDefault(bool include_wavetable);
 

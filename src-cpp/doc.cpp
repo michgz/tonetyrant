@@ -37,6 +37,7 @@
 
 #include "doc.h"
 #include "view.h"
+#include "midi_comms.h"
 #include "Crc32.h"
 
 #include "parameters.h"
@@ -106,7 +107,7 @@ void ToneDocument::Modify(bool x)
     wxDocument::Modify(x);
 }
  
- 
+
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
     return true;//m_image.LoadFile(file);
@@ -122,6 +123,41 @@ bool ToneDocument::OnOpenDocument(const wxString& filename)
     return true;
 }
 
+void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned char old_val)
+{
+    PP_ID PP;
+    
+    for (PP = 0; PP < sizeof(Parameters)/sizeof(Parameters[0]); PP ++)
+    {
+        if ((Parameters[PP].byteOffset + 0x20 <= offset) && (Parameters[PP].byteOffset + 0x20 + Parameters[PP].byteCount > offset))
+        {
+            if (Parameters[PP].bitOffset + Parameters[PP].bitCount <= 8)
+            {
+                // Fits into a byte
+
+                unsigned char a = (new_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
+                unsigned char b = (old_val << Parameters[PP].bitOffset) & ((1U >> Parameters[PP].bitCount) - 1);
+
+                if (a != b)
+                {
+                    midi_comms_set_param_to(PP, a);
+                }
+            }
+            else
+            {
+                // Needs full 32 bits
+
+                unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
+                unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
+
+                midi_comms_set_param_to(PP, (X & MASK) << Parameters[PP].bitOffset);
+            }
+        }
+        
+    }
+    
+    
+}
 
 
 void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
@@ -135,10 +171,10 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     }
             
     unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-    unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
+    unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
         
     X = X & ~MASK;
-    X = X | (p_val << Parameters[PP].bitOffset);
+    X = X | (p_val >> Parameters[PP].bitOffset);
 
     
     std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
@@ -155,6 +191,10 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
+
+
+    midi_comms_set_param_to(PP, p_val);
+
 }
 
 void ToneDocument::OnSetToRandomise(bool include_wavetable)
@@ -442,23 +482,24 @@ bool HexEditCommand::Do(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char y;
         unsigned char old_nibble;
 
         _document->change_list.clear();
 
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2);
-            old_nibble = (x & 0xF0) >> 4;
-            x = x & 0x0F;
+            y = _document->at(_offset/2);
+            old_nibble = (y & 0xF0) >> 4;
+            x = y & 0x0F;
             x = x + (_new_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2);
-            old_nibble = x & 0x0F;
-            x = x & 0xF0;
+            y = _document->at(_offset/2);
+            old_nibble = y & 0x0F;
+            x = y & 0xF0;
             x = x + (_new_nibble << 0);
             _document->at(_offset/2) = x;
         }
@@ -474,6 +515,8 @@ bool HexEditCommand::Do(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            
+            _document->InformByteChanged(_offset/2, x, y);
         }
 
         _document->DoUpdate();
@@ -497,6 +540,7 @@ bool HexEditCommand::Do(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, _new_byte, old_byte);
         }
         _document->DoUpdate();
         return wxTrue;
@@ -536,22 +580,23 @@ bool HexEditCommand::Undo(void)
     if (_type == 1)  // Nibble
     {
         unsigned char x;
+        unsigned char y;
         unsigned char now_nibble;
 
         _document->change_list.clear();
         if ((_offset & 1) == 0)
         {
-            x = _document->at(_offset/2);
-            now_nibble = (x & 0xF0) >> 4;
-            x = x & 0x0F;
+            y = _document->at(_offset/2);
+            now_nibble = (y & 0xF0) >> 4;
+            x = y & 0x0F;
             x = x + (_old_nibble << 4);
             _document->at(_offset/2) = x;
         }
         else
         {
-            x = _document->at(_offset/2);
-            now_nibble = x & 0x0F;
-            x = x & 0xF0;
+            y = _document->at(_offset/2);
+            now_nibble = y & 0x0F;
+            x = y & 0xF0;
             x = x + (_old_nibble << 0);
             _document->at(_offset/2) = x;
         }
@@ -567,6 +612,7 @@ bool HexEditCommand::Undo(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, x, y);
         }
 
         _document->DoUpdate();
@@ -589,6 +635,7 @@ bool HexEditCommand::Undo(void)
                 _document->change_list.push_back(0x1A);
                 _document->change_list.push_back(0x1B);
             }
+            _document->InformByteChanged(_offset/2, _new_byte, now_byte);
         }
         
         _document->DoUpdate();
