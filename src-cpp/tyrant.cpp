@@ -436,7 +436,85 @@ void MyApp::OnDefault(wxCommandEvent& WXUNUSED(event))
 
 void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
 {
-    // TODO:
+        /*
+        Show the MidiDowloadDialog, and perform any operations which were requested.
+        */
+
+
+    int target_saved_value = 801;
+
+    wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("MIDI Dowload"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
+    wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
+
+    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Read from User Tone:"), wxDefaultPosition, wxSize(140, 22));
+    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    
+    wxString s_1 = wxString("%d", target_saved_value);
+    wxSpinCtrl spn_1 = wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
+    sizer.Add(&spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    
+    
+    wxButton btn_1 = wxButton(dlg, wxID_OK);
+    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
+    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+
+    dlg->SetSizer(&sizer);
+    sizer.Fit(dlg);
+    dlg->CenterOnParent();
+    int retCode = dlg->ShowModal();
+
+    wxSpinCtrl * w = reinterpret_cast<wxSpinCtrl*>(dlg->FindWindowByName("TargetValue"));
+    int res = w->GetValue();
+    target_saved_value = res;  // TODO: make this a class global
+
+    dlg->SetSizer(NULL, false);
+    dlg->Destroy();
+    if (retCode == wxID_OK)
+    {
+        
+        if (target_saved_value >= 801 && target_saved_value <= 900)
+        {
+        
+            wxProgressDialog *dlg_2 = new wxProgressDialog (_("Downloading..."), "Progress:", 100, GetTopWindow());
+            dlg_2->Show();
+            
+            
+            // TODO: Unsafe!!!!! Need to test every pointer in this sequence!!
+            ToneDocument * src_doc = static_cast<ToneDocument *>(this->m_canvas->m_view->GetDocument());
+            
+            std::vector<unsigned char> dest_doc = download_ac7_internal(target_saved_value - 801, 1, 3);
+            
+            if (dest_doc.size() == 0x1C8)
+            {
+                
+                HexEditCommand * cmd = HexEditCommand::CompletelyChange(src_doc, static_cast<std::vector<unsigned char>>(*src_doc), dest_doc);
+                src_doc->GetCommandProcessor()->Submit(cmd);
+                this->m_canvas->Refresh();
+                
+                
+            }
+            
+            
+
+            // Now a "fake" progress indication
+            //     ** For now, the progress is commented out. It causes double free
+            //        error in Linux
+            wxMilliSleep(300);
+            //dlg_2->Update(44);
+            wxMilliSleep(300);
+            //dlg_2->Update(96);
+            wxMilliSleep(300);
+           
+            
+            
+            dlg_2->Destroy();
+        }
+            
+         
+
+    }
+
 }
 
 void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
@@ -470,7 +548,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
     int retCode = dlg->ShowModal();
 
     wxSpinCtrl * w = reinterpret_cast<wxSpinCtrl*>(dlg->FindWindowByName("TargetValue"));
-    bool res = w->GetValue();
+    int res = w->GetValue();
     target_saved_value = res;  // TODO: make this a class global
 
     dlg->SetSizer(NULL, false);
@@ -481,7 +559,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
         if (target_saved_value >= 801 && target_saved_value <= 900)
         {
         
-            wxGenericProgressDialog *dlg_2 = new wxGenericProgressDialog (_("Uploading..."), "Progress:", 100, GetTopWindow());
+            wxProgressDialog *dlg_2 = new wxProgressDialog (_("Uploading..."), "Progress:", 100, GetTopWindow());
             dlg_2->Show();
             
             
@@ -500,11 +578,13 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
             
 
             // Now a "fake" progress indication
-            sleep(300);
-            dlg_2->Update(44);
-            sleep(300);
-            dlg_2->Update(96);
-            sleep(300);
+            //     ** For now, the progress is commented out. It causes double free
+            //        error in Linux
+            wxMilliSleep(300);
+            //dlg_2->Update(44);
+            wxMilliSleep(300);
+            //dlg_2->Update(96);
+            wxMilliSleep(300);
            
             
             

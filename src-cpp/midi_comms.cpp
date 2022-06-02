@@ -995,7 +995,7 @@ static void wait_for_ack(RtMidiIn * midi_in)
             // Success!
             return;
         }
-        sleep(20);
+        wxMilliSleep(20);
         //if time.monotonic() > st + 4.0:
         //  # Clean up. We're exiting with an exception, but just in case a higher-
         //  # level process catches the exception we should have the port closed.
@@ -1008,7 +1008,7 @@ static void wait_for_ack(RtMidiIn * midi_in)
 
 
 
-std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse)
+std::vector<unsigned char> download_ac7_internal(int param_set, int memory, int category, bool _debug)
 {
     RtMidiIn * midi_in = new RtMidiIn();
 
@@ -1063,6 +1063,10 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, in
     midi_in->ignoreTypes(false, true, true);
     
     
+    // Flush the input
+    wxMilliSleep(40);
+    std::vector<unsigned char> unused_pkt = std::vector<unsigned char>();
+    midi_in->getMessage(&unused_pkt);
 
     total_rxed.clear();
 
@@ -1106,7 +1110,7 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, in
     {
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xe);
     midi_out->sendMessage(&pkt);
-    sleep(300);
+    wxMilliSleep(300);
     }
 
 
@@ -1223,14 +1227,14 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
     // Sending ESS (no ACK expected)
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xD);
     midi_out->sendMessage(&pkt);
-    sleep(300);
+    wxMilliSleep(300);
     }
     
     {
     // Sending EBS (no ACK expected)
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xE);
     midi_out->sendMessage(&pkt);
-    sleep(300);
+    wxMilliSleep(300);
     }
     
 

@@ -51,6 +51,7 @@ extern void midi_comms_set_param_to(PP_ID PP, unsigned int p_val);
 
 
 void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int memory=1, int category=30, bool _debug=wxFalse);
+std::vector<unsigned char> download_ac7_internal(int param_set, int memory=1, int category=30, bool _debug=wxFalse);
 
 #endif // _MIDI_COMMS_H_
 

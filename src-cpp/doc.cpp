@@ -551,9 +551,9 @@ bool HexEditCommand::Do(void)
         _document->change_list.clear();
         for (i = 0x20; i < _document->size()-4; i ++)
         {
-            if (_document->at(i) != _new_vals.at(i))
+            if (_document->at(i) != _new_vals.at(i - 0x20))
             {
-                _document->at(i) = _new_vals.at(i);
+                _document->at(i) = _new_vals.at(i - 0x20);
                 has_changed = true;
                 _document->change_list.push_back(i);
             }   
@@ -647,9 +647,9 @@ bool HexEditCommand::Undo(void)
         _document->change_list.clear();
         for (i = 0x20; i < _document->size()-4; i ++)
         {
-            if (_document->at(i) != _old_vals.at(i))
+            if (_document->at(i) != _old_vals.at(i - 0x20))
             {
-                _document->at(i) = _old_vals.at(i);
+                _document->at(i) = _old_vals.at(i - 0x20);
                 has_changed = true;
                 _document->change_list.push_back(i);
             }   
