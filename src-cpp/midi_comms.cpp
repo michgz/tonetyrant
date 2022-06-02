@@ -673,6 +673,8 @@ std::vector<unsigned char> make_packet(bool tx,
 
 
 
+
+
 int set_single_parameter(int parameter, 
                         unsigned long int data, 
                         int midi_bytes=1, 
@@ -690,7 +692,7 @@ int set_single_parameter(int parameter,
     //_logger = logging.getLogger()
     //_logger.info(f" parameter {parameter}, block {block0} <- {str(data)}:")
 
-
+std::cout << "RRRR" << std::endl;
 
 
     // Open the device (if needed)
@@ -799,6 +801,13 @@ int set_single_parameter(int parameter,
 
 }
 
+#include "doc.h"
+#include "parameters.h"
+
+void midi_comms_set_param(PP_ID P, int p_val)
+{
+    set_single_parameter(Parameters[P].number, p_val, Parameters[P].midiBytes, 3, 1, 0, Parameters[P].block0, 0);
+}
 
 static bool have_got_ack;
 static std::vector<unsigned char> so_far;

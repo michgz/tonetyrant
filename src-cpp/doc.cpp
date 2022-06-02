@@ -106,6 +106,7 @@ void ToneDocument::Modify(bool x)
     wxDocument::Modify(x);
 }
  
+extern void midi_comms_set_param(PP_ID P, int p_val);
  
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
@@ -155,6 +156,11 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
     HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
+
+
+std::cout << "A" << std::endl;
+midi_comms_set_param(PP, p_val);
+
 }
 
 void ToneDocument::OnSetToRandomise(bool include_wavetable)
@@ -269,6 +275,8 @@ void ToneDocument::OnSetToDefault(bool include_wavetable)
     this->GetCommandProcessor()->Submit(cmd_);
 }
 
+
+
 void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
 {
     int number_ = Parameters[PP].number;
@@ -326,6 +334,10 @@ void ToneDocument::SetParamTo(PP_ID PP, wxString p_val)
     HexEditCommand * cmd_ = HexEditCommand::CompletelyChange(this, *this, altered_);
     this->GetCommandProcessor()->Submit(cmd_);
     //self._docManager.SetParamTo(P, p_val)
+
+
+    
+    
 }
 
 
