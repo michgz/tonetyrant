@@ -657,7 +657,9 @@ std::vector<unsigned char> make_packet(bool tx,
         w.push_back((unsigned char) (parameter & 0x007F));
         w.push_back((unsigned char) (parameter/128));
         w.push_back((unsigned char) (index));
+        w.push_back((unsigned char) (0));
         w.push_back((unsigned char) (length-1));
+        w.push_back((unsigned char) (0));
     }
     if (tx)
     {
@@ -671,7 +673,7 @@ std::vector<unsigned char> make_packet(bool tx,
 
 }
 
-
+#include <iomanip>
 
 
 
@@ -736,6 +738,8 @@ std::cout << "RRRR" << std::endl;
     midi_out->openPort(i);
     
 
+std::cout << "B" << std::endl;
+
 
     // Flush the input queue
     /* time.sleep(0.01)
@@ -774,6 +778,16 @@ std::cout << "RRRR" << std::endl;
     auto pkt = make_packet(wxTrue, d, category, memory, parameter_set, blocks, parameter, 0, 1);
     midi_out->sendMessage(&pkt);
 
+int ii;
+for (ii = 0 ; ii < pkt.size(); ii ++)
+{
+    std::cout << " " << std::hex <<  std::setfill('0') << std::setw(2) << static_cast<int>(pkt[ii]);
+}
+std::cout << std::endl;
+
+
+std::cout << "C" << std::endl;
+
 #if 0
     _logger.info("    " + pkt.hex(" ").upper())
     time.sleep(0.1)
@@ -806,7 +820,7 @@ std::cout << "RRRR" << std::endl;
 
 void midi_comms_set_param(PP_ID P, int p_val)
 {
-    set_single_parameter(Parameters[P].number, p_val, Parameters[P].midiBytes, 3, 1, 0, Parameters[P].block0, 0);
+    set_single_parameter(Parameters[P].number, p_val, Parameters[P].midiBytes, 3, 3, 0, Parameters[P].block0, 0);
 }
 
 static bool have_got_ack;
