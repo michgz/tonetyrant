@@ -107,10 +107,6 @@ void ToneDocument::Modify(bool x)
     wxDocument::Modify(x);
 }
  
-<<<<<<< HEAD
-
-=======
->>>>>>> 3e016aa
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
     return true;//m_image.LoadFile(file);
