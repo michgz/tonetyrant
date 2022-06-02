@@ -147,9 +147,9 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
                 // Needs full 32 bits
 
                 unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-                unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
+                unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
 
-                midi_comms_set_param_to(PP, (X & MASK) << Parameters[PP].bitOffset);
+                midi_comms_set_param_to(PP, (X & MASK) >> Parameters[PP].bitOffset);
             }
         }
         
@@ -168,12 +168,12 @@ void ToneDocument::SetParamTo(PP_ID PP, unsigned int p_val)
         wxLogError("Trying to set value %d to a field with only %d bits", p_val, Parameters[PP].bitCount);
         return;
     }
-            
+
     unsigned long int X = *((unsigned long int *) &this->data()[Parameters[PP].byteOffset + 0x20]);
-    unsigned long int MASK = ((1ULL >> Parameters[PP].bitCount) - 1) >> Parameters[PP].bitOffset;
+    unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
         
     X = X & ~MASK;
-    X = X | (p_val >> Parameters[PP].bitOffset);
+    X = X | (p_val << Parameters[PP].bitOffset);
 
     
     std::vector<unsigned char> altered_ = std::vector<unsigned char>(*this);
