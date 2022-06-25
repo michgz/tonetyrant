@@ -51,7 +51,8 @@ public:
     ToneDocument(void);
 
 
-    virtual bool OnOpenDocument(const wxString& file);
+    //virtual bool OnOpenDocument(const wxString& file);
+    virtual bool OnCreate(const wxString& path, long flags);
     
     
     int GetParamFrom(PP_ID PP);
@@ -63,11 +64,13 @@ public:
     void OnSetToRandomise(bool include_wavetable);
     void OnSetToDefault(bool include_wavetable);
 
-    virtual void Modify(bool );
+    virtual bool IsModified() const;
+    virtual void Modify(bool mod);
     
     std::vector<unsigned short int> change_list;
 
 protected:
+    virtual bool DoSaveDocument(const wxString& filename);
     virtual bool DoOpenDocument(const wxString& file);
 
 private:

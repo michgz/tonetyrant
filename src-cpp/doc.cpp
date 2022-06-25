@@ -51,6 +51,20 @@ ToneDocument::ToneDocument(void) : wxDocument()
     clear();
 
 
+    /* Random seed, for each document */
+    srand( time(NULL) );
+
+
+
+}
+
+
+bool ToneDocument::OnCreate(const wxString& path, long flags)
+{
+    if ( !wxDocument::OnCreate(path, flags) )
+        return false;
+
+
     // A "default" data array to use as a starting point. It's a sine-wave sound
     unsigned char CALSINE [] =  \
       "CT-X3000\x00\x00\x00\x00\x00\x00\x00\x00TONH\x00\x00\x00\x00\xfe:R\x1a\xc8\x01\x00\x00"                              \
@@ -78,13 +92,9 @@ ToneDocument::ToneDocument(void) : wxDocument()
         push_back(CALSINE[i]);
     }
 
-    /* Random seed, for each document */
-    srand( time(NULL) );
 
-
-
+    return true;
 }
-
 
 void ToneDocument::DoUpdate()
 {
@@ -109,17 +119,39 @@ void ToneDocument::Modify(bool x)
  
 bool ToneDocument::DoOpenDocument(const wxString& file)
 {
-    return true;//m_image.LoadFile(file);
+    wxFileInputStream infile(file);
+    
+    if (!infile.IsOk())
+        return false;
+    
+    this->std::vector<unsigned char>::clear();
+    while (infile.CanRead())
+    {
+        char c;
+        if (!infile.Read(&c, 1))
+            break;
+        this->std::vector<unsigned char>::push_back(c);
+    }
+    
+    // we're not modified by the user yet
+    Modify(false);
+    
+    return true;
 }
 
-bool ToneDocument::OnOpenDocument(const wxString& filename)
+bool ToneDocument::DoSaveDocument(const wxString& filename)
 {
-    if ( !wxDocument::OnOpenDocument(filename) )
+    wxFileOutputStream outfile(filename);// = wxFileOutputStream::wxFileOutputStream(filename);
+    
+    if (!outfile.IsOk())
         return false;
-
-    // Do something
-
-    return true;
+    if (this->std::vector<unsigned char>::size() != 0x1EC)
+        return false;
+    
+    outfile.Write( this->std::vector<unsigned char>::data() , 0x1EC);
+    outfile.Close();
+    
+    return true;//m_image.LoadFile(file);
 }
 
 void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned char old_val)
@@ -158,6 +190,11 @@ void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned
     
 }
 
+bool ToneDocument::IsModified() const
+{
+    wxTextCtrl* wnd = NULL;// none exists
+    return wxDocument::IsModified() || (wnd && wnd->IsModified());
+}
 
 std::vector<unsigned char> ToneDocument::GetSubsetData(void)
 {

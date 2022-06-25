@@ -483,7 +483,7 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
             // TODO: Unsafe!!!!! Need to test every pointer in this sequence!!
             ToneDocument * src_doc = static_cast<ToneDocument *>(this->m_canvas->m_view->GetDocument());
             
-            std::vector<unsigned char> dest_doc = download_ac7_internal(target_saved_value - 801, 1, 3);
+            std::vector<unsigned char> dest_doc = download_ac7_internal(target_saved_value - 801, 1, 3, true);
             
             if (dest_doc.size() == 0x1C8)
             {
@@ -580,7 +580,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
                 dest_doc.push_back(src_doc->at(j));
             }
             
-            upload_ac7_internal(dest_doc, target_saved_value - 801, 1, 3);
+            upload_ac7_internal(dest_doc, target_saved_value - 801, 1, 3, true);
             
 
             // Now a "fake" progress indication
