@@ -135,7 +135,7 @@ bool MyApp::OnInit()
     wxDocManager *docManager = new wxDocManager;
 
     //// Create a template relating tone documents to their views
-    new wxDocTemplate(docManager, _("Casio Tone"), "*.ton", "", "ton",
+    new wxDocTemplate(docManager, _("Casio Tone"), "*.TON", "", "TON",
                       "Tone Doc", "Tone View",
                       CLASSINFO(ToneDocument), CLASSINFO(ToneView));
 
@@ -185,6 +185,10 @@ bool MyApp::OnInit()
 #endif // wxUSE_CONFIG
 
 
+    _hintsDlg = new HintsDialog(frame);
+    _hintsDlg->Show(); // Non-modal
+
+
     m_canvas = new MyCanvas(NULL, frame);
     m_menuEdit = CreateDrawingEditMenu();
     docManager->CreateNewDocument();
@@ -219,13 +223,10 @@ bool MyApp::OnInit()
     Bind(wxEVT_MENU, &MyApp::OnMidiUpload, this, MIDI_UPLOAD_ID);
 
 
-
 #ifndef wxHAS_IMAGES_IN_RESOURCES
     frame->SetIcon(wxICON(doc));
 #endif
 
-    _hintsDlg = new HintsDialog(frame);
-    _hintsDlg->Show(); // Non-modal
 
     frame->Centre();
     frame->Show();
@@ -436,9 +437,9 @@ void MyApp::OnDefault(wxCommandEvent& WXUNUSED(event))
 
 void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
 {
-        /*
-        Show the MidiDowloadDialog, and perform any operations which were requested.
-        */
+    /*
+    Show the MidiDowloadDialog, and perform any operations which were requested.
+    */
 
 
     int target_saved_value = 801;

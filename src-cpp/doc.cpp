@@ -48,14 +48,8 @@ IMPLEMENT_DYNAMIC_CLASS(ToneDocument, wxDocument)
 
 ToneDocument::ToneDocument(void) : wxDocument()
 {
-    clear();
-
-
     /* Random seed, for each document */
     srand( time(NULL) );
-
-
-
 }
 
 
@@ -64,6 +58,7 @@ bool ToneDocument::OnCreate(const wxString& path, long flags)
     if ( !wxDocument::OnCreate(path, flags) )
         return false;
 
+    this->std::vector<unsigned char>::clear();
 
     // A "default" data array to use as a starting point. It's a sine-wave sound
     unsigned char CALSINE [] =  \
@@ -128,7 +123,7 @@ bool ToneDocument::DoOpenDocument(const wxString& file)
     while (infile.CanRead())
     {
         char c;
-        if (!infile.Read(&c, 1))
+        if (!infile.ReadAll(&c, 1))
             break;
         this->std::vector<unsigned char>::push_back(c);
     }
@@ -141,7 +136,7 @@ bool ToneDocument::DoOpenDocument(const wxString& file)
 
 bool ToneDocument::DoSaveDocument(const wxString& filename)
 {
-    wxFileOutputStream outfile(filename);// = wxFileOutputStream::wxFileOutputStream(filename);
+    wxFileOutputStream outfile(filename);
     
     if (!outfile.IsOk())
         return false;
@@ -151,7 +146,7 @@ bool ToneDocument::DoSaveDocument(const wxString& filename)
     outfile.Write( this->std::vector<unsigned char>::data() , 0x1EC);
     outfile.Close();
     
-    return true;//m_image.LoadFile(file);
+    return true;
 }
 
 void ToneDocument::InformByteChanged(int offset, unsigned char new_val, unsigned char old_val)
@@ -203,7 +198,7 @@ std::vector<unsigned char> ToneDocument::GetSubsetData(void)
     int j;
     for (j = 0x20; j < 0x1E8; j ++)
     {
-        res.push_back(this->at(j));
+        res.push_back(this->std::vector<unsigned char>::at(j));
     }
     
     return res;
@@ -720,8 +715,6 @@ bool HexEditCommand::Undo(void)
     }
     return wxFalse;
 }
-
-
 
 
 

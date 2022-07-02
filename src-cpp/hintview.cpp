@@ -238,7 +238,7 @@ class CustomListBox_DSPType : public wxComboBox
         c_[3]  = wxString("3")  + SEP + _("Limiter");
         c_[4]  = wxString("4")  + SEP + _("Enhancer");
         c_[5]  = wxString("5")  + SEP + _("Reflection");
-        c_[6]   = wxString("6")  + SEP + _("Phaser");
+        c_[6]  = wxString("6")  + SEP + _("Phaser");
         c_[7]  = wxString("7")  + SEP + _("Chorus");
         c_[8]  = wxString("8")  + SEP + _("Flange");
         c_[9]  = wxString("9")  + SEP + _("Tremolo");
@@ -276,13 +276,13 @@ class CustomListBox_LFOType : public wxComboBox
         wxComboBox()
     {
         wxString c_[7];
-        c_[0]  = wxString("0")  + SEP + _("Sine");
-        c_[1]  = wxString("1")  + SEP + _("Triangle");
-        c_[2]  = wxString("2")  + SEP + _("Saw up");
-        c_[3]  = wxString("3")  + SEP + _("Saw down");
-        c_[4]  = wxString("4")  + SEP + _("1:3 rectangle");
-        c_[5]  = wxString("5")  + SEP + _("Square");
-        c_[6]  = wxString("6")  + SEP + _("3:1 rectangle");
+        c_[0] = wxString("0")  + SEP + _("Sine");
+        c_[1] = wxString("1")  + SEP + _("Triangle");
+        c_[2] = wxString("2")  + SEP + _("Saw up");
+        c_[3] = wxString("3")  + SEP + _("Saw down");
+        c_[4] = wxString("4")  + SEP + _("1:3 rectangle");
+        c_[5] = wxString("5")  + SEP + _("Square");
+        c_[6] = wxString("6")  + SEP + _("3:1 rectangle");
         wxComboBox::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 7, c_);
     }
 
@@ -310,9 +310,9 @@ class CustomListBox_NoteOffVelocity : public wxComboBox
         wxComboBox()
     {
         wxString c_[3];
-        c_[0]  = wxString("0")  + SEP + _("Normal");
-        c_[1]  = wxString("1")  + SEP + _("Note-on");
-        c_[2]  = wxString("2")  + SEP + _("Minimum");
+        c_[0] = wxString("0")  + SEP + _("Normal");
+        c_[1] = wxString("1")  + SEP + _("Note-on");
+        c_[2] = wxString("2")  + SEP + _("Minimum");
         wxComboBox::Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 3, c_);
     }
 

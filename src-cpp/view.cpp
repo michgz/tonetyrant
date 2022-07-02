@@ -394,7 +394,7 @@ bool ToneView::OnClose(bool deleteWindow)
     if ( wxGetApp().GetMode() == MyApp::Mode_Single )
     {
         
-                GetDocument()->DeleteContents();
+        GetDocument()->DeleteContents();
         
         m_canvas->ClearBackground();
         m_canvas->ResetView();
@@ -541,27 +541,27 @@ void ToneView::OnChar(wxKeyEvent& event )
 
 int ToneView::PosToBuff(int x, int y)
 {
-      
-        if (x < _x1)
-            return -1;
-        if (x >= _x2)
-            return -1;
-        
-        int yy = y / _y2;
-        int xx = int((x - _x1) * 32 / (_x2 - _x1));
-        
-        return 32*yy+xx;
+  
+    if (x < _x1)
+        return -1;
+    if (x >= _x2)
+        return -1;
+    
+    int yy = y / _y2;
+    int xx = int((x - _x1) * 32 / (_x2 - _x1));
+    
+    return 32*yy+xx;
 }
 
 int ToneView::PosToBuffReg3(int x, int y)
 {
-        if (x < _x2 + 5)
-            return -1;
-        
-        int yy = y / _y2;
-        int xx = int((x - (_x2 + 5)) / _x4);
-        
-        return 32*yy+2*xx;
+    if (x < _x2 + 5)
+        return -1;
+    
+    int yy = y / _y2;
+    int xx = int((x - (_x2 + 5)) / _x4);
+    
+    return 32*yy+2*xx;
 }
 
 void ToneView::OnMouse(wxMouseEvent& event)
@@ -674,7 +674,6 @@ void MyCanvas::OnChar(wxKeyEvent& event)
     if ( m_view )
     {
         m_view->ProcessEvent(event);
-        
     }
     
     event.Skip(true);
