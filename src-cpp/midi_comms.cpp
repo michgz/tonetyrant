@@ -22,6 +22,14 @@
 #include "Crc32.h"
 
 
+
+/* Define this macro to turn on command-line logging of sent and
+ * received SYSEX messages. Generally should be undefined.
+ */
+#undef MIDI_SYSEX_LOG_TO_CONSOLE
+
+
+
 /*
 
     def __init__(self):
@@ -833,6 +841,7 @@ void midi_comms_set_param_to(PP_ID PP, unsigned int p_val)
 
 
 static bool have_got_ack;
+static bool have_got_error;
 static std::vector<unsigned char> so_far;
 static bool is_busy;
 static bool must_send_ack;
@@ -875,6 +884,10 @@ static void handle_pkt(std::vector<unsigned char> p)
         {
             have_got_ack = wxTrue;
             have_got_ess = wxTrue;
+        }
+        if (type_of_pkt == 0xF)
+        {
+            have_got_error = wxTrue;
         }
     }
           
@@ -994,7 +1007,9 @@ static void wait_for_ack(RtMidiIn * midi_in)
     been seen. If more than 4 seconds passes then an exception will be raised.
     */
     //global have_got_ack
+    int retry_count = 0;
     have_got_ack = wxFalse;
+    have_got_error = wxFalse;
     //st = time.monotonic()
     while (wxTrue)
     {
@@ -1004,6 +1019,24 @@ static void wait_for_ack(RtMidiIn * midi_in)
         {
             // print("<    " + bytes(msg[0]).hex(" "))
             parse_response(msg);
+            
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+            char dbg_2[500];
+            int i = 0;
+            strcpy(dbg_2, "< ");
+            i = 2;
+            int j;
+            for (j = 0; j < msg.size(); j ++)
+            {
+                sprintf(&dbg_2[i], "%02X ", msg[j]);
+                i += 3;
+            }
+            wxLogDebug(dbg_2);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+            
+            
+            
+            
         }
         if (have_got_ack)
         {
@@ -1011,6 +1044,12 @@ static void wait_for_ack(RtMidiIn * midi_in)
             return;
         }
         wxMilliSleep(20);
+        retry_count += 1;
+        if (retry_count > 200)
+        {
+            // Timed out
+            return;
+        }
         //if time.monotonic() > st + 4.0:
         //  # Clean up. We're exiting with an exception, but just in case a higher-
         //  # level process catches the exception we should have the port closed.
@@ -1083,52 +1122,106 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory, int 
     std::vector<unsigned char> unused_pkt = std::vector<unsigned char>();
     midi_in->getMessage(&unused_pkt);
 
-    total_rxed.clear();
-
-
-    // Send the SBS command
-
+    int retry_count = 0;
+    
+    
+    while (true)   // retry loop
     {
-    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 8, 2);
-    midi_out->sendMessage(&pkt);  // SBS(HBR)
-    }
-
-    wait_for_ack(midi_in);
-
-
-    {
-    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 4);
-    midi_out->sendMessage(&pkt);  // HBR
-    }
-
-
-    have_got_ess = wxFalse;
-
-
-    while(wxTrue)
-    {
-
-        wait_for_ack(midi_in);
-        
-        if (have_got_ess)
-            break;
-        
-        
+        retry_count ++;
+        if (retry_count > 3)
         {
-        auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xa);
-        midi_out->sendMessage(&pkt);
+            break;
+        }
+    
+    
+    
+        total_rxed.clear();
+
+
+        // Send the SBS command
+
+        {
+        auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 8, 2);
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+        char dbg_1 [500];
+        int i = 0;
+        strcpy(dbg_1, "> ");
+        i = 2;
+        int j;
+        for (j = 0; j < pkt.size(); j ++)
+        {
+            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            i += 3;
+        }
+        wxLogDebug(dbg_1);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+        midi_out->sendMessage(&pkt);  // SBS(HBR)
         }
 
-    }
-
-    // Send EBS (no ACK expected)
-    {
-    auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xe);
-    midi_out->sendMessage(&pkt);
-    wxMilliSleep(300);
-    }
+        wait_for_ack(midi_in);
+        if (have_got_error)
+            continue;
 
 
+        {
+        auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 4);
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+        char dbg_1 [500];
+        int i = 0;
+        strcpy(dbg_1, "> ");
+        i = 2;
+        int j;
+        for (j = 0; j < pkt.size(); j ++)
+        {
+            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            i += 3;
+        }
+        wxLogDebug(dbg_1);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+        midi_out->sendMessage(&pkt);  // HBR
+        }
+
+
+        have_got_ess = wxFalse;
+
+
+        while(wxTrue)
+        {
+
+            wait_for_ack(midi_in);
+
+            if (have_got_ess)
+                break;
+            
+            
+            {
+            auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xa);
+            midi_out->sendMessage(&pkt);
+            }
+
+        }
+
+        // Send EBS (no ACK expected)
+        {
+        auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xe);
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+        char dbg_1 [500];
+        int i = 0;
+        strcpy(dbg_1, "> ");
+        i = 2;
+        int j;
+        for (j = 0; j < pkt.size(); j ++)
+        {
+            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            i += 3;
+        }
+        wxLogDebug(dbg_1);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+        midi_out->sendMessage(&pkt);
+        wxMilliSleep(300);
+        }
+
+    } // retry loop
 
     midi_out->closePort();
     midi_in->closePort();
@@ -1206,6 +1299,22 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
     {
     // Send the SBS command
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 8, 3);
+    
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+    char dbg_1 [500];
+    int i = 0;
+    strcpy(dbg_1, "> ");
+    i = 2;
+    int j;
+    for (j = 0; j < pkt.size(); j ++)
+    {
+        sprintf(&dbg_1[i], "%02X ", pkt[j]);
+        i += 3;
+    }
+    wxLogDebug(dbg_1);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+
+    
     midi_out->sendMessage(&pkt);
     wait_for_ack(midi_in);
     }
@@ -1237,6 +1346,21 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
         
         
         auto pkt = make_packet(wxFalse, sub_data, category, memory, param_set, EMPTY_BLOCKS, 0, 0, len_remaining, 5);
+
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+        char dbg_2 [500];
+        int i1 = 0;
+        strcpy(dbg_2, "> ");
+        i1 = 2;
+        int j1;
+        for (j1 = 0; j1 < pkt.size(); j1 ++)
+        {
+            sprintf(&dbg_2[i1], "%02X ", pkt[j1]);
+            i1 += 3;
+        }
+        wxLogDebug(dbg_2);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+
         midi_out->sendMessage(&pkt);
         wait_for_ack(midi_in);
         i += len_remaining;
@@ -1247,6 +1371,21 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
     {
     // Sending ESS (no ACK expected)
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xD);
+
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+    char dbg_3 [500];
+    int i1 = 0;
+    strcpy(dbg_3, "> ");
+    i1 = 2;
+    int j1;
+    for (j1 = 0; j1 < pkt.size(); j1 ++)
+    {
+        sprintf(&dbg_3[i1], "%02X ", pkt[j1]);
+        i1 += 3;
+    }
+    wxLogDebug(dbg_3);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+
     midi_out->sendMessage(&pkt);
     wxMilliSleep(300);
     }
@@ -1254,6 +1393,21 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
     {
     // Sending EBS (no ACK expected)
     auto pkt = make_packet(wxFalse, EMPTY_VEC, category, memory, param_set, EMPTY_BLOCKS, 0, 0, 1, 0xE);
+
+#ifdef MIDI_SYSEX_LOG_TO_CONSOLE
+    char dbg_3 [500];
+    int i1 = 0;
+    strcpy(dbg_3, "> ");
+    i1 = 2;
+    int j1;
+    for (j1 = 0; j1 < pkt.size(); j1 ++)
+    {
+        sprintf(&dbg_3[i1], "%02X ", pkt[j1]);
+        i1 += 3;
+    }
+    wxLogDebug(dbg_3);
+#endif // MIDI_SYSEX_LOG_TO_CONSOLE
+
     midi_out->sendMessage(&pkt);
     wxMilliSleep(300);
     }
