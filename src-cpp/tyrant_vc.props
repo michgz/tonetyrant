@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets">
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <wxBuildDir>..\wxWidgets-3.1.6\build\msw</wxBuildDir>
+    <wxBuildDir>..\wxWidgets\build\msw</wxBuildDir>
     <rtMidiDir>..\RtMidi-5.0.0</rtMidiDir>
   </PropertyGroup>
   <ItemDefinitionGroup />

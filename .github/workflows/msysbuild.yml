@@ -45,9 +45,11 @@ jobs:
     
       # Builds WX static library
       - name: Build WX
+        env:
+          DEVENV: "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe"
         run: |
           cd wxWidgets\build\msw
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" wx_vc17.sln /Build "Release|Win32"
+          ${{DEVENV}} wx_vc17.sln /Build "Release|Win32"
 
       # Build our program
       - name: Build Tyrant
