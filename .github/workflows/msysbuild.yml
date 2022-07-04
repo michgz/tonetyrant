@@ -1,8 +1,5 @@
 name: MSYS-Build
 
-env:
-  DEVENV: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe
-
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -48,19 +45,15 @@ jobs:
     
       # Builds WX static library
       - name: Build WX
-        shell: powershell
-        run: |
-          chdir wxWidgets\build\msw
-          $env:DEVENV wx_vc17.sln /Build "Release|Win32"
+        run: 'chdir wxWidgets\build\msw'
+        run: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" wx_vc17.sln /Build "Release|Win32"'
 
       # Build our program
       - name: Build Tyrant
         id: build-tyrant
-        shell: powershell
         continue-on-error: true
-        run: |
-          chdir tonetyrant\src-cpp
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" tyrant_vc.vcxproj /Build "Release|x86"
+        run: 'chdir tonetyrant\src-cpp'
+        run: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" tyrant_vc.vcxproj /Build "Release|x86"'
 
       # Upload the artifact
       - uses: actions/upload-artifact@v2
