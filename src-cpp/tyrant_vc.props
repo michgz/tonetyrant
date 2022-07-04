@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ImportGroup Label="PropertySheets">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <wxBuildDir>.</wxBuildDir>
+    <rtMidiDir>./RtMidi-5.0.0</rtMidiDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="wxBuildDir">
+      <Value>$(wxBuildDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="rtMidiDir">
+      <Value>$(rtMidiDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
