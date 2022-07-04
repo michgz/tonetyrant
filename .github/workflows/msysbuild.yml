@@ -1,7 +1,7 @@
 name: MSYS-Build
 
 env:
-  DEVENV: "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe"
+  DEVENV: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe
 
 # Controls when the workflow will run
 on:
