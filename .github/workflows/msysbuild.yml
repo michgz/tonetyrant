@@ -45,9 +45,8 @@ jobs:
     
       # Builds WX static library
       - name: Build WX
-        with:
-          DEVENV: "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe"
         run: |
+          DEVENV="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe"
           cd wxWidgets\build\msw
           ${{DEVENV}} wx_vc17.sln /Build "Release|Win32"
 
