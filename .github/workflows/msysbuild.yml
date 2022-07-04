@@ -48,6 +48,7 @@ jobs:
     
       # Builds WX static library
       - name: Build WX
+        shell: cmd
         run: |
           dir "%MSBUILD_PATH%"
           dir "wxWidgets\build\msw"
@@ -55,6 +56,7 @@ jobs:
 
       # Build our program
       - name: Build Tyrant
+        shell: cmd
         run: |
           dir "%MSBUILD_PATH%"
           dir "tonetyrant\src-cpp"
