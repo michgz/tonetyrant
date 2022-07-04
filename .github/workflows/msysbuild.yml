@@ -55,7 +55,7 @@ jobs:
 
       # Build our program
       - name: Build Tyrant
-      - run: |
+        run: |
           dir "%MSBUILD_PATH%"
           dir tonetyrant\src-cpp
           "%MSBUILD_PATH%" tonetyrant\src-cpp\tyrant_vc.vcxproj /Build "Release|x86"
