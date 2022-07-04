@@ -46,13 +46,13 @@ jobs:
       # Builds WX static library
       - name: Build WX
         run: |
-          cd wxWidgets-3.1.6\build\msw
           dir C:\Program Files\
           dir C:\Program Files\Microsoft Visual Studio\
           dir C:\Program Files\Microsoft Visual Studio\2022\
           dir C:\Program Files\Microsoft Visual Studio\2022\Enterprise
           dir C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7
           dir C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE
+          cd wxWidgets\build\msw
           dir .
           C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe wx_vc17.sln /Build Release|Win32
 
