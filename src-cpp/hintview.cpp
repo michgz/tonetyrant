@@ -456,7 +456,7 @@ void HintsPanelGeneric::ReadValues(ToneDocument * doc_)
 
             if (PVtype(PP) == 1)
             {
-                static_cast<wxCheckBox *>(W_)->SetValue(V_);
+                static_cast<wxCheckBox *>(W_)->SetValue(!!V_);
             }
             else if (PVtype(PP) == 4 || PVtype(PP) == 9 || PVtype(PP) == 10)
             {
@@ -509,7 +509,7 @@ void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
     if (type_ == 1)
         static_cast<wxCheckBox *>(W_)->SetValue((bool)val_);
     else if (type_ == 2 || type_ == 5 || type_ == 6 || type_ == 7 || type_ == 11)
-        static_cast<wxComboBox *>(W_)->SetSelection(val_);
+        static_cast<wxComboBox *>(W_)->SetSelection(!!val_);
     else if (type_ == 3)
         static_cast<wxComboBox *>(W_)->SetSelection(val_ / 2);
     else if (type_ == 8)
@@ -929,7 +929,6 @@ std::set<unsigned short> HintsDialog::GetHighlightList(void)
 void HintsDialog::MakeHighlightList(std::list<std::pair<int, int>> params)
 {
     PP_ID PP = 0;
-    int i = 0;
     
     _highlight_list.clear();
     for (auto PV = params.begin(); PV != params.end(); PV ++)

@@ -583,14 +583,14 @@ std::vector<unsigned char> midi_8bit_to_7bit(std::vector<unsigned char> b)
     #    0x7F       Device. This is a "don't care" value
     #*/
 const std::vector<unsigned char> DEVICE_ID = {0x44, 0x19, 0x01, 0x7F};
-    
+static const unsigned short int EMPTY_BLOCKS[4] = {0,0,0,0};
     
 std::vector<unsigned char> make_packet(bool tx,
                                         std::vector<unsigned char> data,
                                         unsigned short int category=30,
                                         unsigned short int memory=1,
                                         unsigned short int parameter_set=0,
-                                        const unsigned short int block[4] = (const unsigned short int[]){0,0,0,0},
+                                        const unsigned short int block[4] = EMPTY_BLOCKS,
                                         unsigned short int parameter=0,
                                         unsigned char      index=0,
                                         int                length=1,
@@ -996,7 +996,7 @@ void parse_response(std::vector<unsigned char> b, bool _debug=wxFalse)
 
 
 static const std::vector<unsigned char> EMPTY_VEC = std::vector<unsigned char>();
-static const unsigned short int EMPTY_BLOCKS[4] = {0,0,0,0};
+
 
 
 

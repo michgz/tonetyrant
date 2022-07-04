@@ -95,6 +95,9 @@ public:
                    bool canUndo=true)
         : wxCommand(canUndo, " ")   // if an empty string, shows as "Unnamed command" for some reason. So use a space.
     {
+        (void) doc;
+        (void) name;
+        (void) info;
     }
     
 private:

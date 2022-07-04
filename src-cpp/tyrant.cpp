@@ -305,18 +305,18 @@ void MyApp::ShowAbout(void)
 
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
-    wxStaticBitmap _icon = wxStaticBitmap(dlg, wxID_ANY, wxNullBitmap);
-    _icon.SetIcon(wxIcon(ICON_LOCATION));
-    sizer->Add(&_icon, wxALIGN_LEFT);
+    wxStaticBitmap *_icon = new wxStaticBitmap(dlg, wxID_ANY, wxNullBitmap);
+    _icon=>SetIcon(wxIcon(ICON_LOCATION));
+    sizer->Add(_icon, wxALIGN_LEFT);
 
     sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.0.0"), 0, wxALIGN_CENTRE|wxALL, 5);
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++"), 0, wxALIGN_CENTRE|wxALL, 5);
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "\u00A9 2022"), 0, wxALIGN_CENTRE|wxALL, 5);
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "https://github.com/michgz/ToneTyrant"), 0, wxALIGN_CENTRE|wxALL, 5);
 
-    wxButton btn = wxButton(dlg, wxID_OK);
+    wxButton *btn = new wxButton(dlg, wxID_OK);
 
-    sizer->Add(&btn, 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(btn, 0, wxALIGN_CENTRE|wxALL, 5);
 
     dlg->SetSizer(sizer);
     sizer->Fit(dlg);
@@ -354,19 +354,19 @@ bool MyApp::ShowRandomise(void)
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("Set to random"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
     wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
 
-    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Set all values in the tone to random values. This will overwrite all current data."));
-    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
-    wxCheckBox cbox_1 = wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
+    wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Set all values in the tone to random values. This will overwrite all current data."));
+    sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxCheckBox *cbox_1 = new wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
             wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator,
             "IncludeWavetable");
-    cbox_1.SetValue(randomise_include_wavetable_saved_value);
+    cbox_1->SetValue(randomise_include_wavetable_saved_value);
 
-    sizer.Add(&cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    sizer.Add(cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
 
-    wxButton btn_1 = wxButton(dlg, wxID_OK);
-    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
-    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
-    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_1 = new wxButton(dlg, wxID_OK);
+    sizer.Add(btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_2 = new wxButton(dlg, wxID_CANCEL);
+    sizer.Add(btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
 
     dlg->SetSizer(&sizer);
     sizer.Fit(dlg);
@@ -397,19 +397,19 @@ bool MyApp::ShowDefault(void)
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("Set to default"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
     wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
 
-    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Set all values in the tone to default values. This will overwrite all current data."));
-    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
-    wxCheckBox cbox_1 = wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
+    wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Set all values in the tone to default values. This will overwrite all current data."));
+    sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxCheckBox *cbox_1 = new wxCheckBox(dlg, wxID_ANY, _("Include wavetable"), 
             wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator,
             "IncludeWavetable");
-    cbox_1.SetValue(default_include_wavetable_saved_value);
+    cbox_1->SetValue(default_include_wavetable_saved_value);
 
-    sizer.Add(&cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    sizer.Add(cbox_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
 
-    wxButton btn_1 = wxButton(dlg, wxID_OK);
-    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
-    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
-    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_1 = new wxButton(dlg, wxID_OK);
+    sizer.Add(btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_2 = new wxButton(dlg, wxID_CANCEL);
+    sizer.Add(btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
 
     dlg->SetSizer(&sizer);
     sizer.Fit(dlg);
@@ -447,18 +447,18 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("MIDI Dowload"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
     wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
 
-    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Read from User Tone:"), wxDefaultPosition, wxSize(140, 22));
-    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Read from User Tone:"), wxDefaultPosition, wxSize(140, 22));
+    sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
     wxString s_1 = wxString("%d", target_saved_value);
-    wxSpinCtrl spn_1 = wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
-    sizer.Add(&spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxSpinCtrl *spn_1 = new wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
+    sizer.Add(spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
     
-    wxButton btn_1 = wxButton(dlg, wxID_OK);
-    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
-    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
-    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_1 = new wxButton(dlg, wxID_OK);
+    sizer.Add(btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_2 = new wxButton(dlg, wxID_CANCEL);
+    sizer.Add(btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
 
     dlg->SetSizer(&sizer);
     sizer.Fit(dlg);
@@ -536,18 +536,18 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, _("MIDI Upload"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
     wxBoxSizer sizer = wxBoxSizer(wxVERTICAL);
 
-    wxStaticText lbl_1 = wxStaticText(dlg, wxID_ANY, _("Write to User Tone:"), wxDefaultPosition, wxSize(140, 22));
-    sizer.Add(&lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Write to User Tone:"), wxDefaultPosition, wxSize(140, 22));
+    sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
     wxString s_1 = wxString("%d", target_saved_value);
-    wxSpinCtrl spn_1 = wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
-    sizer.Add(&spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
+    wxSpinCtrl *spn_1 = new wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
+    sizer.Add(spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
     
-    wxButton btn_1 = wxButton(dlg, wxID_OK);
-    sizer.Add(&btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
-    wxButton btn_2 = wxButton(dlg, wxID_CANCEL);
-    sizer.Add(&btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_1 = new wxButton(dlg, wxID_OK);
+    sizer.Add(btn_1, 0, wxALIGN_CENTRE|wxALL, 5);
+    wxButton *btn_2 = new wxButton(dlg, wxID_CANCEL);
+    sizer.Add(btn_2, 0, wxALIGN_CENTRE|wxALL, 5);
 
     dlg->SetSizer(&sizer);
     sizer.Fit(dlg);
