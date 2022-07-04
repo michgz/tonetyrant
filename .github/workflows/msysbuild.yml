@@ -48,16 +48,18 @@ jobs:
     
       # Builds WX static library
       - name: Build WX
+        shell: powershell
         run: |
-          cd wxWidgets\build\msw
+          chdir wxWidgets\build\msw
           $env:DEVENV wx_vc17.sln /Build "Release|Win32"
 
       # Build our program
       - name: Build Tyrant
         id: build-tyrant
+        shell: powershell
         continue-on-error: true
         run: |
-          cd tonetyrant/src-cpp
+          chdir tonetyrant\src-cpp
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" tyrant_vc.vcxproj /Build "Release|x86"
 
       # Upload the artifact
