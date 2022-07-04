@@ -50,7 +50,7 @@ jobs:
       - name: Build WX
         run: |
           cd wxWidgets\build\msw
-          ${{ env.DEVENV }} wx_vc17.sln /Build "Release|Win32"
+          $env:DEVENV wx_vc17.sln /Build "Release|Win32"
 
       # Build our program
       - name: Build Tyrant
