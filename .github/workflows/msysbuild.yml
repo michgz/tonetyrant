@@ -53,6 +53,7 @@ jobs:
           dir "%MSBUILD_PATH%"
           dir "wxWidgets\build\msw"
           "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|Win32"
+          dir "wxWidgets\build\msw\vc_mswu"
 
       # Build our program
       - name: Build Tyrant
