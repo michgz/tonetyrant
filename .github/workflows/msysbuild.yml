@@ -71,5 +71,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: tyrant-${{ runner.os }}-error-log-artifact
-          path: tonetyrant/src-cpp/vc_mswu/tyrant/tyrant_vc.exe
+          path: tonetyrant\src-cpp\vc_mswu\tyrant\tyrant_vc.txt
           
