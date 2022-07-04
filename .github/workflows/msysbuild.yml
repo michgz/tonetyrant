@@ -17,7 +17,10 @@ jobs:
   build-windows:
 
     runs-on: windows-latest
-    
+
+    env:
+      MSBUILD_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     
@@ -44,14 +47,18 @@ jobs:
           submodules: 'false'
     
       # Builds WX static library
-      - run: 'chdir wxWidgets\build\msw'
-      - run: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" wx_vc17.sln /Build "Release|Win32"'
-      - run: 'chdir ..\..\..'
+      - name: Build WX
+        run: |
+          dir "%MSBUILD_PATH%"
+          dir wxWidgets\build\msw
+          "%MSBUILD_PATH%" wxWidgets\build\msw\wx_vc17.sln /Build "Release|Win32"
 
       # Build our program
-      - run: 'chdir tonetyrant\src-cpp'
-      - run: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe" tyrant_vc.vcxproj /Build "Release|x86"'
-      - run: 'chdir ..\..'
+      - name: Build Tyrant
+      - run: |
+          dir "%MSBUILD_PATH%"
+          dir tonetyrant\src-cpp
+          "%MSBUILD_PATH%" tonetyrant\src-cpp\tyrant_vc.vcxproj /Build "Release|x86"
 
       # Upload the artifact
       - uses: actions/upload-artifact@v2
