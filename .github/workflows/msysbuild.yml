@@ -48,31 +48,32 @@ jobs:
           submodules: 'false'
     
       # Builds WX static library
-      - name: Build WX
+      - name: Build WX 64-bit
         shell: cmd
         run: |
           dir "wxWidgets\build\msw"
-          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x86"
-          dir "wxWidgets\lib\vc_mswu"
+          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x64"
+          dir "wxWidgets\lib\vc_x64_mswu"
 
       # Build our program
-      - name: Build Tyrant
+      - name: Build Tyrant 64-bit
+        id: build-tyrant
         shell: cmd
         run: |
           dir "tonetyrant\src-cpp"
           SET WX_BUILD_DIR=..\..\wxWidgets\build\msw
           SET RT_MIDI_DIR=..\..\RtMidi-5.0.0
-          "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x86"
-          dir "tonetyrant\src-cpp\vc_mswu"
+          "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x64"
+          dir "tonetyrant\src-cpp\vc_x64_mswu"
 
       # Upload the artifact
       - uses: actions/upload-artifact@v2
         if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-${{ runner.os }}-executable-artifact
-          path: tonetyrant/src-cpp/vc_mswu/*.exe
+          path: tonetyrant/src-cpp/vc_x64_mswu/*.exe
       - uses: actions/upload-artifact@v2
         with:
           name: tyrant-${{ runner.os }}-error-log-artifact
-          path: tonetyrant\src-cpp\vc_mswu\tyrant\tyrant_vc.txt
+          path: tonetyrant\src-cpp\vc_x64_mswu\tyrant\tyrant_vc.txt
           
