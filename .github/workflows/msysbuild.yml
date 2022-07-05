@@ -71,9 +71,9 @@ jobs:
         if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-${{ runner.os }}-executable-artifact
-          path: tonetyrant\src-cpp\vc_x64_mswu\tyrant\*.exe
+          path: tonetyrant/src-cpp/vc_x64_mswu/*.exe
       - uses: actions/upload-artifact@v2
         with:
           name: tyrant-${{ runner.os }}-error-log-artifact
-          path: tonetyrant\src-cpp\vc_x64_mswu\tyrant\tyrant_vc.txt
+          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.txt
           
