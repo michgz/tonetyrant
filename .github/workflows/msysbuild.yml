@@ -53,7 +53,7 @@ jobs:
         run: |
           dir "wxWidgets\build\msw"
           "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x64"
-          dir "wxWidgets"
+          dir /S "wxWidgets\lib"
 
       # Build our program
       - name: Build Tyrant 64-bit
@@ -75,5 +75,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: tyrant-${{ runner.os }}-error-log-artifact
-          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.txt
+          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.log
           
