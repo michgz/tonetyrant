@@ -29,6 +29,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: tonetyrant
+          submodules: 'true'
 
       - name: Checkout WX
         uses: actions/checkout@v2
@@ -50,18 +51,19 @@ jobs:
       - name: Build WX
         shell: cmd
         run: |
-          dir "%MSBUILD_PATH%"
           dir "wxWidgets\build\msw"
-          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|Win32"
-          dir "wxWidgets\build\msw\vc_mswu"
+          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x86"
+          dir "wxWidgets\lib\vc_mswu"
 
       # Build our program
       - name: Build Tyrant
         shell: cmd
         run: |
-          dir "%MSBUILD_PATH%"
           dir "tonetyrant\src-cpp"
+          SET WX_BUILD_DIR=..\..\wxWidgets\build\msw
+          SET RT_MIDI_DIR=..\..\RtMidi-5.0.0
           "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x86"
+          dir "tonetyrant\src-cpp\vc_mswu"
 
       # Upload the artifact
       - uses: actions/upload-artifact@v2

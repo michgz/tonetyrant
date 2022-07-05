@@ -1,4 +1,7 @@
 #include "wx/wxprec.h"
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
 
 #include "wx/docview.h"
 #include "wx/docmdi.h"
@@ -507,9 +510,9 @@ void HintsPanelGeneric::SetNewVal(PP_ID PP, int val_)
     wxWindow *W_ = FindWindowByName(wxString::Format("C_P%d", (int) PP));
     int type_ = PVtype(PP);
     if (type_ == 1)
-        static_cast<wxCheckBox *>(W_)->SetValue((bool)val_);
+        static_cast<wxCheckBox *>(W_)->SetValue((bool)!!val_);
     else if (type_ == 2 || type_ == 5 || type_ == 6 || type_ == 7 || type_ == 11)
-        static_cast<wxComboBox *>(W_)->SetSelection(!!val_);
+        static_cast<wxComboBox *>(W_)->SetSelection(val_);
     else if (type_ == 3)
         static_cast<wxComboBox *>(W_)->SetSelection(val_ / 2);
     else if (type_ == 8)
