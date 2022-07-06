@@ -36,6 +36,7 @@ rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 ### Variables: ###
 
 DESTDIR = 
+OBJS = .
 WX_RELEASE = 3.1
 WX_VERSION = $(WX_RELEASE).6
 LIBDIRNAME = $(wx_top_builddir)/lib
@@ -44,11 +45,11 @@ TEXT_CXXFLAGS = -D__WX$(TOOLKIT)__ $(__WXUNIV_DEFINE_p) $(__DEBUG_DEFINE_p) \
 	-I$(srcdir) -I$(__DLLFLAG_p) $(CXXWARNINGS) \
 	$(CPPFLAGS) $(CXXFLAGS) -DwxHAS_IMAGES_IN_RESOURCES
 TONETYRANT_OBJECTS =  \
-	$(OBJS)\tonetyrant_tyrant.o \
-	$(OBJS)\tonetyrant_doc.o \
-	$(OBJS)\tonetyrant_view.o \
-	$(OBJS)\tonetyrant_hintview.o \
-	$(OBJS)\tonetyrant_midicomms.o
+	$(OBJS)/tonetyrant_tyrant.o \
+	$(OBJS)/tonetyrant_doc.o \
+	$(OBJS)/tonetyrant_view.o \
+	$(OBJS)/tonetyrant_hintview.o \
+	$(OBJS)/tonetyrant_midicomms.o
 CPPDEPS = -MT$@ -MF$@.d -MD -MP
 
 
@@ -150,31 +151,31 @@ clean:
 distclean: clean
 	rm -f config.cache config.log config.status bk-deps bk-make-pch shared-ld-sh Makefile
 
-$(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o $(OBJS)\Crc32.o
-	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)\rtmidi.o $(OBJS)\Crc32.o -L$(LIBDIRNAME) $(LDFLAGS_GUI) $(SAMPLES_RPATH_FLAG) $(LDFLAGS)  $(__WXLIB_CORE_p)  $(__WXLIB_BASE_p)  $(__WXLIB_MONO_p) $(__LIB_SCINTILLA_IF_MONO_p) $(__LIB_TIFF_p) $(__LIB_JPEG_p) $(__LIB_PNG_p)  $(EXTRALIBS_FOR_GUI) $(__LIB_ZLIB_p) $(__LIB_REGEX_p) $(__LIB_EXPAT_p) $(EXTRALIBS_FOR_BASE) $(EXTRALIBS_FOR_RTMIDI) $(LIBS) $(__text___os2_emxbindcmd)
+$(OBJS)/tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)/rtmidi.o $(OBJS)/Crc32.o
+	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)/rtmidi.o $(OBJS)/Crc32.o -L$(LIBDIRNAME) $(LDFLAGS_GUI) $(SAMPLES_RPATH_FLAG) $(LDFLAGS)  $(__WXLIB_CORE_p)  $(__WXLIB_BASE_p)  $(__WXLIB_MONO_p) $(__LIB_SCINTILLA_IF_MONO_p) $(__LIB_TIFF_p) $(__LIB_JPEG_p) $(__LIB_PNG_p)  $(EXTRALIBS_FOR_GUI) $(__LIB_ZLIB_p) $(__LIB_REGEX_p) $(__LIB_EXPAT_p) $(EXTRALIBS_FOR_BASE) $(EXTRALIBS_FOR_RTMIDI) $(LIBS) $(__text___os2_emxbindcmd)
 
 
-$(OBJS)\tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
+$(OBJS)/tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
 
-$(OBJS)\tonetyrant_doc.o: $(srcdir)/doc.cpp
+$(OBJS)/tonetyrant_doc.o: $(srcdir)/doc.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
-$(OBJS)\tonetyrant_view.o: $(srcdir)/view.cpp
+$(OBJS)/tonetyrant_view.o: $(srcdir)/view.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
-$(OBJS)\tonetyrant_hintview.o: $(srcdir)/hintview.cpp
+$(OBJS)/tonetyrant_hintview.o: $(srcdir)/hintview.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
-$(OBJS)\tonetyrant_midicomms.o: $(srcdir)/midi_comms.cpp
+$(OBJS)/tonetyrant_midicomms.o: $(srcdir)/midi_comms.cpp
 	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
-$(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
+$(OBJS)/rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	g++ -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp -I${rtmidi_srcdir}
 
 FLAGS_CRC32     = -O3 -Wall -Wextra -pedantic -s
 
-$(OBJS)\Crc32.o : crc32/Crc32.cpp crc32/Crc32.h
+$(OBJS)/Crc32.o : crc32/Crc32.cpp crc32/Crc32.h
 	$(CXX) $(FLAGS_CRC32) -I./crc32 -c crc32/Crc32.cpp -o $@
 
 ##$(OBJS)\tyrant_docview_rc.o: ./docview.rc
