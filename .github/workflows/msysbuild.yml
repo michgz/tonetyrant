@@ -68,7 +68,7 @@ jobs:
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: cmd
         run: |
-          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x86"
+          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|Win32"
 
       # Build our program
       - name: Build Tyrant 64-bit
