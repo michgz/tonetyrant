@@ -178,7 +178,6 @@ jobs:
         run: |
           ls -lR wx-build/lib
           sudo apt-get install -y libasound2-dev
-          sudo apt-get install -y libgtk-3-0 libgdk3.0-cil libpangocairo-1.0-0 libharfbuzz-bin libatk1.0-0
           cd tonetyrant/src-cpp
           make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
