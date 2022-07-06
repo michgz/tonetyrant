@@ -134,7 +134,7 @@ COND_MONOLITHIC_1___WXLIB_MONO_p = \
 
 ### Targets: ###
 
-all: $(OBJS)\tyrant$(EXEEXT) $(__text_bundle___depname)
+all: $(OBJS)/tyrant$(EXEEXT) $(__text_bundle___depname)
 
 install: 
 
