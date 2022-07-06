@@ -46,18 +46,33 @@ jobs:
           ref: 5.0.0
           path: RtMidi-5.0.0
           submodules: 'false'
-    
+
+      - name: Cache WX 64-bit
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: wx-build/lib
+          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          restore-keys: |
+            wx-3.1-build-lib-${{ runner.os }}-
+
       # Builds WX static library
       - name: Build WX 64-bit
+        if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: cmd
         run: |
-          dir "wxWidgets\build\msw"
           "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x64"
-          dir /S "wxWidgets\lib"
+
+      # Builds WX static library
+      - name: Build WX 32-bit
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        shell: cmd
+        run: |
+          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x86"
 
       # Build our program
       - name: Build Tyrant 64-bit
-        id: build-tyrant
+        id: build-tyrant-x64
         shell: cmd
         run: |
           dir "tonetyrant\src-cpp"
@@ -66,14 +81,113 @@ jobs:
           "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x64"
           dir /S "tonetyrant\src-cpp\vc_x64_mswu"
 
-      # Upload the artifact
+      # Build our program
+      - name: Build Tyrant 32-bit
+        id: build-tyrant-x86
+        shell: cmd
+        run: |
+          dir "tonetyrant\src-cpp"
+          SET WX_BUILD_DIR=..\..\wxWidgets\build\msw
+          SET RT_MIDI_DIR=..\..\RtMidi-5.0.0
+          "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x86"
+          dir /S "tonetyrant\src-cpp\vc_mswu"
+
+      # Upload the artifacts
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant-x64.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-64bit-executable-artifact
+          path: tonetyrant/src-cpp/vc_x64_mswu/*.exe
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant-x86.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-32bit-executable-artifact
+          path: tonetyrant/src-cpp/vc_mswu/*.exe
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tyrant-${{ runner.os }}-error-64bit-log-artifact
+          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.log
+      - uses: actions/upload-artifact@v2
+        with:
+          name: tyrant-${{ runner.os }}-error-32bit-log-artifact
+          path: tonetyrant/src-cpp/vc_mswu/tyrant/tyrant_vc.log
+
+
+  build-linux:
+
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Tone Tyrant
+        uses: actions/checkout@v2
+        with:
+          path: tonetyrant
+          submodules: 'true'
+
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.1.6
+          path: wxWidgets
+          submodules: 'true'
+
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi
+          submodules: 'false'
+
+      - name: Cache WX
+        id: cache-wx
+        uses: actions/cache@v3
+        with:
+          path: wx-build/lib
+          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          restore-keys: |
+            wx-3.1-build-lib-gtk3-${{ runner.os }}-
+    
+      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
+      - name: Build WX if no Cache
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get install -y gtk3.0
+          sudo apt-get install -y build-essential libgtk-3-dev
+          mkdir wx-build
+          cd wx-build
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=3
+          make all
+
+      # For fun :)
+      - name: Build Sample
+        id: build-sample
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          cd wx-build/samples/docview
+          make all
+
+      # Build our program
+      - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
+        run: |
+          ls -lR wx-build/lib
+          cd tonetyrant/src-cpp
+          make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+
+      # Upload the two artifacts
       - uses: actions/upload-artifact@v2
         if: steps.build-tyrant.outcome == 'success'
         with:
           name: tyrant-${{ runner.os }}-executable-artifact
-          path: tonetyrant/src-cpp/vc_x64_mswu/*.exe
+          path: tonetyrant/src-cpp/tyrant
       - uses: actions/upload-artifact@v2
+        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
-          name: tyrant-${{ runner.os }}-error-log-artifact
-          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.log
-          
+          name: docview-${{ runner.os }}-executable-artifact
+          path: wx-build/samples/docview/docview
