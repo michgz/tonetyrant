@@ -100,7 +100,7 @@ void __config(void);
 
     std::set<unsigned short int> _highlighted_offsets;
     wxFont _font1, _font2;
-    wxColour _font_colour1, _font_colour2;
+    wxColour _font_colour1, _font_colour2, _font_colour3, _font_colour4;
     wxBrush _brush1, _brush2, _brush3, _brush4;
     unsigned int _x1, _x2, _y1, _y2, _x3, _x4, _header_offset;
     signed int _caret_pos;
