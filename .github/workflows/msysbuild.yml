@@ -52,9 +52,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          key: wx-3.1-build-lib-${{ runner.os }}-3264bit-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
-            wx-3.1-build-lib-${{ runner.os }}-
+            wx-3.1-build-lib-${{ runner.os }}-3264bit-
 
       # Builds WX static library
       - name: Build WX 64-bit
@@ -148,9 +148,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build/lib
-          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-${{ hashFiles('wx-build/config.log') }}
+          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
-            wx-3.1-build-lib-gtk3-${{ runner.os }}-
+            wx-3.1-build-lib-gtk3-${{ runner.os }}-static-
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
       - name: Build WX if no Cache
@@ -177,6 +177,8 @@ jobs:
         continue-on-error: true
         run: |
           ls -lR wx-build/lib
+          # Needs ALSA installed to build rtmidi
+          sudo apt-get install -y libasound2-dev
           cd tonetyrant/src-cpp
           make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
