@@ -179,7 +179,7 @@ jobs:
           ls -lR wx-build/lib
           sudo apt-get install -y libasound2-dev
           cd tonetyrant/src-cpp
-          make all -f Makefile.linux wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+          make all -f Makefile.unx wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
       # Upload the two artifacts
       - uses: actions/upload-artifact@v2
