@@ -250,7 +250,22 @@ jobs:
           cd wx-build/samples/docview
           make all
 
+      # Build our program
+      - name: Build Tyrant
+        id: build-tyrant
+        continue-on-error: true
+        run: |
+          ls -lR wx-build/lib
+          sudo apt-get install -y libasound2-dev
+          cd tonetyrant/src-cpp
+          make all -f Makefile.gtk2 wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+
       # Upload the two artifacts
+      - uses: actions/upload-artifact@v2
+        if: steps.build-tyrant.outcome == 'success'
+        with:
+          name: tyrant-${{ runner.os }}-gtk2-executable-artifact
+          path: tonetyrant/src-cpp/tyrant
       - uses: actions/upload-artifact@v2
         if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
