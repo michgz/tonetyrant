@@ -20,7 +20,7 @@ rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 CXX = g++
 
 # Standard flags for C++ 
-CXXFLAGS ?= -Icrc32 -Iinih
+CXXFLAGS ?= -Icrc32 -Iinih -DwxHAS_IMAGES_IN_RESOURCES
 
 # Standard preprocessor flags (common for CC and CXX) 
 CPPFLAGS ?= 
