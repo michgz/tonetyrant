@@ -298,7 +298,6 @@ void MyApp::CreateMenuBarForFrame(wxFrame *frame, wxMenu *file, wxMenu *edit, wx
 
 const char  ICON_LOCATION[] = "../tyrant-64x64.ico";
 
-
 void MyApp::ShowAbout(void)
 {
     wxDialog *dlg = new wxDialog(GetTopWindow(), wxID_ANY, wxString(_("About ")) + GetAppName(), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, "");
@@ -309,8 +308,18 @@ void MyApp::ShowAbout(void)
     _icon->SetIcon(wxIcon(ICON_LOCATION));
     sizer->Add(_icon, wxALIGN_LEFT);
 
-    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.0.0"), 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.1.99"), 0, wxALIGN_CENTRE|wxALL, 5);
+#if defined(__WXGTK__)
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for GTK"), 0, wxALIGN_CENTRE|wxALL, 5);
+#elif defined(__WIN32__)
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows 32-bit"), 0, wxALIGN_CENTRE|wxALL, 5);
+#elif defined(__WIN64__)
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows 64-bit"), 0, wxALIGN_CENTRE|wxALL, 5);
+#elif defined(__WXMSW__)
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows"), 0, wxALIGN_CENTRE|wxALL, 5);
+#else
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++"), 0, wxALIGN_CENTRE|wxALL, 5);
+#endif
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "\u00A9 2022"), 0, wxALIGN_CENTRE|wxALL, 5);
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "https://github.com/michgz/ToneTyrant"), 0, wxALIGN_CENTRE|wxALL, 5);
 

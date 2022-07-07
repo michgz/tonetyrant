@@ -6,7 +6,7 @@
 
 
 # Change this!!
-wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.1.6/buildgtk
+wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.2.0/buildx11
 
 # Change this!!
 rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
