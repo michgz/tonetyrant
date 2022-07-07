@@ -16,6 +16,7 @@ jobs:
 
   build-windows:
 
+    if: 'false'
     runs-on: windows-latest
 
     env:
@@ -147,10 +148,10 @@ jobs:
         id: cache-wx
         uses: actions/cache@v3
         with:
-          path: wx-build/lib
-          key: wx-3.1-build-lib-gtk3-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
+          path: wx-build-3.1-gtk3/
+          key: wx-3.1-build-gtk3-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
-            wx-3.1-build-lib-gtk3-${{ runner.os }}-static-
+            wx-3.1-build-gtk3-${{ runner.os }}-static-
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
       - name: Build WX if no Cache
@@ -158,8 +159,8 @@ jobs:
         run: |
           sudo apt-get install -y gtk3.0
           sudo apt-get install -y build-essential libgtk-3-dev
-          mkdir wx-build
-          cd wx-build
+          mkdir wx-build-3.1-gtk3/
+          cd wx-build-3.1-gtk3/
           ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=3
           make all
 
@@ -168,7 +169,8 @@ jobs:
         id: build-sample
         if: steps.cache-wx.outputs.cache-hit != 'true'
         run: |
-          cd wx-build/samples/docview
+          ls -lR wx-build-3.1-gtk3/
+          cd wx-build-3.1-gtk3//samples/docview
           make all
 
       # Build our program
@@ -176,10 +178,9 @@ jobs:
         id: build-tyrant
         continue-on-error: true
         run: |
-          ls -lR wx-build/lib
           sudo apt-get install -y libasound2-dev
           cd tonetyrant/src-cpp
-          make all -f Makefile.unx wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+          make all -f Makefile.unx wx_top_builddir=../../wx-build-3.1-gtk3/ top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
       # Upload the two artifacts
       - uses: actions/upload-artifact@v2
@@ -191,7 +192,7 @@ jobs:
         if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
           name: docview-${{ runner.os }}-executable-artifact
-          path: wx-build/samples/docview/docview
+          path: wx-build-3.1-gtk3/samples/docview/docview
 
   build-linux-gtk2:
 
@@ -227,19 +228,19 @@ jobs:
         id: cache-wx
         uses: actions/cache@v3
         with:
-          path: wx-build/lib
-          key: wx-3.1-build-lib-gtk2-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
+          path: wx-build-3.1-gtk2
+          key: wx-3.1-build-gtk2-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
           restore-keys: |
-            wx-3.1-build-lib-gtk2-${{ runner.os }}-static-
+            wx-3.1-build-gtk2-${{ runner.os }}-static-
     
       # Builds WX static library. This is a long action! >30 minutes! Cache if possible
       - name: Build WX if no Cache
         if: steps.cache-wx.outputs.cache-hit != 'true'
         run: |
           sudo apt-get install -y build-essential libgtk2.0-dev
-          mkdir wx-build
-          cd wx-build
-          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-regex --with-gtk=2
+          mkdir wx-build-3.1-gtk2
+          cd wx-build-3.1-gtk2
+          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=2
           make all
 
       # For fun :)
@@ -247,7 +248,8 @@ jobs:
         id: build-sample
         if: steps.cache-wx.outputs.cache-hit != 'true'
         run: |
-          cd wx-build/samples/docview
+          ls -lR wx-build-3.1-gtk32
+          cd wx-build-3.1-gtk2/samples/docview
           make all
 
       # Build our program
@@ -255,10 +257,9 @@ jobs:
         id: build-tyrant
         continue-on-error: true
         run: |
-          ls -lR wx-build/lib
           sudo apt-get install -y libasound2-dev
           cd tonetyrant/src-cpp
-          make all -f Makefile.gtk2 wx_top_builddir=../../wx-build top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
+          make all -f Makefile.unx wx_top_builddir=../../wx-build-3.1-gtk2 top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
 
       # Upload the two artifacts
       - uses: actions/upload-artifact@v2
@@ -270,5 +271,5 @@ jobs:
         if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
           name: docview-${{ runner.os }}-gtk2-executable-artifact
-          path: wx-build/samples/docview/docview
+          path: wx-build-3.1-gtk2/samples/docview/docview
 
