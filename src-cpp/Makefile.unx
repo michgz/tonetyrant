@@ -53,6 +53,7 @@ EXTRALIBS_FOR_RTMIDI = -lasound -lpthread
 
 ### Variables: ###
 
+CXXC = $(CXX)
 CPPDEPS = -MT$@ -MF`echo $@ | sed -e 's,\.o$$,.d,'` -MD -MP
 WX_VERSION_MAJOR = $(shell echo $(WX_VERSION) | cut -c1,1)
 WX_VERSION_MINOR = $(shell echo $(WX_VERSION) | cut -c2,2)
@@ -124,7 +125,7 @@ tonetyrant_midicomms.o: ${srcdir}/midi_comms.cpp
 	$(CXXC) -c -o $@ $(TONETYRANT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)/rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
-	g++ -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp -I${rtmidi_srcdir}
+	$(CXX) -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp -I${rtmidi_srcdir}
 
 FLAGS_CRC32     = -O3 -Wall -Wextra -pedantic -s
 
