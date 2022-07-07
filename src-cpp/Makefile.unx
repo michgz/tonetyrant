@@ -5,13 +5,19 @@
 # =========================================================================
 
 
+# Change this!!
+wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.1.6/buildgtk
+
+# Change this!!
+rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
+
 
 # -------------------------------------------------------------------------
 # These are configurable options:
 # -------------------------------------------------------------------------
 
 # C++ compiler 
-CXX = g++
+CXX = `$(WX_CONFIG) --cxx`
 
 # Standard flags for C++ 
 CXXFLAGS ?= 
@@ -23,27 +29,21 @@ CPPFLAGS ?=
 LDFLAGS ?= 
 
 # Location and arguments of wx-config script 
-WX_CONFIG ?= wx-config
+WX_CONFIG ?= ${wx_top_builddir}/wx-config
 
 # Port of the wx library to build against [gtk1,gtk2,msw,x11,motif,osx_cocoa,osx_carbon,dfb]
-WX_PORT ?= gtk3
+WX_PORT ?= $(shell $(WX_CONFIG) --query-toolkit)
 
 # Use DLL build of wx library to use? [0,1]
-WX_SHARED ?= 0
+WX_SHARED ?= $(shell if test -z `$(WX_CONFIG) --query-linkage`; then echo 1; else echo 0; fi)
 
 # Compile Unicode build of wxWidgets? [0,1]
-WX_UNICODE ?= 1
+WX_UNICODE ?= $(shell $(WX_CONFIG) --query-chartype | sed 's/unicode/1/;s/ansi/0/')
 
 # Version of the wx library to build against. 
-WX_VERSION ?= 3.1
+WX_VERSION ?= $(shell $(WX_CONFIG) --query-version | sed -e 's/\([0-9]*\)\.\([0-9]*\)/\1\2/')
 
-# Change this!!
-wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.1.6/buildgtk
 
-# Change this!!
-rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
-
-LIBS = -lz -lm
 EXTRALIBS_FOR_RTMIDI = -lasound -lpthread
 
 
@@ -58,11 +58,8 @@ WX_VERSION_MAJOR = $(shell echo $(WX_VERSION) | cut -c1,1)
 WX_VERSION_MINOR = $(shell echo $(WX_VERSION) | cut -c2,2)
 WX_CONFIG_FLAGS = $(WX_CONFIG_UNICODE_FLAG) $(WX_CONFIG_SHARED_FLAG) \
 	--toolkit=$(WX_PORT) --version=$(WX_VERSION_MAJOR).$(WX_VERSION_MINOR)
-#TONETYRANT_CXXFLAGS = -I. -I${wx_top_builddir}/lib/wx/include/gtk3-unicode-3.0        -I${top_srcdir}/include -D_FILE_OFFSET_BITS=64 -DWXUSINGDLL -D__WXGTK__ -pthread   \
-#	$(CXXFLAGS)
-TONETYRANT_CXXFLAGS = -I. -I${wx_top_builddir}/lib/wx/include/gtk3-unicode-static-3.1 -I${top_srcdir}/include -D_FILE_OFFSET_BITS=64 -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gio-unix-2.0 -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/harfbuzz -I/usr/include/atk-1.0 -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include  -D__WXGTK__     -pthread -Wall -Wundef -Wunused-parameter -Wno-ctor-dtor-privacy -Woverloaded-virtual -Wno-deprecated-declarations -O2 -I/usr/include/pango-1.0 -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/gtk-3.0/unix-print -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gio-unix-2.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/libsecret-1 -fPIC -DPIC   -fPIC -DPIC  \
-	$(CXXFLAGS)     \
-	-Icrc32 -Iinih
+TONETYRANT_CXXFLAGS = -I. `$(WX_CONFIG) --cxxflags $(WX_CONFIG_FLAGS)` $(CPPFLAGS) \
+	$(CXXFLAGS)
 TONETYRANT_OBJECTS =  \
 	tonetyrant_tyrant.o \
 	tonetyrant_doc.o \
@@ -70,7 +67,8 @@ TONETYRANT_OBJECTS =  \
 	tonetyrant_hintview.o \
 	tonetyrant_midicomms.o
 EXEEXT = 
-OBJS = 
+OBJS = .
+srcdir = .
 
 ### Conditionally set variables: ###
 
@@ -101,12 +99,8 @@ clean:
 	rm -f ./*.d
 	rm -f tyrant$(EXEEXT)
 
-#CORE_FLAGS = -L${wx_top_builddir}/lib -pthread   -Wl,-rpath,${wx_top_builddir}/lib -lwx_gtk3u_aui-3.0 -lwx_gtk3u_core-3.0 -lwx_baseu-3.0 
-
-CORE_FLAGS = -L${wx_top_builddir}/lib -pthread -lwx_gtk3u_aui-3.1  lwx_gtk3u_core-3.1 -lwx_baseu-3.1 -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lgthread-2.0 -pthread -lglib-2.0 -lX11 -lSM -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -lharfbuzz -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lXtst -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lharfbuzz -lfontconfig -lfreetype -lpng  -ljpeg -ljbig    -pthread     -ldl -lsecret-1 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lpcre2-32 -ldl -lsecret-1 -lgio-2.0 -lgobject-2.0 -lglib-2.0
-
 tyrant$(EXEEXT): $(TONETYRANT_OBJECTS) $(OBJS)/rtmidi.o $(OBJS)/Crc32.o
-	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)/rtmidi.o $(OBJS)/Crc32.o $(LDFLAGS) $(CORE_FLAGS) $(EXTRALIBS_FOR_RTMIDI) $(LIBS)
+	$(CXX) -o $@ $(TONETYRANT_OBJECTS) $(OBJS)/rtmidi.o $(OBJS)/Crc32.o $(LDFLAGS) `$(WX_CONFIG) $(WX_CONFIG_FLAGS) --libs aui,core,base` $(EXTRALIBS_FOR_RTMIDI)
 
 tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
 	$(CXXC) -c -o $@ $(TONETYRANT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
@@ -129,7 +123,7 @@ $(OBJS)/rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 FLAGS_CRC32     = -O3 -Wall -Wextra -pedantic -s
 
 $(OBJS)/Crc32.o : crc32/Crc32.cpp crc32/Crc32.h
-	$(CXX) $(FLAGS_CRC32) -I./crc32 -c crc32/Crc32.cpp -o $@
+	g++ $(FLAGS_CRC32) -I./crc32 -c crc32/Crc32.cpp -o $@
 
 .PHONY: all clean
 
