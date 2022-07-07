@@ -20,7 +20,7 @@ rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 CXX = g++
 
 # Standard flags for C++ 
-CXXFLAGS ?= -Icrc32 -Iinih -DwxHAS_IMAGES_IN_RESOURCES
+CXXFLAGS ?= -Icrc32 -Iinih -DwxHAS_IMAGES_IN_RESOURCES -DWX_PRECOMP
 
 # Standard preprocessor flags (common for CC and CXX) 
 CPPFLAGS ?= 
@@ -124,7 +124,7 @@ tonetyrant_hintview.o: ${srcdir}/hintview.cpp
 	$(CXXC) -c -o $@ $(TONETYRANT_CXXFLAGS) $(CPPDEPS) $<
 
 tonetyrant_midicomms.o: ${srcdir}/midi_comms.cpp
-	$(CXXC) -c -o $@ $(TONETYRANT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXXC) -c -o $@ $(TONETYRANT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
 
 $(OBJS)/rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	$(CXX) -c -Wall -D__LINUX_ALSA__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp -I${rtmidi_srcdir}
