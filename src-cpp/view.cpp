@@ -97,7 +97,7 @@ void ToneView::__config(void)
 
     _font_colour1 = wxColourDatabase().Find("BLACK");
     _font_colour2 = wxColourDatabase().Find("RED");
-    _font_colour3 = wxColourDatabase().Find("WHITE");
+    _font_colour3 = wxColour(235, 235, 234);    // Light ivory colour
     _font_colour4 = wxColour(86, 125, 134);     // A dark-ish blue, for the ASCII characters
 
     
