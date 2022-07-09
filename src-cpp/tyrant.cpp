@@ -305,7 +305,8 @@ void MyApp::ShowAbout(void)
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
     wxStaticBitmap *_icon = new wxStaticBitmap(dlg, wxID_ANY, wxNullBitmap);
-#if defined(__WXMSW__)
+#ifdef wxHAS_IMAGES_IN_RESOURCES
+    // Windows: load from resources
     _icon->SetIcon(wxIcon("tyrant", wxICON_DEFAULT_TYPE, 64, 64));
 #else
     // TODO: make this independent of the file structure
