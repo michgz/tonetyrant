@@ -297,7 +297,7 @@ void ToneDocument::OnSetToRandomise(bool include_wavetable)
         {
             unsigned long int Y = (rand() % (Parameters[PP].recommendedLimits[1] - Parameters[PP].recommendedLimits[0] + 1)) + Parameters[PP].recommendedLimits[0];
             
-            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset + 0x20]);
+            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset]);
             unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
                 
             X = X & ~MASK;
@@ -336,7 +336,7 @@ void ToneDocument::OnSetToDefault(bool include_wavetable)
         {
             unsigned long int Y = Parameters[PP].defaultValue;
             
-            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset + 0x20]);
+            unsigned long int X = *((unsigned long int *) &altered_.data()[Parameters[PP].byteOffset]);
             unsigned long int MASK = ((1ULL << Parameters[PP].bitCount) - 1) << Parameters[PP].bitOffset;
                 
             X = X & ~MASK;
