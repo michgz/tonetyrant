@@ -513,8 +513,8 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
     
     res->_type = 3;
     res->_document = document;
-    std::vector<unsigned char>::const_iterator first = old_vals.begin() + 0x20;
-    std::vector<unsigned char>::const_iterator last = old_vals.begin() + 0x1E8;
+    std::vector<unsigned char>::const_iterator first = old_vals.begin() + 0x00;
+    std::vector<unsigned char>::const_iterator last = old_vals.begin() + 0x1C8;
     //vector<T> newVec(first, last);
     res->_old_vals = std::vector<unsigned char>(first, last);
     res->_new_vals = new_vals;

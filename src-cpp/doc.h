@@ -73,7 +73,7 @@ protected:
     virtual bool DoSaveDocument(const wxString& filename);
     virtual bool DoOpenDocument(const wxString& file);
 
-private:
+public:
     // Gets the subset 0x20 - 0x1E8
     std::vector<unsigned char> GetSubsetData(void);
 public:

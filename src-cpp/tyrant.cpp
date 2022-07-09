@@ -506,7 +506,7 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
             if (dest_doc.size() == 0x1C8)
             {
                 
-                HexEditCommand * cmd = HexEditCommand::CompletelyChange(src_doc, static_cast<std::vector<unsigned char>>(*src_doc), dest_doc);
+                HexEditCommand * cmd = HexEditCommand::CompletelyChange(src_doc, src_doc->GetSubsetData(), dest_doc);
                 src_doc->GetCommandProcessor()->Submit(cmd);
                 this->m_canvas->Refresh();
                 
