@@ -467,7 +467,7 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
     wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Read from User Tone:"), wxDefaultPosition, wxSize(140, 22));
     sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
-    wxString s_1 = wxString("%d", target_saved_value);
+    wxString s_1 = wxString::Format("%d", target_saved_value);
     wxSpinCtrl *spn_1 = new wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
     sizer.Add(spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
@@ -556,7 +556,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
     wxStaticText *lbl_1 = new wxStaticText(dlg, wxID_ANY, _("Write to User Tone:"), wxDefaultPosition, wxSize(140, 22));
     sizer.Add(lbl_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
-    wxString s_1 = wxString("%d", target_saved_value);
+    wxString s_1 = wxString::Format("%d", target_saved_value);
     wxSpinCtrl *spn_1 = new wxSpinCtrl(dlg, wxID_ANY, s_1, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 801, 900, target_saved_value, "TargetValue");
     sizer.Add(spn_1, 0, wxALIGN_CENTRE|wxLEFT|wxRIGHT, 5);
     
