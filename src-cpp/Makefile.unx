@@ -6,7 +6,7 @@
 
 
 # Change this!!
-wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.2.0/buildx11
+wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.2.0/buildgtk
 
 # Change this!!
 rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
@@ -23,7 +23,7 @@ CXX = `$(WX_CONFIG) --cxx`
 CXXFLAGS ?= 
 
 # Standard preprocessor flags (common for CC and CXX) 
-CPPFLAGS ?= -Icrc32 -Iinih -DwxHAS_IMAGES_IN_RESOURCES -DWX_PRECOMP
+CPPFLAGS ?= -Icrc32 -Iinih
 
 # Standard linker flags 
 LDFLAGS ?= 

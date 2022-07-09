@@ -64,9 +64,7 @@
 #endif
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
-    #include "doc.xpm"
-    #include "chart.xpm"
-    #include "notepad.xpm"
+    #include "tyrant-64x64.xpm"
 #endif
 
 #include "parameters.h"
@@ -224,7 +222,7 @@ bool MyApp::OnInit()
 
 
 #ifndef wxHAS_IMAGES_IN_RESOURCES
-    frame->SetIcon(wxICON(doc));
+    frame->SetIcon(wxICON(tyrant));
 #endif
 
 
@@ -309,8 +307,8 @@ void MyApp::ShowAbout(void)
     // Windows: load from resources
     _icon->SetIcon(wxIcon("tyrant", wxICON_DEFAULT_TYPE, 64, 64));
 #else
-    // TODO: make this independent of the file structure
-    _icon->SetIcon(wxIcon(ICON_LOCATION));
+    // Linux: use XPM
+    _icon->SetIcon(wxICON(tyrant));
 #endif
     sizer->Add(_icon, wxALIGN_LEFT);
 
