@@ -1,4 +1,4 @@
 
-from src.main import main
+from python.main import main
 
 main()

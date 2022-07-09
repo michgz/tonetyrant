@@ -151,7 +151,7 @@ for i in elem.find("parameters"):
              ))
     
 
-with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_py:
+with open(p.parent.parent.resolve().joinpath("python", "parameters.py"), "w") as f_py:
 
     f_py.write("## Automatically generated file. Time of processing: {0}\n\n".format( datetime.datetime.now().isoformat() ))
     f_py.write(textwrap.dedent("""
@@ -183,5 +183,51 @@ with open(p.parent.parent.resolve().joinpath("src", "parameters.py"), "w") as f_
     
     f_py.write("]\n\n\n")
 
+    
+    
+    
+    
+with open(p.parent.parent.resolve().joinpath("src-cpp", "parameters.h"), "w") as f_cpp:
+    
+    f_cpp.write("/* Automatically generated file. Time of processing: {0}   */\n\n".format( datetime.datetime.now().isoformat() ))
+    f_cpp.write(textwrap.dedent("""
+                  #include <wx/wxprec.h>
+
+
+                  class Parameter
+                  {
+                      public:
+                      
+                      
+                      int number;
+                      int block0;
+                      wxString name;
+                      wxString cluster;
+                      int byteOffset;
+                      int byteCount;
+                      int bitOffset;
+                      int bitCount;
+                      int recommendedLimits[2];
+                      int recommendedStep;
+                      int defaultValue;
+                      int midiBytes;
+                      wxString helpStr;
+                      
+                      
+                  };
+                  
+                  """))
+
+
+
+    f_cpp.write("const Parameter   Parameters[{0}] =\n{{\n".format(len(A)))
+
+    for i, AA in enumerate(A):
+        if i > 0:
+            f_cpp.write(",")
+        f_cpp.write('\n    {{{0}, {1}, "{10}", "{11}", {2}, {3}, {4}, {5}, {{{7}, {8}}}, {9}, {6}, {12}, "{13}"}}'.format(AA[0], AA[1], AA[2], AA[3], AA[4], AA[5], AA[6], AA[7], AA[8], AA[9], AA[10], AA[11], AA[12], AA[13]))
+    
+    f_cpp.write("\n\n};\n\n\n")
+    
     
 print("...done")

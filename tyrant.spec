@@ -27,7 +27,7 @@ def get_version():
     import os.path
     import importlib
     import importlib.util
-    spec = importlib.util.spec_from_file_location("main", os.path.join(os.getcwd(), "src", "main.py"))
+    spec = importlib.util.spec_from_file_location("main", os.path.join(os.getcwd(), "python", "main.py"))
     main = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(main)
     ver_strs = main.__version__.split(".")
@@ -88,7 +88,7 @@ else:
     binaries_ = []
 
 
-a = Analysis(['src/main.py'],
+a = Analysis(['python/main.py'],
              pathex=[],
              binaries=binaries_,
              datas=[ ('./tyrant-64x64.ico', '.') ],

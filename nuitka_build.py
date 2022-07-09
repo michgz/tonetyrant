@@ -10,8 +10,8 @@ import nuitka.__main__
 
 def read_version():
     # Pull the version out of our main.py file
-    import src.main
-    return src.main.__version__
+    import python.main
+    return python.main.__version__
     
     
 def build():
@@ -38,7 +38,7 @@ def build():
     sys.argv.extend(["--show-scons"])   # These two produce lots of output!!
     sys.argv.extend(["--verbose"])      #
     sys.argv.extend(["-o", "tyrant.exe"])
-    sys.argv.extend(["src/main.py"])
+    sys.argv.extend(["python/main.py"])
     
     # Now run!
     nuitka.__main__.main()
