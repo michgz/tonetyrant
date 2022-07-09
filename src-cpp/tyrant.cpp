@@ -305,7 +305,12 @@ void MyApp::ShowAbout(void)
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
     wxStaticBitmap *_icon = new wxStaticBitmap(dlg, wxID_ANY, wxNullBitmap);
+#if defined(__WXMSW__)
+    _icon->SetIcon(wxIcon("tyrant", wxICON_DEFAULT_TYPE, 64, 64));
+#else
+    // TODO: make this independent of the file structure
     _icon->SetIcon(wxIcon(ICON_LOCATION));
+#endif
     sizer->Add(_icon, wxALIGN_LEFT);
 
     sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.1.99"), 0, wxALIGN_CENTRE|wxALL, 5);
