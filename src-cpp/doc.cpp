@@ -84,7 +84,7 @@ bool ToneDocument::OnCreate(const wxString& path, long flags)
     
     for (i = 0; i < sizeof(CALSINE)-1; i ++)  // -1 for the null termination
     {
-        push_back(CALSINE[i]);
+        this->std::vector<unsigned char>::push_back(CALSINE[i]);
     }
 
 
