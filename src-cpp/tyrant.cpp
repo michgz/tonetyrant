@@ -317,10 +317,10 @@ void MyApp::ShowAbout(void)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for GTK 3.0"), 0, wxALIGN_CENTRE|wxALL, 5);
 #elif defined(__WXGTK__)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for GTK 2.0"), 0, wxALIGN_CENTRE|wxALL, 5);
-#elif defined(__WIN32__)
-    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows 32-bit"), 0, wxALIGN_CENTRE|wxALL, 5);
 #elif defined(__WIN64__)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows 64-bit"), 0, wxALIGN_CENTRE|wxALL, 5);
+#elif defined(__WIN32__)
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows 32-bit"), 0, wxALIGN_CENTRE|wxALL, 5);
 #elif defined(__WXMSW__)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for Windows"), 0, wxALIGN_CENTRE|wxALL, 5);
 #else
