@@ -56,6 +56,7 @@ class HintsDialog : public wxFrame
     void OnCheckChanged(wxCommandEvent& event);
     void OnComboBoxSelected(wxCommandEvent& event);
     void OnTextChanged(wxCommandEvent& event);
+    void OnSpinCtrlEnter(wxCommandEvent& event);
     
     void UpdateValues(wxDocument* doc_);
 

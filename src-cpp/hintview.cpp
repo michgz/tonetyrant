@@ -322,6 +322,12 @@ class CustomListBox_NoteOffVelocity : public wxComboBox
 };
 
 
+// Linux seem to handle enter keys on spin controls just fine.
+#ifdef __WXMSW__
+#define wxTE_PROCESS_ENTER_WINDOWS_ONLY   wxTE_PROCESS_ENTER
+#else
+#define wxTE_PROCESS_ENTER_WINDOWS_ONLY   0
+#endif
 
 HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, int>> params) : wxPanel(parent, wxID_ANY)
 {
@@ -387,7 +393,7 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                 }
                 else if (PVtype_ == 8)
                 {
-                    w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -4, 3, 0);
+                    w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS|wxTE_PROCESS_ENTER_WINDOWS_ONLY, -4, 3, 0);
                     w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
                 else if (PVtype_ == 11)
@@ -401,11 +407,11 @@ HintsPanelGeneric::HintsPanelGeneric(wxWindow *parent, std::list<std::pair<int, 
                     if (Parameters[PP].bitCount > 16)
                     {
                         // Put some arbitrary limit on the maximum field
-                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 1023, 0);
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS|wxTE_PROCESS_ENTER_WINDOWS_ONLY, 0, 1023, 0);
                     }
                     else
                     {
-                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, (1 << Parameters[PP].bitCount)-1, 0);
+                        w_ = new wxSpinCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS|wxTE_PROCESS_ENTER_WINDOWS_ONLY, 0, (1 << Parameters[PP].bitCount)-1, 0);
                     }
                     w_->SetName(wxString::Format("C_P%d", /*PV.id_*/(int) PP));
                 }
@@ -737,6 +743,7 @@ HintsDialog::HintsDialog(wxWindow *parent) :
     Bind(wxEVT_IDLE, &HintsDialog::OnIdle, this); // Want to adjust the starting position relative to the parent
 
     Bind(wxEVT_SPINCTRL, &HintsDialog::OnValueChanged, this);
+    Bind(wxEVT_TEXT_ENTER, &HintsDialog::OnSpinCtrlEnter, this);
     Bind(wxEVT_CHECKBOX, &HintsDialog::OnCheckChanged, this);
     Bind(wxEVT_COMBOBOX, &HintsDialog::OnComboBoxSelected, this);
 }
@@ -747,6 +754,40 @@ HintsDialog::~HintsDialog()
     SetSizer(NULL, false);
 }
 
+void HintsDialog::OnSpinCtrlEnter(wxCommandEvent& event)
+{
+    // Handle an "Enter" key being pressed. This is only the case in Windows builds
+    // due to the wxTE_ENTER_PROCESS macro.
+    
+    if (_panel == NULL)
+        return;   // Nothing we can do
+    wxWindow * w_ = FindWindowById(event.GetId(), _panel);
+    if (w_ == NULL)
+    {
+        wxLogError("Could not find window ", event.GetId());
+        return;
+    }
+    
+    std::list<PP_ID> PARAMS;
+    
+    for (auto iter = _panel->PARAMS.begin(); iter != _panel->PARAMS.end(); iter++)
+    {
+        if (wxString::Format("C_P%d", (int)*iter).IsSameAs(w_->GetName()))
+        {
+            int T_ = PVtype(*iter);
+            // Only proceed if it's a spin-type control
+            if (T_ == 0 || T_ == 8)
+            {
+                // An "Enter" event has been received by a spin control. The usual
+                // way to force a validation of the entered text is for the control
+                // to lose focus --- in this case, to the main view window.
+                this->GetParent()->Raise();
+            }
+            break;
+        }
+    }
+
+}
 void HintsDialog::OnIdle(wxIdleEvent& event)
 {
     SetPosition( wxPoint( GetParent()->GetPosition().x + GetParent()->GetSize().x + 5, GetParent()->GetPosition().y + 100) );  // Move the window out of the way.
