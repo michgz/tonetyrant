@@ -240,12 +240,6 @@ int MyApp::OnExit()
 #endif // wxUSE_CONFIG
     delete manager;
 
-    // Make sure RTMidi is linking, don't do anything more with it at this stage.
-    RtMidiOut * midi = new RtMidiOut();
-
-    (void) midi->getPortCount();
-
-
     return wxApp::OnExit();
 }
 
