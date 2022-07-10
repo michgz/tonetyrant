@@ -51,10 +51,10 @@ jobs:
         id: cache-wx
         uses: actions/cache@v3
         with:
-          path: wx-build/lib
-          key: wx-3.2-build-lib-${{ runner.os }}-3264bit-${{ hashFiles('wx-build/config.log') }}
+          path: wxWidgets/lib
+          key: wx-3.2-build-lib-${{ runner.os }}-3264bit-static-${{ hashFiles('wxWidgets/lib/config.log') }}
           restore-keys: |
-            wx-3.2-build-lib-${{ runner.os }}-3264bit-
+            wx-3.2-build-lib-${{ runner.os }}-3264bit-static-
 
       # Builds WX static library
       - name: Build WX 64-bit
@@ -148,7 +148,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build-3.2-gtk3/
-          key: wx-3.2-build-gtk3-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
+          key: wx-3.2-build-gtk3-${{ runner.os }}-static-${{ hashFiles('wx-build-3.2-gtk3/config.log') }}
           restore-keys: |
             wx-3.2-build-gtk3-${{ runner.os }}-static-
       
@@ -231,7 +231,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wx-build-3.2-gtk2
-          key: wx-3.2-build-gtk2-${{ runner.os }}-static-${{ hashFiles('wx-build/config.log') }}
+          key: wx-3.2-build-gtk2-${{ runner.os }}-static-${{ hashFiles('wx-build-3.2-gtk2/config.log') }}
           restore-keys: |
             wx-3.2-build-gtk2-${{ runner.os }}-static-
       
