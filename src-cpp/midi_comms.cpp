@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 #include "inih/INIReader.h"
 #include "Crc32.h"
 
@@ -824,6 +825,22 @@ int set_single_parameter(int parameter,
     midi_out->closePort();
     delete midi_out;
     
+    
+    if (_midiComms._logging_level >= 1)
+    {
+        std::ofstream logfile;
+
+      logfile.open("tyrant.log", std::ios_base::app); // append
+      logfile << "<   ";
+      int j1;
+      for (j1 = 0; j1 < pkt.size(); j1 ++)
+      {
+          logfile << std::hex << std::setw(2) << std::setfill('0') << static_cast<unsigned short int>(pkt[j1]) << " ";
+      }
+      logfile << std::endl;
+    }
+    
+    
     return 0;
 
 }
@@ -1150,10 +1167,10 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory, int 
         int i = 0;
         strcpy(dbg_1, "> ");
         i = 2;
-        int j;
-        for (j = 0; j < pkt.size(); j ++)
+        int j1;
+        for (j1 = 0; j1 < pkt.size(); j1 ++)
         {
-            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            sprintf(&dbg_1[i], "%02X ", pkt[j1]);
             i += 3;
         }
         wxLogDebug(dbg_1);
@@ -1173,10 +1190,10 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory, int 
         int i = 0;
         strcpy(dbg_1, "> ");
         i = 2;
-        int j;
-        for (j = 0; j < pkt.size(); j ++)
+        int j1;
+        for (j1 = 0; j1 < pkt.size(); j1 ++)
         {
-            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            sprintf(&dbg_1[i], "%02X ", pkt[j1]);
             i += 3;
         }
         wxLogDebug(dbg_1);
@@ -1212,10 +1229,10 @@ std::vector<unsigned char> download_ac7_internal(int param_set, int memory, int 
         int i = 0;
         strcpy(dbg_1, "> ");
         i = 2;
-        int j;
-        for (j = 0; j < pkt.size(); j ++)
+        int j1;
+        for (j1 = 0; j1 < pkt.size(); j1 ++)
         {
-            sprintf(&dbg_1[i], "%02X ", pkt[j]);
+            sprintf(&dbg_1[i], "%02X ", pkt[j1]);
             i += 3;
         }
         wxLogDebug(dbg_1);
@@ -1308,10 +1325,10 @@ void upload_ac7_internal(std::vector<unsigned char> data, int param_set, int mem
     int i = 0;
     strcpy(dbg_1, "> ");
     i = 2;
-    int j;
-    for (j = 0; j < pkt.size(); j ++)
+    int j1;
+    for (j1 = 0; j1 < pkt.size(); j1 ++)
     {
-        sprintf(&dbg_1[i], "%02X ", pkt[j]);
+        sprintf(&dbg_1[i], "%02X ", pkt[j1]);
         i += 3;
     }
     wxLogDebug(dbg_1);
