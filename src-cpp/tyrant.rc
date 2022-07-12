@@ -3,6 +3,7 @@
 //#include "afxres.h"
 #undef APSSTUDIO_READONLY_SYMBOLS
 
+#if 0
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 
 ///////////////
@@ -60,6 +61,7 @@ END
 
 
 #endif  // English U.S.
+#endif  // 0
 
 ///////////////
 // ICON
