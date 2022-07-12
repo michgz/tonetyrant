@@ -1,12 +1,9 @@
-///////////////
-// ICON
-//
+#include "resource.h"
+#define APSSTUDIO_READONLY_SYMBOLS
+#include "afxres.h"
+#undef APSSTUDIO_READONLY_SYMBOLS
 
-tyrant             ICON   DISCARDABLE       "../tyrant-64x64.ico"
-
-
-
-#if 1    // U.S. English  -- always for now
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 
 ///////////////
 // English (U.S.) resources
@@ -17,20 +14,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #endif //_WIN32
 
 
-
-#else   // U.K. English -- not used
-
-
-///////////////
-// English (U.K.) resources
-
-#ifdef _WIN32
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
-#pragma code_page(1252)
-#endif //_WIN32
-
-
-#endif
 
 
 ///////////////
@@ -74,3 +57,16 @@ END
  
  
 #endif    // !_MAC
+
+
+#endif  // English U.S.
+
+///////////////
+// ICON
+//
+
+tyrant             ICON   DISCARDABLE       "../tyrant-64x64.ico"
+
+
+
+
