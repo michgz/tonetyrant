@@ -1,6 +1,6 @@
-#include "resource.h"
+//#include "resource.h"
 #define APSSTUDIO_READONLY_SYMBOLS
-#include "afxres.h"
+//#include "afxres.h"
 #undef APSSTUDIO_READONLY_SYMBOLS
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
