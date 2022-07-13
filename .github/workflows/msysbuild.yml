@@ -52,9 +52,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: wxWidgets/lib
-          key: wx-3.2-build-lib-${{ runner.os }}-3264bit-static-${{ hashFiles('wxWidgets/lib/config.log') }}
+          key: wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-${{ hashFiles('wxWidgets/lib/config.log') }}
           restore-keys: |
-            wx-3.2-build-lib-${{ runner.os }}-3264bit-static-
+            wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-
+
+      - name: Munge WX to use static runtime
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        run: |
+          python "tonetyrant\src-cpp\msw_build_static.py" wxWidgets\build\msw
 
       # Builds WX static library
       - name: Build WX 64-bit
