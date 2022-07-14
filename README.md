@@ -46,8 +46,8 @@ To try out the main features of the software, go through the following steps:
 * v2.2.0  "Red zeroes &#x1F534;&#x1F534;&#x1F534;" edition.
    * Built from C++, which has multiple advantages over Python:
      * Snappier operation
-     * Much smaller executable binaries
-     * Works in 32-bit Windows, and Windows 7
+     * Smaller executable binaries
+     * Supports both 64- and 32-bit Windows, including Vista Windows 7
    * Some tweaks to UI aesthetics
 * v2.0.0  Real-time parameter control over MIDI SysEx
 * v1.0.3
