@@ -1,5 +1,7 @@
 # Prerequisites
 
+*NOTE*: this information only applies to versions up to 2.0.1! Newer versions use C++ rather than Python.
+
 To run from source, the following should be installed. This doesn't apply to the pre-built executable binaries - they should run perfectly fine with no additional setup.
 
 - Python 3.8 (ideally 3.8.10). Hopefully newer versions will be supported in future, but for now it _needs_ to be 3.8.
