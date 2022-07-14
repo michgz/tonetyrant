@@ -13,17 +13,19 @@ Features include:
 
 ### Windows
 
-A pre-built executable for Windows 10 & 11 may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/windows-10-11-executable-v2.0.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
+A pre-built executable for Windows Vista, 7, 10 & 11 may be downloaded from [here (64 bit)](https://github.com/michgz/tonetyrant/releases/download/v2.2.0/windows-all-versions-64bit-executable-v2.2.0.zip) or [here (32 bit)](https://github.com/michgz/tonetyrant/releases/download/v2.2.0/windows-all-versions-32bit-executable-v2.2.0.zip). Extract from the zip file. The first time you run it, Windows security may ask if you really want to run it: click "More Info" and "Run Anyway".
 
 ### Linux
 
-A pre-built executable may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.0/linux-executable-v2.0.0.zip) for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
+A pre-built executable may be downloaded from [here](https://github.com/michgz/tonetyrant/releases/download/v2.2.0/linux-gtk2-executable-v2.2.0.zip) for Linux kernel versions from 4.15 or later (Ubuntu 18.04 or later). Extract from the zip file and enable execution rights with ```sudo chmod +x tyrant```.
 
-Note: newer versions might work better with a GTK 3.0 build, which can be downloaded [here](https://github.com/michgz/tonetyrant/releases/download/v2.0.1/linux-gtk3-executable-v2.0.1.zip) 
+Note: newer versions might work better with a GTK 3.0 build, which can be downloaded [here](https://github.com/michgz/tonetyrant/releases/download/v2.2.0/linux-gtk3-executable-v2.2.0.zip). I think the UI elements look worse than on GTK 2, but that's personal preference I guess..
 
 ### From source
 
-Running from source code will give the best possible compatibility with your operating system. Clone or download this Github repository and run it by calling ```python run.py```. There are some prerequisites to install which are listed [here](Prerequisites.md).
+Starting from v2.2.0 the software is coded in C++ not Python. The following instructions will still work, but any new functionality will be restricted to the built (C++) versions.
+
+Clone or download this Github repository and run it by calling ```python run.py```. There are some prerequisites to install which are listed [here](Prerequisites.md).
 
 This method works for all versions of Windows and Linux, and maybe even Mac OS (if you try it on Mac OS, please give some feedback with your experiences using a Github "Issue").
 
@@ -41,6 +43,12 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v2.2.0  "Red zeroes &#x1F534;&#x1F534;&#x1F534;" edition.
+   * Built from C++, which has multiple advantages over Python:
+     * Snappier operation
+     * Much smaller executable binaries
+     * Works in 32-bit Windows, and Windows 7
+   * Some tweaks to UI aesthetics
 * v2.0.0  Real-time parameter control over MIDI SysEx
 * v1.0.3
    * Improved sizing layout of Hints window
