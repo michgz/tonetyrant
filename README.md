@@ -43,7 +43,7 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
-* v2.2.0  "Red zeroes &#x1F534;&#x1F534;&#x1F534;" edition.
+* v2.2.0  "Red zeroes &#x2B55;&#x2B55;&#x2B55;" edition.
    * Built from C++, which has multiple advantages over Python:
      * Snappier operation
      * Smaller executable binaries
