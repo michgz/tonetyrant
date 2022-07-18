@@ -306,7 +306,7 @@ void MyApp::ShowAbout(void)
 #endif
     sizer->Add(_icon, wxALIGN_LEFT);
 
-    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.2.0"), 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.2.1"), 0, wxALIGN_CENTRE|wxALL, 5);
 #if defined(__WXGTK210__)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for GTK 3.0"), 0, wxALIGN_CENTRE|wxALL, 5);
 #elif defined(__WXGTK__)
