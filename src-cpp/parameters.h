@@ -1,4 +1,4 @@
-/* Automatically generated file. Time of processing: 2022-05-01T22:13:26.253146   */
+/* Automatically generated file. Time of processing: 2022-07-18T21:34:48.510791   */
 
 
 #include <wx/wxprec.h>
@@ -259,18 +259,18 @@ const Parameter   Parameters[245] =
     {114, 0, "Monophonic", "Misc.", 410, 1, 4, 1, {0, 1}, 16, 0, 1, ""},
     {115, 0, "Sound B used for double-stop", "Misc.", 410, 1, 5, 1, {0, 1}, 16, 0, 1, ""},
     {116, 0, "Portamento", "Misc.", 410, 1, 6, 2, {0, 2}, 1, 0, 1, ""},
-    {117, 0, "Type", "Filter 1", 412, 1, 0, 4, {0, 8}, 1, 0, 1, ""},
-    {117, 1, "Type", "Filter 2", 416, 1, 0, 4, {0, 8}, 1, 0, 1, ""},
-    {118, 0, "Parameter 1", "Filter 1", 412, 2, 4, 6, {0, 22}, 1, 12, 1, "Meaning depends on the filter type. Often it controls frequency"},
-    {118, 1, "Parameter 1", "Filter 2", 416, 2, 4, 6, {0, 22}, 1, 12, 1, "Meaning depends on the filter type. Often it controls frequency"},
-    {119, 0, "Parameter 2", "Filter 1", 413, 1, 2, 6, {0, 24}, 1, 12, 1, "Meaning depends on the filter type. Often it controls gain"},
-    {119, 1, "Parameter 2", "Filter 2", 417, 1, 2, 6, {0, 24}, 1, 12, 1, "Meaning depends on the filter type. Often it controls gain"},
-    {120, 0, "Parameter 3", "Filter 1", 414, 1, 4, 4, {0, 15}, 1, 0, 1, "Meaning depends on the filter type. Often it controls resonance Q-value"},
-    {120, 1, "Parameter 3", "Filter 2", 418, 1, 4, 4, {0, 15}, 1, 0, 1, "Meaning depends on the filter type. Often it controls resonance Q-value"},
-    {121, 0, "", "Filter 1", 414, 1, 3, 1, {0, 1}, 16, 1, 1, ""},
-    {121, 1, "", "Filter 2", 418, 1, 3, 1, {0, 1}, 16, 1, 1, ""},
-    {122, 0, "", "Filter 1", 414, 1, 0, 3, {0, 7}, 16, 0, 1, ""},
-    {122, 1, "", "Filter 2", 418, 1, 0, 3, {0, 7}, 16, 0, 1, ""},
+    {117, 0, "Type", "Biquad Filter 1", 412, 1, 0, 4, {0, 8}, 1, 0, 1, ""},
+    {117, 1, "Type", "Biquad Filter 2", 416, 1, 0, 4, {0, 8}, 1, 0, 1, ""},
+    {118, 0, "Parameter 1", "Biquad Filter 1", 412, 2, 4, 6, {0, 22}, 1, 12, 1, "Meaning depends on the filter type. Often it controls frequency"},
+    {118, 1, "Parameter 1", "Biquad Filter 2", 416, 2, 4, 6, {0, 22}, 1, 12, 1, "Meaning depends on the filter type. Often it controls frequency"},
+    {119, 0, "Parameter 2", "Biquad Filter 1", 413, 1, 2, 6, {0, 24}, 1, 12, 1, "Meaning depends on the filter type. Often it controls gain"},
+    {119, 1, "Parameter 2", "Biquad Filter 2", 417, 1, 2, 6, {0, 24}, 1, 12, 1, "Meaning depends on the filter type. Often it controls gain"},
+    {120, 0, "Parameter 3", "Biquad Filter 1", 414, 1, 4, 4, {0, 15}, 1, 0, 1, "Meaning depends on the filter type. Often it controls resonance Q-value"},
+    {120, 1, "Parameter 3", "Biquad Filter 2", 418, 1, 4, 4, {0, 15}, 1, 0, 1, "Meaning depends on the filter type. Often it controls resonance Q-value"},
+    {121, 0, "", "Biquad Filter 1", 414, 1, 3, 1, {0, 1}, 16, 1, 1, ""},
+    {121, 1, "", "Biquad Filter 2", 418, 1, 3, 1, {0, 1}, 16, 1, 1, ""},
+    {122, 0, "", "Biquad Filter 1", 414, 1, 0, 3, {0, 7}, 16, 0, 1, ""},
+    {122, 1, "", "Biquad Filter 2", 418, 1, 0, 3, {0, 7}, 16, 0, 1, ""},
     {200, 0, "Volume 3", "Keyboard only", 450, 1, 0, 7, {0, 127}, 16, 127, 1, "Volume of the note.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)"},
     {201, 0, "Key-follow 3", "Keyboard only", 451, 1, 0, 7, {0, 126}, 1, 2, 1, "Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)"},
     {202, 0, "Key-follow 4", "Keyboard only", 452, 1, 0, 7, {0, 126}, 1, 2, 1, "Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)"}

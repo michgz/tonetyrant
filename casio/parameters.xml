@@ -4962,7 +4962,7 @@
         </parameter>
         <parameter number="117" block="0">
             <name>Type</name>
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19C</offset>
                 <count>1</count>
@@ -4985,7 +4985,7 @@
         </parameter>
         <parameter number="117" block="1">
             <name>Type</name>
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A0</offset>
                 <count>1</count>
@@ -5008,7 +5008,7 @@
         </parameter>
         <parameter number="118" block="0">
             <name>Parameter 1</name>
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19C</offset>
                 <count>2</count>
@@ -5032,7 +5032,7 @@
         </parameter>
         <parameter number="118" block="1">
             <name>Parameter 1</name>
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A0</offset>
                 <count>2</count>
@@ -5056,7 +5056,7 @@
         </parameter>
         <parameter number="119" block="0">
             <name>Parameter 2</name>
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19D</offset>
                 <count>1</count>
@@ -5080,7 +5080,7 @@
         </parameter>
         <parameter number="119" block="1">
             <name>Parameter 2</name>
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A1</offset>
                 <count>1</count>
@@ -5104,7 +5104,7 @@
         </parameter>
         <parameter number="120" block="0">
             <name>Parameter 3</name>
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -5128,7 +5128,7 @@
         </parameter>
         <parameter number="120" block="1">
             <name>Parameter 3</name>
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
@@ -5151,7 +5151,7 @@
             <help>Meaning depends on the filter type. Often it controls resonance Q-value</help>
         </parameter>
         <parameter number="121" block="0">
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -5168,7 +5168,7 @@
             <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="121" block="1">
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
@@ -5185,7 +5185,7 @@
             <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="122" block="0">
-            <cluster>Filter 1</cluster>
+            <cluster>Biquad Filter 1</cluster>
             <bytes>
                 <offset>0x19E</offset>
                 <count>1</count>
@@ -5202,7 +5202,7 @@
             <midiBytes>1</midiBytes>
         </parameter>
         <parameter number="122" block="1">
-            <cluster>Filter 2</cluster>
+            <cluster>Biquad Filter 2</cluster>
             <bytes>
                 <offset>0x1A2</offset>
                 <count>1</count>
