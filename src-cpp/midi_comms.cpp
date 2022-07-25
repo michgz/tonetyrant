@@ -821,6 +821,10 @@ int set_single_parameter(int parameter,
     midiout.delete()
 #endif
 
+    // A delay here seems to reduce the incidence of MIDI port errors, especially
+    // in Windows. May refine this a bit more.
+    wxMilliSleep(50);
+
 
     midi_out->closePort();
     delete midi_out;
