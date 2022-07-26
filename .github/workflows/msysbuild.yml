@@ -300,7 +300,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: tyrant-Windows-64bit-executable-artifact
-          path: windows-all-versions-64bit-executable-${{ github.ref_name }}
+          path: windows-64bit
       - run: |
           cd windows-64bit
           zip windows-all-versions-64bit-executable-${{ github.ref_name }}.zip ./* -i *.exe
