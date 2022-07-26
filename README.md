@@ -43,6 +43,7 @@ To try out the main features of the software, go through the following steps:
 
 ## History
 
+* v2.2.2  Add a small delay to MIDI communications, which seems to help reliability in Windows
 * v2.2.1  Rename generic "Filter" parameter to "Biquad Filter"
 * v2.2.0  "Red zeroes &#x2B55;&#x2B55;&#x2B55;" edition.
    * Built from C++, which has multiple advantages over Python:
