@@ -203,7 +203,7 @@ jobs:
 
   release-all:
     runs-on: ubuntu-latest
-    needs: [ jobs.build-windows, jobs.build-linux-gtk2 ]
+    needs: [ build-windows, build-linux-gtk2 ]
     steps:
       - run: |
           echo "${{ github.ref }}"
