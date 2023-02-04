@@ -583,10 +583,10 @@ std::vector<unsigned char> midi_8bit_to_7bit(std::vector<unsigned char> b)
 
    /* Define the device ID. Constructed as follows:
     #    0x44       Manufacturer ID ( = Casio)
-    #    0x19 0x01  Model ID ( = CT-X3000, CT-X5000, CT-X700)
+    #    0x17 0x02  Model ID ( = MZ-X500)
     #    0x7F       Device. This is a "don't care" value
     #*/
-const std::vector<unsigned char> DEVICE_ID = {0x44, 0x19, 0x01, 0x7F};
+const std::vector<unsigned char> DEVICE_ID = {0x44, 0x17, 0x02, 0x7F};
 static const unsigned short int EMPTY_BLOCKS[4] = {0,0,0,0};
     
 std::vector<unsigned char> make_packet(bool tx,
