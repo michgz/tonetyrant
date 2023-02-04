@@ -291,7 +291,6 @@ jobs:
     steps:
       - run: |
           echo "${{ github.ref }}"
-          echo "${{ GITHUB_REF }}"
       - uses: actions/download-artifact@v3
         with:
           name: tyrant-Windows-32bit-executable-artifact
