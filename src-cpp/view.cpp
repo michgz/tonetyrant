@@ -96,7 +96,7 @@ void ToneView::__config(void)
     _font2 = wxFont(10, wxFONTFAMILY_TELETYPE, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, wxFalse);
 
     _font_colour1 = wxColourDatabase().Find("BLACK");
-    _font_colour2 = wxColourDatabase().Find("RED");
+    _font_colour2 = wxColour(71, 69, 255);      // A royal blue, "MZ-X500-ish"
     _font_colour3 = wxColour(235, 235, 234);    // Light ivory colour
     _font_colour4 = wxColour(86, 125, 134);     // A dark-ish blue, for the ASCII characters
 
@@ -105,7 +105,7 @@ void ToneView::__config(void)
     _brush2 = wxBrush( wxColour(243, 246, 244) ); // Lighter gray
     _brush3 = wxBrush( wxColour(232, 232, 232) ); // Darker gray
 
-    _brush4 = wxBrush( wxColour(220, 205, 205) );   // A pale pink.
+    _brush4 = wxBrush( wxColour(188, 192, 223) );   // A pale royal blue.
 
 
     
