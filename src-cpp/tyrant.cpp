@@ -133,7 +133,7 @@ bool MyApp::OnInit()
     wxDocManager *docManager = new wxDocManager;
 
     //// Create a template relating tone documents to their views
-    new wxDocTemplate(docManager, _("Casio Tone"), "*.TON", "", "TON",
+    new wxDocTemplate(docManager, _("Privia Tone"), "*.ZTN", "", "ZTN",
                       "Tone Doc", "Tone View",
                       CLASSINFO(ToneDocument), CLASSINFO(ToneView));
 
@@ -306,7 +306,9 @@ void MyApp::ShowAbout(void)
 #endif
     sizer->Add(_icon, wxALIGN_LEFT);
 
-    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/"2.2.2"), 0, wxALIGN_CENTRE|wxALL, 5);
+    #define VERSION_STR "2.2.2-MZX"
+
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, wxString(GetAppName()) + " v" + /*str(__version__)*/VERSION_STR), 0, wxALIGN_CENTRE|wxALL, 5);
 #if defined(__WXGTK210__)
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++ for GTK 3.0"), 0, wxALIGN_CENTRE|wxALL, 5);
 #elif defined(__WXGTK__)
@@ -320,7 +322,7 @@ void MyApp::ShowAbout(void)
 #else
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "Built in C++"), 0, wxALIGN_CENTRE|wxALL, 5);
 #endif
-    sizer->Add(new wxStaticText(dlg, wxID_ANY, "\u00A9 2022"), 0, wxALIGN_CENTRE|wxALL, 5);
+    sizer->Add(new wxStaticText(dlg, wxID_ANY, "\u00A9 2022-2023"), 0, wxALIGN_CENTRE|wxALL, 5);
     sizer->Add(new wxStaticText(dlg, wxID_ANY, "https://github.com/michgz/ToneTyrant"), 0, wxALIGN_CENTRE|wxALL, 5);
 
     wxButton *btn = new wxButton(dlg, wxID_OK);
@@ -495,7 +497,7 @@ void MyApp::OnMidiDownload(wxCommandEvent& WXUNUSED(event))
             
             std::vector<unsigned char> dest_doc = download_ac7_internal(target_saved_value - 801, 1, 3, true);
             
-            if (dest_doc.size() == 0x1C8)
+            if (dest_doc.size() == 0x1A0)
             {
                 
                 HexEditCommand * cmd = HexEditCommand::CompletelyChange(src_doc, src_doc->GetSubsetData(), dest_doc);

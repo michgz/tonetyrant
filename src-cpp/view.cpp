@@ -603,7 +603,7 @@ void ToneView::OnMouse(wxMouseEvent& event)
 bool ToneView::UpdateCaretPos(signed int x) {
     if (x < 0)
         return false;
-    else if (x > 8*0x1C8)
+    else if (x > 8*0x1A0)
         return false;
         
     _caret_pos = x;

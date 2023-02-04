@@ -62,23 +62,25 @@ bool ToneDocument::OnCreate(const wxString& path, long flags)
 
     // A "default" data array to use as a starting point. It's a sine-wave sound
     unsigned char CALSINE [] =  \
-      "CT-X3000\x00\x00\x00\x00\x00\x00\x00\x00TONH\x00\x00\x00\x00\xfe:R\x1a\xc8\x01\x00\x00"                              \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00"    \
-      "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                    \
-      "\x00\x00\x00@@@@HH@@@@@@@@@@@\xff\x00                \x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"   \
-      "\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00"  \
-      "\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff?\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"   \
-      "d\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x04\x00\x00\x00\x00\x01\x00"       \
-      "\xc0" "0\x08\x00\xc0" "0\x08\x00\x85\x08" "CalSine         d\x7f\x02\x02\x02\x7f\x02\x7f\x02\x7f\x00\x00\x7f"        \
-      "\x02\x02\x00\x00\x00" "EODA";
+              "\x00ZTNFX50\x01\x00\x00\x00\xDE\xAD\xBE\xEF\x02\x00\x00\x00\x01\x00\x00\x00\x03\x00\x00\x00\xA0\x01\x00\x00"   \
+              "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00" \
+              "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00" \
+              "\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                     \
+              "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00" \
+              "\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00\x00\x02\x80\x00" \
+              "\x80\x80\x80\x80\x7f\x00\x01\x00\x7f\x7f\x7f\x00"                     \
+              "\x00\x20\x00\x40\x40\x40\x40\x48\x48\x40\x40\x40\x40\x40\x40\x40\x40\x40\x40\x40\xFF\x00\x00\x00"    \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00"                                                             \
+              "                "                                                     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \    
+              "\x01\x00\x81\x08CalSine\x00        \x64\x02\x7f\x02\x7f\x02\x7f\x00\x00\x00"
 
     int i;
     
@@ -96,12 +98,12 @@ void ToneDocument::DoUpdate()
     // Calculate the CRC. Don't have the __setitem__() method to do that now.
     
     
-    unsigned int crc = crc32_fast(&this->data()[0x20], 0x1C8);
+    unsigned int crc = crc32_fast(&this->data()[0x20], 0x1A0);
     
-    this->at(0x18) = ((unsigned char *)&crc)[0];
-    this->at(0x19) = ((unsigned char *)&crc)[1];
-    this->at(0x1A) = ((unsigned char *)&crc)[2];
-    this->at(0x1B) = ((unsigned char *)&crc)[3];
+    this->at(0x1C) = ((unsigned char *)&crc)[0];
+    this->at(0x1D) = ((unsigned char *)&crc)[1];
+    this->at(0x1E) = ((unsigned char *)&crc)[2];
+    this->at(0x1F) = ((unsigned char *)&crc)[3];
     
     Modify(true);
     UpdateAllViews();
@@ -140,10 +142,10 @@ bool ToneDocument::DoSaveDocument(const wxString& filename)
     
     if (!outfile.IsOk())
         return false;
-    if (this->std::vector<unsigned char>::size() != 0x1EC)
+    if (this->std::vector<unsigned char>::size() != 0x1C0)
         return false;
     
-    outfile.Write( this->std::vector<unsigned char>::data() , 0x1EC);
+    outfile.Write( this->std::vector<unsigned char>::data() , 0x1C0);
     outfile.Close();
     
     return true;
@@ -196,7 +198,7 @@ std::vector<unsigned char> ToneDocument::GetSubsetData(void)
     std::vector<unsigned char> res = std::vector<unsigned char>();
     
     int j;
-    for (j = 0x20; j < 0x1E8; j ++)
+    for (j = 0x20; j < 0x1C0; j ++)
     {
         res.push_back(this->std::vector<unsigned char>::at(j));
     }
@@ -514,7 +516,7 @@ HexEditCommand * HexEditCommand::CompletelyChange(ToneDocument * document, std::
     res->_type = 3;
     res->_document = document;
     std::vector<unsigned char>::const_iterator first = old_vals.begin() + 0x00;
-    std::vector<unsigned char>::const_iterator last = old_vals.begin() + 0x1C8;
+    std::vector<unsigned char>::const_iterator last = old_vals.begin() + 0x1A0;
     //vector<T> newVec(first, last);
     res->_old_vals = std::vector<unsigned char>(first, last);
     res->_new_vals = new_vals;
@@ -552,13 +554,13 @@ bool HexEditCommand::Do(void)
         if (_new_nibble != old_nibble)
         {
             _document->change_list.push_back(_offset/2);
-            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x18);
-                _document->change_list.push_back(0x19);
-                _document->change_list.push_back(0x1A);
-                _document->change_list.push_back(0x1B);
+                _document->change_list.push_back(0x1C);
+                _document->change_list.push_back(0x1D);
+                _document->change_list.push_back(0x1E);
+                _document->change_list.push_back(0x1F);
             }
             
             _document->InformByteChanged(_offset/2, x, y);
@@ -577,13 +579,13 @@ bool HexEditCommand::Do(void)
         if (_new_byte != old_byte)
         {
             _document->change_list.push_back(_offset/2);
-            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x18);
-                _document->change_list.push_back(0x19);
-                _document->change_list.push_back(0x1A);
-                _document->change_list.push_back(0x1B);
+                _document->change_list.push_back(0x1C);
+                _document->change_list.push_back(0x1D);
+                _document->change_list.push_back(0x1E);
+                _document->change_list.push_back(0x1F);
             }
             _document->InformByteChanged(_offset/2, _new_byte, old_byte);
         }
@@ -607,10 +609,10 @@ bool HexEditCommand::Do(void)
         if (has_changed)
         {
             // Assume every byte of the CRC has changed
-            _document->change_list.push_back(0x18);
-            _document->change_list.push_back(0x19);
-            _document->change_list.push_back(0x1A);
-            _document->change_list.push_back(0x1B);
+            _document->change_list.push_back(0x1C);
+            _document->change_list.push_back(0x1D);
+            _document->change_list.push_back(0x1E);
+            _document->change_list.push_back(0x1F);
         }
         
         _document->DoUpdate();
@@ -672,13 +674,13 @@ bool HexEditCommand::Undo(void)
         if (_new_byte != now_byte)
         {
             _document->change_list.push_back(_offset/2);
-            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x18);
-                _document->change_list.push_back(0x19);
-                _document->change_list.push_back(0x1A);
-                _document->change_list.push_back(0x1B);
+                _document->change_list.push_back(0x1C);
+                _document->change_list.push_back(0x1D);
+                _document->change_list.push_back(0x1E);
+                _document->change_list.push_back(0x1F);
             }
             _document->InformByteChanged(_offset/2, _new_byte, now_byte);
         }
@@ -703,10 +705,10 @@ bool HexEditCommand::Undo(void)
         if (has_changed)
         {
             // Assume every byte of the CRC has changed
-            _document->change_list.push_back(0x18);
-            _document->change_list.push_back(0x19);
-            _document->change_list.push_back(0x1A);
-            _document->change_list.push_back(0x1B);
+            _document->change_list.push_back(0x1C);
+            _document->change_list.push_back(0x1D);
+            _document->change_list.push_back(0x1E);
+            _document->change_list.push_back(0x1F);
         }
 
         _document->DoUpdate();

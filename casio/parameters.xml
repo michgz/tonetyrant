@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <configuration>
-    <keyboard>CT-X3000</keyboard>
-    <keyboard>CT-X5000</keyboard>
+    <keyboard>MZ-X500</keyboard>
     <parameters>
         <parameter number="0" block="0">
             <name>Name</name>
