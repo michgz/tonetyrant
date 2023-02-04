@@ -6,7 +6,7 @@
             <name>Name</name>
             <cluster>Name</cluster>
             <bytes>
-                <offset>0x1A6</offset>
+                <offset>0x186</offset>
                 <count>16</count>
             </bytes>
             <midiBytes>16</midiBytes>
@@ -17,7 +17,7 @@
             <cluster>Wavetable (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x87</offset>
+                <offset>0x6B</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -41,7 +41,7 @@
             <cluster>Wavetable (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x82</offset>
+                <offset>0x66</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -60,7 +60,7 @@
             <sound>A</sound>
             <cluster>Velocity (Sound A)</cluster>
             <bytes>
-                <offset>0x84</offset>
+                <offset>0x68</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -75,7 +75,7 @@
             <cluster>Velocity (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x85</offset>
+                <offset>0x69</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -90,7 +90,7 @@
             <cluster>Velocity (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x86</offset>
+                <offset>0x6A</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -105,7 +105,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x02</offset>
+                <offset>0x2</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -130,7 +130,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x06</offset>
+                <offset>0x6</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -155,7 +155,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x0A</offset>
+                <offset>0xA</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -180,7 +180,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x00</offset>
+                <offset>0x0</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -204,7 +204,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x04</offset>
+                <offset>0x4</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -228,7 +228,7 @@
             <cluster>Pitch Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x08</offset>
+                <offset>0x8</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -251,7 +251,7 @@
             <sound>A</sound>
             <cluster>Unknown (Sound A)</cluster>
             <bytes>
-                <offset>0x7C</offset>
+                <offset>0x60</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -265,7 +265,7 @@
             <sound>A</sound>
             <cluster>Unknown (Sound A)</cluster>
             <bytes>
-                <offset>0x7D</offset>
+                <offset>0x61</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -280,7 +280,7 @@
             <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x0E</offset>
+                <offset>0xE</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -448,7 +448,7 @@
             <cluster>Detune Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x0C</offset>
+                <offset>0xC</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -611,348 +611,12 @@
             <defaultValue>512</defaultValue>
             <midiBytes>2</midiBytes>
         </parameter>
-        <parameter number="12" block="0">
-            <name>Attack 1</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x2A</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="1">
-            <name>Attack 2</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x2E</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="2">
-            <name>Attack 3</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x32</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="3">
-            <name>Attack 4</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x36</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="4">
-            <name>Hold</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x3A</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="5">
-            <name>Release 1</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x3E</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="12" block="6">
-            <name>Release 2</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x42</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="0">
-            <name>Unused time</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x28</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="1">
-            <name>Attack time 1</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x2C</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="2">
-            <name>Attack time 2</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x30</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="3">
-            <name>Attack time 3</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x34</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="4">
-            <name>Attack time 4</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x38</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="5">
-            <name>Release time 1</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x3C</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="13" block="6">
-            <name>Release time 2</name>
-            <cluster>Unknown Envelope (Sound A)</cluster>
-            <sound>A</sound>
-            <bytes>
-                <offset>0x40</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
         <parameter number="14" block="0">
             <name>Cutoff</name>
             <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x7E</offset>
+                <offset>0x62</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -967,7 +631,7 @@
             <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x7F</offset>
+                <offset>0x63</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -982,7 +646,7 @@
             <cluster>Filter (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x80</offset>
+                <offset>0x64</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -997,7 +661,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x46</offset>
+                <offset>0x2A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1021,7 +685,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x4A</offset>
+                <offset>0x2E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1045,7 +709,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x4E</offset>
+                <offset>0x32</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1069,7 +733,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x52</offset>
+                <offset>0x36</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1093,7 +757,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x56</offset>
+                <offset>0x3A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1117,7 +781,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x5A</offset>
+                <offset>0x3E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1141,7 +805,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x5E</offset>
+                <offset>0x42</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1165,7 +829,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x44</offset>
+                <offset>0x28</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1189,7 +853,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x48</offset>
+                <offset>0x2C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1213,7 +877,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x4C</offset>
+                <offset>0x30</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1237,7 +901,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x50</offset>
+                <offset>0x34</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1261,7 +925,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x54</offset>
+                <offset>0x38</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1285,7 +949,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x58</offset>
+                <offset>0x3C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1309,7 +973,7 @@
             <cluster>Filter Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x5C</offset>
+                <offset>0x40</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1333,7 +997,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x62</offset>
+                <offset>0x46</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1357,7 +1021,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x66</offset>
+                <offset>0x4A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1381,7 +1045,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x6A</offset>
+                <offset>0x4E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1405,7 +1069,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x6E</offset>
+                <offset>0x52</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1429,7 +1093,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x72</offset>
+                <offset>0x56</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1453,7 +1117,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x76</offset>
+                <offset>0x5A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1477,7 +1141,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x7A</offset>
+                <offset>0x5E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1501,7 +1165,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x60</offset>
+                <offset>0x44</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1525,7 +1189,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x64</offset>
+                <offset>0x48</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1549,7 +1213,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x68</offset>
+                <offset>0x4C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1573,7 +1237,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x6C</offset>
+                <offset>0x50</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1597,7 +1261,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x70</offset>
+                <offset>0x54</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1621,7 +1285,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x74</offset>
+                <offset>0x58</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1645,7 +1309,7 @@
             <cluster>Gain Envelope (Sound A)</cluster>
             <sound>A</sound>
             <bytes>
-                <offset>0x78</offset>
+                <offset>0x5C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1669,7 +1333,7 @@
             <cluster>Wavetable (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x10F</offset>
+                <offset>0xD7</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1693,7 +1357,7 @@
             <cluster>Wavetable (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x10A</offset>
+                <offset>0xD2</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1712,7 +1376,7 @@
             <sound>B</sound>
             <cluster>Velocity (Sound B)</cluster>
             <bytes>
-                <offset>0x10C</offset>
+                <offset>0xD4</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1727,7 +1391,7 @@
             <cluster>Velocity (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x10D</offset>
+                <offset>0xD5</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1742,7 +1406,7 @@
             <cluster>Velocity (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x10E</offset>
+                <offset>0xD6</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1757,7 +1421,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x08A</offset>
+                <offset>0x6E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1782,7 +1446,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x08E</offset>
+                <offset>0x72</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1807,7 +1471,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x092</offset>
+                <offset>0x76</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1832,7 +1496,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x088</offset>
+                <offset>0x6C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1856,7 +1520,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x08C</offset>
+                <offset>0x70</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1880,7 +1544,7 @@
             <cluster>Pitch Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x090</offset>
+                <offset>0x74</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1903,7 +1567,7 @@
             <sound>B</sound>
             <cluster>Unknown (Sound B)</cluster>
             <bytes>
-                <offset>0x104</offset>
+                <offset>0xCC</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1917,7 +1581,7 @@
             <sound>B</sound>
             <cluster>Unknown (Sound B)</cluster>
             <bytes>
-                <offset>0x105</offset>
+                <offset>0xCD</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -1932,7 +1596,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x096</offset>
+                <offset>0x7A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1956,7 +1620,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x09A</offset>
+                <offset>0x7E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -1980,7 +1644,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x09E</offset>
+                <offset>0x82</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2004,7 +1668,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0A2</offset>
+                <offset>0x86</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2028,7 +1692,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0A6</offset>
+                <offset>0x8A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2052,7 +1716,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0AA</offset>
+                <offset>0x8E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2076,7 +1740,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0AE</offset>
+                <offset>0x92</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2100,7 +1764,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x094</offset>
+                <offset>0x78</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2124,7 +1788,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x098</offset>
+                <offset>0x7C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2148,7 +1812,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x09C</offset>
+                <offset>0x80</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2172,7 +1836,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0A0</offset>
+                <offset>0x84</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2196,7 +1860,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0A4</offset>
+                <offset>0x88</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2220,7 +1884,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0A8</offset>
+                <offset>0x8C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2244,343 +1908,7 @@
             <cluster>Detune Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0AC</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="0">
-            <name>Attack 1</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0B2</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="1">
-            <name>Attack 2</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0B6</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="2">
-            <name>Attack 3</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0BA</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="3">
-            <name>Attack 4</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0BE</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="4">
-            <name>Hold</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0C2</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="5">
-            <name>Release 1</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0C6</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="32" block="6">
-            <name>Release 2</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0CA</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>255</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>255</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>128</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="0">
-            <name>Unused time</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0B0</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="1">
-            <name>Attack time 1</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0B4</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="2">
-            <name>Attack time 2</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0B8</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="3">
-            <name>Attack time 3</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0BC</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="4">
-            <name>Attack time 4</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0C0</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="5">
-            <name>Release time 1</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0C4</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>10</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1023</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>256</min>
-                <max>1023</max>
-                <step>64</step>
-            </recommendedLimits>
-            <defaultValue>512</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="33" block="6">
-            <name>Release time 2</name>
-            <cluster>Unknown Envelope (Sound B)</cluster>
-            <sound>B</sound>
-            <bytes>
-                <offset>0x0C8</offset>
+                <offset>0x90</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2604,7 +1932,7 @@
             <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x106</offset>
+                <offset>0xCE</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -2619,7 +1947,7 @@
             <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x107</offset>
+                <offset>0xCF</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -2634,7 +1962,7 @@
             <cluster>Filter (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x108</offset>
+                <offset>0xD0</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -2649,7 +1977,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0CE</offset>
+                <offset>0x96</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2673,7 +2001,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0D2</offset>
+                <offset>0x9A</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2697,7 +2025,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0D6</offset>
+                <offset>0x9E</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2721,7 +2049,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0DA</offset>
+                <offset>0xA2</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2745,7 +2073,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0DE</offset>
+                <offset>0xA6</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2769,7 +2097,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0E2</offset>
+                <offset>0xAA</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2793,7 +2121,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0E6</offset>
+                <offset>0xAE</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2817,7 +2145,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0CC</offset>
+                <offset>0x94</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2841,7 +2169,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0D0</offset>
+                <offset>0x98</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2865,7 +2193,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0D4</offset>
+                <offset>0x9C</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2889,7 +2217,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0D8</offset>
+                <offset>0xA0</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2913,7 +2241,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0DC</offset>
+                <offset>0xA4</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2937,7 +2265,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0E0</offset>
+                <offset>0xA8</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2961,7 +2289,7 @@
             <cluster>Filter Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0E4</offset>
+                <offset>0xAC</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -2985,7 +2313,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0EA</offset>
+                <offset>0xB2</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3009,7 +2337,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0EE</offset>
+                <offset>0xB6</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3033,7 +2361,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0F2</offset>
+                <offset>0xBA</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3057,7 +2385,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0F6</offset>
+                <offset>0xBE</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3081,7 +2409,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0FA</offset>
+                <offset>0xC2</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3105,7 +2433,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0FE</offset>
+                <offset>0xC6</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3129,7 +2457,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x102</offset>
+                <offset>0xCA</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3153,7 +2481,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0E8</offset>
+                <offset>0xB0</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3177,7 +2505,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0EC</offset>
+                <offset>0xB4</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3201,7 +2529,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0F0</offset>
+                <offset>0xB8</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3225,7 +2553,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0F4</offset>
+                <offset>0xBC</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3249,7 +2577,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0F8</offset>
+                <offset>0xC0</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3273,7 +2601,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x0FC</offset>
+                <offset>0xC4</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3297,7 +2625,7 @@
             <cluster>Gain Envelope (Sound B)</cluster>
             <sound>B</sound>
             <bytes>
-                <offset>0x100</offset>
+                <offset>0xC8</offset>
                 <count>2</count>
             </bytes>
             <bits>
@@ -3320,7 +2648,7 @@
             <name>Sound B used for note-off</name>
             <cluster>Octave</cluster>
             <bytes>
-                <offset>0x1A5</offset>
+                <offset>0x185</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3338,7 +2666,7 @@
             <name>Note off velocity</name>
             <cluster>Octave</cluster>
             <bytes>
-                <offset>0x1A5</offset>
+                <offset>0x185</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3361,7 +2689,7 @@
             <name>Octave shift</name>
             <cluster>Octave</cluster>
             <bytes>
-                <offset>0x1A5</offset>
+                <offset>0x185</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3384,7 +2712,7 @@
             <name>Enable DSP</name>
             <cluster>DSP Chain</cluster>
             <bytes>
-                <offset>0x1A5</offset>
+                <offset>0x185</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3402,7 +2730,7 @@
             <name>Volume</name>
             <cluster>Volume</cluster>
             <bytes>
-                <offset>0x1B6</offset>
+                <offset>0x196</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3421,81 +2749,10 @@
             <defaultValue>100</defaultValue>
             <midiBytes>1</midiBytes>
         </parameter>
-        <parameter number="46" block="0">
-            <name>Volume 2</name>
-            <cluster>Gain</cluster>
-            <bytes>
-                <offset>0x1B7</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>127</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>127</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="47" block="0">
-            <name>Key-follow 1</name>
-            <cluster>Gain</cluster>
-            <bytes>
-                <offset>0x1B8</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>126</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>2</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default</help>
-        </parameter>
-        <parameter number="48" block="0">
-            <name>Key-follow 2</name>
-            <cluster>Gain</cluster>
-            <bytes>
-                <offset>0x1B9</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>126</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>2</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default</help>
-        </parameter>
         <parameter number="49" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BA</offset>
+                <offset>0x197</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3517,7 +2774,7 @@
         <parameter number="50" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BB</offset>
+                <offset>0x198</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3539,7 +2796,7 @@
         <parameter number="51" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BC</offset>
+                <offset>0x199</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3561,7 +2818,7 @@
         <parameter number="52" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BD</offset>
+                <offset>0x19A</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3583,7 +2840,7 @@
         <parameter number="53" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BE</offset>
+                <offset>0x19B</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3605,7 +2862,7 @@
         <parameter number="54" block="0">
             <cluster>Gain</cluster>
             <bytes>
-                <offset>0x1BF</offset>
+                <offset>0x19C</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3626,7 +2883,7 @@
         </parameter>
         <parameter number="55" block="0">
             <bytes>
-                <offset>0x1A4</offset>
+                <offset>0x184</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3644,7 +2901,7 @@
             <name>Chorus send</name>
             <cluster>Effects</cluster>
             <bytes>
-                <offset>0x110</offset>
+                <offset>0xD8</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3667,7 +2924,7 @@
             <name>Reverb send</name>
             <cluster>Effects</cluster>
             <bytes>
-                <offset>0x111</offset>
+                <offset>0xD9</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3690,7 +2947,7 @@
             <name>Delay send</name>
             <cluster>Effects</cluster>
             <bytes>
-                <offset>0x112</offset>
+                <offset>0xDA</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3713,7 +2970,7 @@
             <name>Vibrato type</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x124</offset>
+                <offset>0xEC</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3736,7 +2993,7 @@
             <name>Vibrato rate</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x113</offset>
+                <offset>0xDB</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3759,7 +3016,7 @@
             <name>Vibrato delay</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x114</offset>
+                <offset>0xDC</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3782,7 +3039,7 @@
             <name>Vibrato rise time</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x115</offset>
+                <offset>0xDD</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3805,7 +3062,7 @@
             <name>Vibrato depth</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x116</offset>
+                <offset>0xDE</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3828,7 +3085,7 @@
             <name>Vibrato depth for CC 01 (modulation)</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x117</offset>
+                <offset>0xDF</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3851,7 +3108,7 @@
             <name>Vibrato depth for after-touch</name>
             <cluster>Vibrato</cluster>
             <bytes>
-                <offset>0x118</offset>
+                <offset>0xE0</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3874,7 +3131,7 @@
             <name>Tremolo/filter LFO type</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x124</offset>
+                <offset>0xEC</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3897,7 +3154,7 @@
             <name>Tremolo/filter LFO rate</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x119</offset>
+                <offset>0xE1</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3920,7 +3177,7 @@
             <name>Filter LFO delay</name>
             <cluster>Filter LFO</cluster>
             <bytes>
-                <offset>0x11A</offset>
+                <offset>0xE2</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3943,7 +3200,7 @@
             <name>Filter LFO rise time</name>
             <cluster>Filter LFO</cluster>
             <bytes>
-                <offset>0x11B</offset>
+                <offset>0xE3</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3966,7 +3223,7 @@
             <name>Filter LFO depth</name>
             <cluster>Filter LFO</cluster>
             <bytes>
-                <offset>0x11C</offset>
+                <offset>0xE4</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -3989,7 +3246,7 @@
             <name>Filter LFO depth for CC 01 (modulation)</name>
             <cluster>Filter LFO</cluster>
             <bytes>
-                <offset>0x11D</offset>
+                <offset>0xE5</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4012,7 +3269,7 @@
             <name>Filter LFO depth for after-touch</name>
             <cluster>Filter LFO</cluster>
             <bytes>
-                <offset>0x11E</offset>
+                <offset>0xE6</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4035,7 +3292,7 @@
             <name>Tremolo delay</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x11F</offset>
+                <offset>0xE7</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4058,7 +3315,7 @@
             <name>Tremolo rise time</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x120</offset>
+                <offset>0xE8</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4081,7 +3338,7 @@
             <name>Tremolo depth</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x121</offset>
+                <offset>0xE9</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4104,7 +3361,7 @@
             <name>Tremolo depth for CC 01 (modulation)</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x122</offset>
+                <offset>0xEA</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4127,7 +3384,7 @@
             <name>Tremolo depth for after-touch</name>
             <cluster>Tremolo</cluster>
             <bytes>
-                <offset>0x123</offset>
+                <offset>0xEB</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4146,43 +3403,11 @@
             <defaultValue>64</defaultValue>
             <midiBytes>1</midiBytes>
         </parameter>
-        <parameter number="78" block="0">
-            <bytes>
-                <offset>0x1C0</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="79" block="0">
-            <bytes>
-                <offset>0x1C1</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>4</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>15</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
         <parameter number="80" block="0">
             <name>Stretch tuning</name>
             <cluster>Tuning</cluster>
             <bytes>
-                <offset>0x1A4</offset>
+                <offset>0x184</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4204,7 +3429,7 @@
         </parameter>
         <parameter number="81" block="0">
             <bytes>
-                <offset>0x1A4</offset>
+                <offset>0x184</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4220,7 +3445,7 @@
         </parameter>
         <parameter number="82" block="0">
             <bytes>
-                <offset>0x1A4</offset>
+                <offset>0x184</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4236,7 +3461,7 @@
         </parameter>
         <parameter number="83" block="0">
             <bytes>
-                <offset>0x1A4</offset>
+                <offset>0x184</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4254,535 +3479,17 @@
             <name>DSP chain name</name>
             <cluster>DSP Chain</cluster>
             <bytes>
-                <offset>0x126</offset>
+                <offset>0x132</offset>
                 <count>16</count>
             </bytes>
             <midiBytes>16</midiBytes>
             <help>Name of the DSP chain. This is not used for anything and can be set to any string</help>
         </parameter>
-        <parameter number="85" block="0">
-            <name>DSP effect 1</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x136</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>14</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>0x3FFF</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>1</min>
-                <max>31</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0x3FFF</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="85" block="1">
-            <name>DSP effect 2</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x148</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>14</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>0x3FFF</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>1</min>
-                <max>31</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0x3FFF</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="85" block="2">
-            <name>DSP effect 3</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x15A</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>14</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>0x3FFF</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>1</min>
-                <max>31</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0x3FFF</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="85" block="3">
-            <name>DSP effect 4</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x16C</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>14</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>0x3FFF</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>1</min>
-                <max>31</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0x3FFF</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="86" block="0">
-            <name>DSP bypass 1</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x136</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>14</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="86" block="1">
-            <name>DSP bypass 2</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x148</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>14</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="86" block="2">
-            <name>DSP bypass 3</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x15A</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>14</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="86" block="3">
-            <name>DSP bypass 4</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x16C</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>14</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="87" block="0">
-            <name>DSP parameters 1</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x138</offset>
-                <count>16</count>
-            </bytes>
-            <midiBytes>16</midiBytes>
-        </parameter>
-        <parameter number="87" block="1">
-            <name>DSP parameters 2</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x14A</offset>
-                <count>16</count>
-            </bytes>
-            <midiBytes>16</midiBytes>
-        </parameter>
-        <parameter number="87" block="2">
-            <name>DSP parameters 3</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x15C</offset>
-                <count>16</count>
-            </bytes>
-            <midiBytes>16</midiBytes>
-        </parameter>
-        <parameter number="87" block="3">
-            <name>DSP parameters 4</name>
-            <cluster>DSP</cluster>
-            <bytes>
-                <offset>0x16E</offset>
-                <count>16</count>
-            </bytes>
-            <midiBytes>16</midiBytes>
-        </parameter>
-        <parameter number="88" block="0">
-            <bytes>
-                <offset>0x17F</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>7</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="89" block="0">
-            <bytes>
-                <offset>0x17F</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>3</offset>
-                <count>2</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>3</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="90" block="0">
-            <bytes>
-                <offset>0x17F</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>2</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="91" block="0">
-            <bytes>
-                <offset>0x17F</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>1</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="92" block="0">
-            <bytes>
-                <offset>0x17E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>5</offset>
-                <count>3</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>7</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="93" block="0">
-            <bytes>
-                <offset>0x180</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>127</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>100</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="94" block="0">
-            <bytes>
-                <offset>0x17E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>3</offset>
-                <count>2</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>3</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="95" block="0">
-            <bytes>
-                <offset>0x17E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>2</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="96" block="0">
-            <bytes>
-                <offset>0x17E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>1</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="97" block="0">
-            <bytes>
-                <offset>0x181</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>127</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="98" block="0">
-            <bytes>
-                <offset>0x182</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>127</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="99" block="0">
-            <bytes>
-                <offset>0x17E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="100" block="0">
-            <name>DSP chain number</name>
-            <cluster>DSP Chain</cluster>
-            <bytes>
-                <offset>0x184</offset>
-                <count>4</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>32</count>
-            </bits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>899</max>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>5</midiBytes>
-            <help>Number of the DSP chain. This is not used for anything and can be set to any value</help>
-        </parameter>
-        <parameter number="101" block="0">
-            <bytes>
-                <offset>0x188</offset>
-                <count>4</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>32</count>
-            </bits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>1</max>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>5</midiBytes>
-        </parameter>
-        <parameter number="102" block="0">
-            <bytes>
-                <offset>0x18C</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>8</count>
-            </bits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>2</midiBytes>
-        </parameter>
-        <parameter number="103" block="0">
-            <bytes>
-                <offset>0x18D</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <defaultValue>1</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="104" block="0">
-            <bytes>
-                <offset>0x18E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="105" block="0">
-            <bytes>
-                <offset>0x18F</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="106" block="0">
-            <bytes>
-                <offset>0x190</offset>
-                <count>4</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>32</count>
-            </bits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>1</max>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>5</midiBytes>
-        </parameter>
         <parameter number="107" block="0">
             <name>Portamento time</name>
             <cluster>Misc.</cluster>
             <bytes>
-                <offset>0x194</offset>
+                <offset>0x17C</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4805,7 +3512,7 @@
             <name>Octave shift (keyboard)</name>
             <cluster>Octave</cluster>
             <bytes>
-                <offset>0x195</offset>
+                <offset>0x17D</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4822,7 +3529,7 @@
         </parameter>
         <parameter number="109" block="0">
             <bytes>
-                <offset>0x196</offset>
+                <offset>0x17E</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4838,7 +3545,7 @@
         </parameter>
         <parameter number="110" block="0">
             <bytes>
-                <offset>0x197</offset>
+                <offset>0x17F</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4854,7 +3561,7 @@
         </parameter>
         <parameter number="111" block="0">
             <bytes>
-                <offset>0x198</offset>
+                <offset>0x180</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4870,7 +3577,7 @@
         </parameter>
         <parameter number="112" block="0">
             <bytes>
-                <offset>0x199</offset>
+                <offset>0x181</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4886,7 +3593,7 @@
         </parameter>
         <parameter number="113" block="0">
             <bytes>
-                <offset>0x19A</offset>
+                <offset>0x182</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4904,7 +3611,7 @@
             <name>Monophonic</name>
             <cluster>Misc.</cluster>
             <bytes>
-                <offset>0x19A</offset>
+                <offset>0x182</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4922,7 +3629,7 @@
             <name>Sound B used for double-stop</name>
             <cluster>Misc.</cluster>
             <bytes>
-                <offset>0x19A</offset>
+                <offset>0x182</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4940,7 +3647,7 @@
             <name>Portamento</name>
             <cluster>Misc.</cluster>
             <bytes>
-                <offset>0x19A</offset>
+                <offset>0x182</offset>
                 <count>1</count>
             </bytes>
             <bits>
@@ -4958,336 +3665,6 @@
             </recommendedLimits>
             <defaultValue>0</defaultValue>
             <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="117" block="0">
-            <name>Type</name>
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19C</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>4</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>15</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>8</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="117" block="1">
-            <name>Type</name>
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A0</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>4</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>15</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>8</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="118" block="0">
-            <name>Parameter 1</name>
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19C</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>4</offset>
-                <count>6</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>63</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>22</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>12</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls frequency</help>
-        </parameter>
-        <parameter number="118" block="1">
-            <name>Parameter 1</name>
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A0</offset>
-                <count>2</count>
-            </bytes>
-            <bits>
-                <offset>4</offset>
-                <count>6</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>63</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>22</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>12</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls frequency</help>
-        </parameter>
-        <parameter number="119" block="0">
-            <name>Parameter 2</name>
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19D</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>2</offset>
-                <count>6</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>63</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>24</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>12</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls gain</help>
-        </parameter>
-        <parameter number="119" block="1">
-            <name>Parameter 2</name>
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A1</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>2</offset>
-                <count>6</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>63</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>24</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>12</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls gain</help>
-        </parameter>
-        <parameter number="120" block="0">
-            <name>Parameter 3</name>
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>4</offset>
-                <count>4</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>15</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>15</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls resonance Q-value</help>
-        </parameter>
-        <parameter number="120" block="1">
-            <name>Parameter 3</name>
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A2</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>4</offset>
-                <count>4</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>15</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>15</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Meaning depends on the filter type. Often it controls resonance Q-value</help>
-        </parameter>
-        <parameter number="121" block="0">
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>3</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>1</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="121" block="1">
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A2</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>3</offset>
-                <count>1</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>1</max>
-            </absoluteLimits>
-            <defaultValue>1</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="122" block="0">
-            <cluster>Biquad Filter 1</cluster>
-            <bytes>
-                <offset>0x19E</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>3</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>7</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="122" block="1">
-            <cluster>Biquad Filter 2</cluster>
-            <bytes>
-                <offset>0x1A2</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>3</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>7</max>
-            </absoluteLimits>
-            <defaultValue>0</defaultValue>
-            <midiBytes>1</midiBytes>
-        </parameter>
-        <parameter number="200" block="0">
-            <name>Volume 3</name>
-            <cluster>Keyboard only</cluster>
-            <bytes>
-                <offset>0x1C2</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>127</max>
-                <step>16</step>
-            </recommendedLimits>
-            <defaultValue>127</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Volume of the note.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
-        </parameter>
-        <parameter number="201" block="0">
-            <name>Key-follow 3</name>
-            <cluster>Keyboard only</cluster>
-            <bytes>
-                <offset>0x1C3</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>126</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>2</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
-        </parameter>
-        <parameter number="202" block="0">
-            <name>Key-follow 4</name>
-            <cluster>Keyboard only</cluster>
-            <bytes>
-                <offset>0x1C4</offset>
-                <count>1</count>
-            </bytes>
-            <bits>
-                <offset>0</offset>
-                <count>7</count>
-            </bits>
-            <absoluteLimits>
-                <min>0</min>
-                <max>127</max>
-            </absoluteLimits>
-            <recommendedLimits>
-                <min>0</min>
-                <max>126</max>
-                <step>1</step>
-            </recommendedLimits>
-            <defaultValue>2</defaultValue>
-            <midiBytes>1</midiBytes>
-            <help>Relationship between note pitch and volume of the sound. A value of 2 specifies an equal volume for all pitches, and is the default.\nOnly notes played on the keyboard are affected by this (not MIDI IN or rhythms)</help>
         </parameter>
     </parameters>
 </configuration>
