@@ -80,7 +80,7 @@ bool ToneDocument::OnCreate(const wxString& path, long flags)
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \    
-              "\x01\x00\x81\x08CalSine\x00        \x64\x02\x7f\x02\x7f\x02\x7f\x00\x00\x00";
+              "\x01\x00\x81\x09CalSine\x00        \x64\x02\x7f\x02\x7f\x02\x7f\x00\x00\x00";
 
     int i;
     
@@ -100,10 +100,10 @@ void ToneDocument::DoUpdate()
     
     unsigned int crc = crc32_fast(&this->data()[0x20], 0x1A0);
     
-    this->at(0x1C) = ((unsigned char *)&crc)[0];
-    this->at(0x1D) = ((unsigned char *)&crc)[1];
-    this->at(0x1E) = ((unsigned char *)&crc)[2];
-    this->at(0x1F) = ((unsigned char *)&crc)[3];
+    this->at(0x0C) = ((unsigned char *)&crc)[0];
+    this->at(0x0D) = ((unsigned char *)&crc)[1];
+    this->at(0x0E) = ((unsigned char *)&crc)[2];
+    this->at(0x0F) = ((unsigned char *)&crc)[3];
     
     Modify(true);
     UpdateAllViews();
@@ -557,10 +557,10 @@ bool HexEditCommand::Do(void)
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x1C);
-                _document->change_list.push_back(0x1D);
-                _document->change_list.push_back(0x1E);
-                _document->change_list.push_back(0x1F);
+                _document->change_list.push_back(0x0C);
+                _document->change_list.push_back(0x0D);
+                _document->change_list.push_back(0x0E);
+                _document->change_list.push_back(0x0F);
             }
             
             _document->InformByteChanged(_offset/2, x, y);
@@ -582,10 +582,10 @@ bool HexEditCommand::Do(void)
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x1C);
-                _document->change_list.push_back(0x1D);
-                _document->change_list.push_back(0x1E);
-                _document->change_list.push_back(0x1F);
+                _document->change_list.push_back(0x0C);
+                _document->change_list.push_back(0x0D);
+                _document->change_list.push_back(0x0E);
+                _document->change_list.push_back(0x0F);
             }
             _document->InformByteChanged(_offset/2, _new_byte, old_byte);
         }
@@ -609,10 +609,10 @@ bool HexEditCommand::Do(void)
         if (has_changed)
         {
             // Assume every byte of the CRC has changed
-            _document->change_list.push_back(0x1C);
-            _document->change_list.push_back(0x1D);
-            _document->change_list.push_back(0x1E);
-            _document->change_list.push_back(0x1F);
+            _document->change_list.push_back(0x0C);
+            _document->change_list.push_back(0x0D);
+            _document->change_list.push_back(0x0E);
+            _document->change_list.push_back(0x0F);
         }
         
         _document->DoUpdate();
@@ -654,10 +654,10 @@ bool HexEditCommand::Undo(void)
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x18);
-                _document->change_list.push_back(0x19);
-                _document->change_list.push_back(0x1A);
-                _document->change_list.push_back(0x1B);
+                _document->change_list.push_back(0x0C);
+                _document->change_list.push_back(0x0D);
+                _document->change_list.push_back(0x0E);
+                _document->change_list.push_back(0x0F);
             }
             _document->InformByteChanged(_offset/2, x, y);
         }
@@ -677,10 +677,10 @@ bool HexEditCommand::Undo(void)
             if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
-                _document->change_list.push_back(0x1C);
-                _document->change_list.push_back(0x1D);
-                _document->change_list.push_back(0x1E);
-                _document->change_list.push_back(0x1F);
+                _document->change_list.push_back(0x0C);
+                _document->change_list.push_back(0x0D);
+                _document->change_list.push_back(0x0E);
+                _document->change_list.push_back(0x0F);
             }
             _document->InformByteChanged(_offset/2, _new_byte, now_byte);
         }
@@ -705,10 +705,10 @@ bool HexEditCommand::Undo(void)
         if (has_changed)
         {
             // Assume every byte of the CRC has changed
-            _document->change_list.push_back(0x1C);
-            _document->change_list.push_back(0x1D);
-            _document->change_list.push_back(0x1E);
-            _document->change_list.push_back(0x1F);
+            _document->change_list.push_back(0x0C);
+            _document->change_list.push_back(0x0D);
+            _document->change_list.push_back(0x0E);
+            _document->change_list.push_back(0x0F);
         }
 
         _document->DoUpdate();
