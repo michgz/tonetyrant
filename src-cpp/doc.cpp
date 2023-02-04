@@ -79,7 +79,7 @@ bool ToneDocument::OnCreate(const wxString& path, long flags)
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
               "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
-              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \    
+              "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"     \
               "\x01\x00\x81\x09" "CalSine\x00        \x64\x02\x7f\x02\x7f\x02\x7f\x00\x00\x00";
 
     int i;
@@ -597,7 +597,7 @@ bool HexEditCommand::Do(void)
         int i;
         bool has_changed = false;
         _document->change_list.clear();
-        for (i = 0x20; i < _document->size()-4; i ++)
+        for (i = 0x20; i < _document->size()-0; i ++)
         {
             if (_document->at(i) != _new_vals.at(i - 0x20))
             {
@@ -651,7 +651,7 @@ bool HexEditCommand::Undo(void)
         if (_new_nibble != now_nibble)
         {
             _document->change_list.push_back(_offset/2);
-            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1E8)
+            if ((_offset/2) >= 0x20 && (_offset/2) < 0x1C0)
             {
                 // Assume every byte of the CRC has changed
                 _document->change_list.push_back(0x0C);
@@ -693,7 +693,7 @@ bool HexEditCommand::Undo(void)
         bool has_changed = false;
         int i;
         _document->change_list.clear();
-        for (i = 0x20; i < _document->size()-4; i ++)
+        for (i = 0x20; i < _document->size()-0; i ++)
         {
             if (_document->at(i) != _old_vals.at(i - 0x20))
             {

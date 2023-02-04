@@ -587,7 +587,7 @@ void MyApp::OnMidiUpload(wxCommandEvent& WXUNUSED(event))
             // Copy a subset. Should be able to do this better!
             std::vector<unsigned char> dest_doc = std::vector<unsigned char>();
             int j;
-            for (j = 0x20; j < 0x1E8; j ++)
+            for (j = 0x20; j < 0x1C0; j ++)
             {
                 dest_doc.push_back(src_doc->at(j));
             }
