@@ -36,16 +36,16 @@ jobs:
         id: build-tyrant-x64
         shell: cmd
         run: |
-          mkdir tonetyrant/src-cpp/vc_x64_mswu
-          echo "Empty 1" > tonetyrant/src-cpp/vc_x64_mswu/tyrant.exe
+          mkdir tonetyrant\src-cpp\vc_x64_mswu
+          echo "Empty 1" > tonetyrant\src-cpp\vc_x64_mswu\tyrant.exe
 
       # Build our program
       - name: Build Tyrant 32-bit
         id: build-tyrant-x86
         shell: cmd
         run: |
-          mkdir tonetyrant/src-cpp/vc_mswu
-          echo "Empty 2" > tonetyrant/src-cpp/vc_mswu/tyrant.exe
+          mkdir tonetyrant\src-cpp\vc_mswu
+          echo "Empty 2" > tonetyrant\src-cpp\vc_mswu\tyrant.exe
 
       # Upload the artifacts
       - uses: actions/upload-artifact@v2
