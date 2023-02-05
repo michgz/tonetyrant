@@ -59,7 +59,7 @@ jobs:
 
   release-all:
     runs-on: ubuntu-latest
-    needs: [ build-linux-gtk2 ]
+    needs: [ build-windows ]
     steps:
       - run: |
           echo "${{ github.ref_name }}"
