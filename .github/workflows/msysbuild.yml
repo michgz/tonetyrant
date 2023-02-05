@@ -219,6 +219,8 @@ jobs:
         with:
           name: tyrant-Linux-gtk2-executable-artifact
           path: linux-gtk2-executable-${{ github.ref_name }}.zip
+      - run: |
+          dir
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
