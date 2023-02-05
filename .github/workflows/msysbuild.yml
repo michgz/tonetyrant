@@ -77,10 +77,11 @@ jobs:
       - run: |
           dir
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
+            ./*.*
             *.zip
             windows-all-versions-32bit-executable-${{ github.ref_name }}.zip
             windows-all-versions-64bit-executable-${{ github.ref_name }}.zip
