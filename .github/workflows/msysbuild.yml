@@ -68,13 +68,16 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: tyrant-Windows-32bit-executable-artifact
-          path: windows-all-versions-32bit-executable-${{ github.ref_name }}.zip
+          path: windows-all-versions-32bit-executable-${{ github.ref_name }}
       - uses: actions/download-artifact@v3
         with:
           name: tyrant-Windows-64bit-executable-artifact
-          path: windows-all-versions-64bit-executable-${{ github.ref_name }}.zip
+          path: windows-all-versions-64bit-executable-${{ github.ref_name }}
       - uses: actions/download-artifact@v3
       - run: |
+          ls -lR
+          mv windows-all-versions-32bit-executable-${{ github.ref_name }}/tyrant*.* ./tyrant32.exe
+          mv windows-all-versions-64bit-executable-${{ github.ref_name }}/tyrant*.* ./tyrant.exe
           ls -l
       - name: Release
         uses: softprops/action-gh-release@v1
@@ -83,6 +86,5 @@ jobs:
           files: |
             ./*.*
             *.zip
-            windows-all-versions-32bit-executable-${{ github.ref_name }}.zip/*
-            windows-all-versions-64bit-executable-${{ github.ref_name }}.zip/*
+            *.exe
             linux-gtk2-executable-${{ github.ref_name }}.zip
