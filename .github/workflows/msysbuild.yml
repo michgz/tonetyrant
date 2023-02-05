@@ -31,71 +31,19 @@ jobs:
           path: tonetyrant
           submodules: 'true'
 
-      - name: Checkout WX
-        uses: actions/checkout@v2
-        with:
-          repository: WxWidgets/WxWidgets
-          ref: v3.2.0
-          path: wxWidgets
-          submodules: 'true'
-
-      - name: Checkout RtMidi
-        uses: actions/checkout@v2
-        with:
-          repository: thestk/rtmidi
-          ref: 5.0.0
-          path: RtMidi-5.0.0
-          submodules: 'false'
-
-      - name: Cache WX 64-bit
-        id: cache-wx
-        uses: actions/cache@v3
-        with:
-          path: wxWidgets/lib
-          key: wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-${{ hashFiles('wxWidgets/lib/config.log') }}
-          restore-keys: |
-            wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-
-
-      - name: Munge WX to use static runtime
-        if: steps.cache-wx.outputs.cache-hit != 'true'
-        run: |
-          python "tonetyrant\src-cpp\msw_build_static.py" wxWidgets\build\msw
-
-      # Builds WX static library
-      - name: Build WX 64-bit
-        if: steps.cache-wx.outputs.cache-hit != 'true'
-        shell: cmd
-        run: |
-          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|x64"
-
-      # Builds WX static library
-      - name: Build WX 32-bit
-        if: steps.cache-wx.outputs.cache-hit != 'true'
-        shell: cmd
-        run: |
-          "%MSBUILD_PATH%" "wxWidgets\build\msw\wx_vc17.sln" /Build "Release|Win32"
-
       # Build our program
       - name: Build Tyrant 64-bit
         id: build-tyrant-x64
         shell: cmd
         run: |
-          dir "tonetyrant\src-cpp"
-          SET WX_BUILD_DIR=..\..\wxWidgets\build\msw
-          SET RT_MIDI_DIR=..\..\RtMidi-5.0.0
-          "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x64"
-          dir /S "tonetyrant\src-cpp\vc_x64_mswu"
+          echo "Empty 1" > tonetyrant/src-cpp/vc_x64_mswu/tyrant-64.exe
 
       # Build our program
       - name: Build Tyrant 32-bit
         id: build-tyrant-x86
         shell: cmd
         run: |
-          dir "tonetyrant\src-cpp"
-          SET WX_BUILD_DIR=..\..\wxWidgets\build\msw
-          SET RT_MIDI_DIR=..\..\RtMidi-5.0.0
-          "%MSBUILD_PATH%" "tonetyrant\src-cpp\tyrant_vc.vcxproj" /Build "Release|x86"
-          dir /S "tonetyrant\src-cpp\vc_mswu"
+          echo "Empty 2" > tonetyrant/src-cpp/vc_x64_mswu/tyrant-32.exe
 
       # Upload the artifacts
       - uses: actions/upload-artifact@v2
@@ -108,102 +56,10 @@ jobs:
         with:
           name: tyrant-${{ runner.os }}-32bit-executable-artifact
           path: tonetyrant/src-cpp/vc_mswu/*.exe
-      - uses: actions/upload-artifact@v2
-        with:
-          name: tyrant-${{ runner.os }}-error-64bit-log-artifact
-          path: tonetyrant/src-cpp/vc_x64_mswu/tyrant/tyrant_vc.log
-      - uses: actions/upload-artifact@v2
-        with:
-          name: tyrant-${{ runner.os }}-error-32bit-log-artifact
-          path: tonetyrant/src-cpp/vc_mswu/tyrant/tyrant_vc.log
-
-  build-linux-gtk2:
-
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout Tone Tyrant
-        uses: actions/checkout@v2
-        with:
-          path: tonetyrant
-          submodules: 'true'
-
-      - name: Checkout WX
-        uses: actions/checkout@v2
-        with:
-          repository: WxWidgets/WxWidgets
-          ref: v3.2.0
-          path: wxWidgets
-          submodules: 'true'
-
-      - name: Checkout RtMidi
-        uses: actions/checkout@v2
-        with:
-          repository: thestk/rtmidi
-          ref: 5.0.0
-          path: RtMidi
-          submodules: 'false'
-
-      - name: Cache WX
-        id: cache-wx
-        uses: actions/cache@v3
-        with:
-          path: wx-build-3.2-gtk2
-          key: wx-3.2-build-gtk2-${{ runner.os }}-static-${{ hashFiles('wx-build-3.2-gtk2/config.log') }}
-          restore-keys: |
-            wx-3.2-build-gtk2-${{ runner.os }}-static-
-      
-      - name: Get dependencies GTK2
-        run: |
-          sudo apt-get install -y build-essential libgtk2.0-dev
-      
-      # Builds WX static library. This is a long action! >30 minutes! Cache if possible
-      - name: Build WX if no Cache
-        if: steps.cache-wx.outputs.cache-hit != 'true'
-        run: |
-          mkdir wx-build-3.2-gtk2
-          cd wx-build-3.2-gtk2
-          ../wxWidgets/configure --without-expat --without-libtiff --disable-shared --with-gtk=2
-          make all
-
-      # For fun :)
-      - name: Build Sample
-        id: build-sample
-        if: 'true'
-        run: |
-          ls -lR wx-build-3.2-gtk2
-          cd wx-build-3.2-gtk2/samples/docview
-          make all
-
-      # Build our program
-      - name: Build Tyrant
-        id: build-tyrant
-        continue-on-error: true
-        run: |
-          sudo apt-get install -y libasound2-dev
-          cd tonetyrant/src-cpp
-          make all -f Makefile.unx wx_top_builddir=../../wx-build-3.2-gtk2 top_srcdir=../../wxWidgets rtmidi_srcdir=../../RtMidi
-
-      # Upload the two artifacts
-      - uses: actions/upload-artifact@v2
-        if: steps.build-tyrant.outcome == 'success'
-        with:
-          name: tyrant-${{ runner.os }}-gtk2-executable-artifact
-          path: tonetyrant/src-cpp/tyrant
-      - uses: actions/upload-artifact@v2
-        if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
-        with:
-          name: docview-${{ runner.os }}-gtk2-executable-artifact
-          path: wx-build-3.2-gtk2/samples/docview/docview
-
-
 
   release-all:
     runs-on: ubuntu-latest
-    needs: [ build-windows, build-linux-gtk2 ]
+    needs: [ build-linux-gtk2 ]
     steps:
       - run: |
           echo "${{ github.ref_name }}"
@@ -216,9 +72,6 @@ jobs:
           name: tyrant-Windows-64bit-executable-artifact
           path: windows-all-versions-64bit-executable-${{ github.ref_name }}.zip
       - uses: actions/download-artifact@v3
-        with:
-          name: tyrant-Linux-gtk2-executable-artifact
-          path: linux-gtk2-executable-${{ github.ref_name }}.zip
       - run: |
           dir
       - name: Release
