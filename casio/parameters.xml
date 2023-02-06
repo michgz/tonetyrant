@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <configuration>
     <keyboard>MZ-X500</keyboard>
+    <comment>
+      This file was thrown together in order to get a simple build of MZ-X
+      functionality working and able to change "Wavetable" parameter. Most of
+      the parameters have not been confirmed! Parameter number are completely
+      unverified, and even some byte offsets are doubtful. Use with care.
+    </comment>
     <parameters>
         <parameter number="0" block="0">
             <name>Name</name>
