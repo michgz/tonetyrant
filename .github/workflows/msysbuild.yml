@@ -24,6 +24,14 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
+      - name Check MAKE
+        shell: cmd
+        run: |
+          make -v
+          gmake -v
+          mingw32-make -v
+          mingw-w64-make -v
+
       - name: Checkout WX
         uses: actions/checkout@v2
         with:
