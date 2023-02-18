@@ -19,7 +19,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      WXWIN: 
+      WXWIN: ${{ github.path }}/wxWidgets
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
