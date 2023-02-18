@@ -20,6 +20,7 @@ jobs:
 
     env:
       WXWIN: ${{ github.path }}/wxWidgets
+      MINGW_W64_MAKE: mingw32-make
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -30,7 +31,7 @@ jobs:
           make -v
           gmake -v
           mingw32-make -v
-          mingw-w64-make -v
+          %MINGW_W64_MAKE% -v
 
       - name: Checkout WX
         uses: actions/checkout@v2
@@ -57,8 +58,8 @@ jobs:
           dir wxWidgets
           chdir "wxWidgets\build\msw"
           dir .
-          mingw64-make SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
-          mingw64-make SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release
+          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
+          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release
 
   release-all:
     runs-on: ubuntu-latest
