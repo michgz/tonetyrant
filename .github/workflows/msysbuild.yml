@@ -24,7 +24,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-      - name Check MAKE
+      - name: Check MAKE
         shell: cmd
         run: |
           make -v
