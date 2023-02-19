@@ -66,10 +66,12 @@ jobs:
           dir "wxWidgets\lib"
           dir "wxWidgets\lib\gcc_lib"
           dir "wxWidgets\lib\gcc_lib\mswu"
+          dir "wxWidgets\lib\gcc_lib\mswu\wx"
           cd "wxWidgets\samples\docview"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc BUILD=release all
           dir "..\..\wxWidgets\lib"
           dir .
+          dir "gcc_mswu"
 
   release-all:
     runs-on: ubuntu-latest
