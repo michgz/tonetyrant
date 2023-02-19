@@ -45,6 +45,14 @@ jobs:
           path: wxWidgets
           submodules: 'true'
 
+      - name: Checkout RtMidi
+        uses: actions/checkout@v2
+        with:
+          repository: thestk/rtmidi
+          ref: 5.0.0
+          path: RtMidi-5.0.0
+          submodules: 'false'
+
       - name: Cache WX 64-bit
         id: cache-wx
         uses: actions/cache@v3
