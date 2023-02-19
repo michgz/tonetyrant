@@ -28,9 +28,6 @@ jobs:
       - name: Check MAKE
         shell: cmd
         run: |
-          make -v
-          gmake -v
-          mingw32-make -v
           %MINGW_W64_MAKE% -v
 
       - name: Checkout WX
@@ -50,20 +47,24 @@ jobs:
           restore-keys: |
             wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-mingw-
 
-      # Builds WX static library
+      # Builds WX static library. The setup_h step seems to be necessary to avoid a random error, and it must be done
+      # with only 1 thread. 4 threads are used for other steps.
       - name: Build WX 64-bit
         if: steps.cache-wx.outputs.cache-hit != 'true'
         shell: cmd
         run: |
-          dir wxWidgets
           chdir "wxWidgets\build\msw"
-          dir .
-          dir ..\..\include\wx\msw
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
-          dir .
-          dir ..\..\include\wx\msw
           %MINGW_W64_MAKE% SHELL=CMD.exe -j1 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=setup_h
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release
+
+      # For fun :)
+      - name: Build Sample
+        id: build-sample
+        run: |
+          ls -lR wxWidgets/lib
+          cd "wxWidgets/samples/docview"
+          %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc all
 
   release-all:
     runs-on: ubuntu-latest
