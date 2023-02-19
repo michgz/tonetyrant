@@ -30,12 +30,11 @@ jobs:
         run: |
           %MINGW_W64_MAKE% -v
 
-      - name: Checkout WX
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Tone Tyrant
         uses: actions/checkout@v2
         with:
-          repository: WxWidgets/WxWidgets
-          ref: v3.2.0
-          path: wxWidgets
+          path: tonetyrant
           submodules: 'true'
 
       - name: Cache WX 64-bit
@@ -47,6 +46,15 @@ jobs:
           restore-keys: |
             wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-mingw-
 
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        if: steps.cache-wx.outputs.cache-hit != 'true'
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.2.0
+          path: wxWidgets
+          submodules: 'true'
+          
       # Builds WX static library. The setup_h step seems to be necessary to avoid a random error, and it must be done
       # with only 1 thread. 4 threads are used for other steps.
       - name: Build WX 64-bit
@@ -58,30 +66,15 @@ jobs:
           %MINGW_W64_MAKE% SHELL=CMD.exe -j1 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release setup_h
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release all
 
-      # For fun :)
-      - name: Build Sample
-        id: build-sample
+      # Build our program
+      - name: Build Tyrant 64-bit
+        id: build-tyrant-x64
         shell: cmd
         run: |
-          dir "wxWidgets\lib"
-          dir "wxWidgets\lib\gcc_lib"
-          dir "wxWidgets\lib\gcc_lib\mswu"
-          dir "wxWidgets\lib\gcc_lib\mswu\wx"
-          dir "wxWidgets\lib\gcc_lib\mswu\wx\msw"
-          cd "wxWidgets\samples\docview"
-          %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc BUILD=release all
-          dir .
-          dir "gcc_mswu"
-          dir "..\..\wxWidgets\lib"
-          dir "..\..\wxWidgets\lib\gcc_lib"
-          dir "..\..\wxWidgets\lib\gcc_lib\mswu"
-          dir "..\..\wxWidgets\lib\gcc_lib\mswu\wx"
-          dir "..\..\wxWidgets\lib\gcc_lib\mswu\wx\msw"
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: sample-win32
-          path: wxWidgets\samples\docview\gcc_mswu
+          dir "tonetyrant\src-cpp"
+          chdir "tonetyrant\src-cpp"
+          %MINGW_W64_MAKE% SHELL=CMD.exe -f Makefile.gcc BUILD=release wx_top_builddir=..\..\wxWidgets\build\msw rtmidi_srcdir=..\..\RtMidi-5.0.0 all    
+          dir /S "tonetyrant\src-cpp"
 
   release-all:
     runs-on: ubuntu-latest
