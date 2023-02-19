@@ -55,8 +55,8 @@ jobs:
         run: |
           chdir "wxWidgets\build\msw"
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
-          %MINGW_W64_MAKE% SHELL=CMD.exe -j1 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=setup_h
-          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release
+          %MINGW_W64_MAKE% SHELL=CMD.exe -j1 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release setup_h
+          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release all
 
       # For fun :)
       - name: Build Sample
@@ -67,6 +67,8 @@ jobs:
           dir "wxWidgets\lib\gcc_lib"
           cd "wxWidgets\samples\docview"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc BUILD=release all
+          dir "wxWidgets\lib"
+          dir "wxWidgets\samples\docview"
 
   release-all:
     runs-on: ubuntu-latest
