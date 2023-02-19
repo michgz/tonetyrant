@@ -62,7 +62,7 @@ jobs:
       - name: Build Sample
         id: build-sample
         run: |
-          ls -lR wxWidgets/lib
+          dir /s /n wxWidgets/lib
           cd "wxWidgets/samples/docview"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc all
 
