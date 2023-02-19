@@ -61,6 +61,7 @@ jobs:
       # For fun :)
       - name: Build Sample
         id: build-sample
+        shell: cmd
         run: |
           dir "wxWidgets\lib"
           dir "wxWidgets\lib\gcc_lib"
