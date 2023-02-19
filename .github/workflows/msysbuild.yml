@@ -84,6 +84,12 @@ jobs:
           %MINGW_W64_MAKE% SHELL=CMD.exe -f Makefile.gcc BUILD=release wx_top_builddir=..\..\wxWidgets\build\msw rtmidi_srcdir=..\..\RtMidi-5.0.0 all    
           dir /S "tonetyrant\src-cpp"
 
+      - name: Listing
+        id: list-tyrant-x64
+        shell: cmd
+        run: |
+          dir /S "tonetyrant\src-cpp"
+
   release-all:
     runs-on: ubuntu-latest
     needs: [ build-windows ]
