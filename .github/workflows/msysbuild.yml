@@ -48,7 +48,6 @@ jobs:
 
       - name: Checkout WX
         uses: actions/checkout@v2
-        if: steps.cache-wx.outputs.cache-hit != 'true'
         with:
           repository: WxWidgets/WxWidgets
           ref: v3.2.0
