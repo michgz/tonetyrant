@@ -67,11 +67,16 @@ jobs:
           dir "wxWidgets\lib\gcc_lib"
           dir "wxWidgets\lib\gcc_lib\mswu"
           dir "wxWidgets\lib\gcc_lib\mswu\wx"
+          dir "wxWidgets\lib\gcc_lib\mswu\wx\msw"
           cd "wxWidgets\samples\docview"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc BUILD=release all
-          dir "..\..\wxWidgets\lib"
           dir .
           dir "gcc_mswu"
+          dir "..\..\wxWidgets\lib"
+          dir "..\..\wxWidgets\lib\gcc_lib"
+          dir "..\..\wxWidgets\lib\gcc_lib\mswu"
+          dir "..\..\wxWidgets\lib\gcc_lib\mswu\wx"
+          dir "..\..\wxWidgets\lib\gcc_lib\mswu\wx\msw"
 
       - uses: actions/upload-artifact@v3
         with:
