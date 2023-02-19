@@ -4,7 +4,6 @@
 #     Do not modify, all changes will be overwritten!
 # =========================================================================
 
-include ../../build/msw/config.gcc
 
 # -------------------------------------------------------------------------
 # Do not modify the rest of this file!
@@ -24,6 +23,8 @@ wx_top_builddir ?= $(HOME)/Downloads/wxWidgets-3.0.5/buildgtk
 rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 
 
+
+include ${wx_top_builddir}/config.gcc
 
 ### Variables: ###
 
