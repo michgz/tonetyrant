@@ -86,6 +86,7 @@ jobs:
 
       - name: Listing
         id: list-tyrant-x64
+        if: always()
         shell: cmd
         run: |
           dir /S "tonetyrant\src-cpp"
