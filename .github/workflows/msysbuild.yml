@@ -30,6 +30,14 @@ jobs:
         run: |
           %MINGW_W64_MAKE% -v
 
+      - name: Checkout WX
+        uses: actions/checkout@v2
+        with:
+          repository: WxWidgets/WxWidgets
+          ref: v3.2.0
+          path: wxWidgets
+          submodules: 'true'
+
       - name: Cache WX 64-bit
         id: cache-wx
         uses: actions/cache@v3
@@ -38,15 +46,6 @@ jobs:
           key: wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-mingw-${{ hashFiles('wxWidgets/lib/config.log') }}
           restore-keys: |
             wx-3.2-build-lib-${{ runner.os }}-3264bit-static-staticrt-mingw-
-
-      - name: Checkout WX
-        uses: actions/checkout@v2
-        if: steps.cache-wx.outputs.cache-hit != 'true'
-        with:
-          repository: WxWidgets/WxWidgets
-          ref: v3.2.0
-          path: wxWidgets
-          submodules: 'true'
 
       # Builds WX static library. The setup_h step seems to be necessary to avoid a random error, and it must be done
       # with only 1 thread. 4 threads are used for other steps.
@@ -64,6 +63,7 @@ jobs:
         id: build-sample
         run: |
           dir "wxWidgets\lib"
+          dir "wxWidgets\lib\gcc_lib"
           cd "wxWidgets\samples\docview"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f makefile.gcc all
 
