@@ -42,7 +42,7 @@ TEXT_CXXFLAGS = $(__DEBUGINFO) $(__OPTIMIZEFLAG_2) $(__THREADSFLAG) \
 	$(__EXCEPTIONS_DEFINE_p) $(__RTTI_DEFINE_p) $(__THREAD_DEFINE_p) \
 	$(__UNICODE_DEFINE_p) -I$(SETUPHDIR) -I${top_srcdir}/include \
 	$(____CAIRO_INCLUDEDIR_FILENAMES_p) -W -Wall -I. $(__DLLFLAG_p) \
-	-I$(wx_top_builddir)\..\..\include      \
+	-I$(wx_top_builddir)\..\..\include   -Icrc32   \
 	-I$(srcdir) -DNOPCH $(__RTTIFLAG_5) $(__EXCEPTIONSFLAG_6) \
 	-Wno-ctor-dtor-privacy $(CPPFLAGS) $(CXXFLAGS)
 TONETYRANT_OBJECTS =  \
