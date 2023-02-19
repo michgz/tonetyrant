@@ -59,7 +59,7 @@ jobs:
           chdir "wxWidgets\build\msw"
           dir .
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
-          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release
+          %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release setup_h
 
   release-all:
     runs-on: ubuntu-latest
