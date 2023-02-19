@@ -42,7 +42,7 @@ TEXT_CXXFLAGS = $(__DEBUGINFO) $(__OPTIMIZEFLAG_2) $(__THREADSFLAG) \
 	$(__EXCEPTIONS_DEFINE_p) $(__RTTI_DEFINE_p) $(__THREAD_DEFINE_p) \
 	$(__UNICODE_DEFINE_p) -I$(SETUPHDIR) -I${top_srcdir}/include \
 	$(____CAIRO_INCLUDEDIR_FILENAMES_p) -W -Wall -I. $(__DLLFLAG_p) \
-	-I$(wx_top_builddir)\..\..\include   -Icrc32   \
+	-I$(wx_top_builddir)\..\..\include   -Icrc32 -Iinih  \
 	-I$(srcdir) -DNOPCH $(__RTTIFLAG_5) $(__EXCEPTIONSFLAG_6) \
 	-Wno-ctor-dtor-privacy $(CPPFLAGS) $(CXXFLAGS)
 TONETYRANT_OBJECTS =  \
@@ -52,6 +52,7 @@ TONETYRANT_OBJECTS =  \
 	$(OBJS)\tonetyrant_hintview.o \
 	$(OBJS)\rtmidi.o \
 	$(OBJS)\tonetyrant_midicomms.o \
+	$(OBJS)\Crc32.o \
 	$(OBJS)\tyrant_tyrant_rc.o
 
 
@@ -267,6 +268,11 @@ $(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 
 $(OBJS)\tyrant_tyrant_rc.o: ./tyrant.rc
 	$(WINDRES) -i$< -o$@    --define __WXMSW__ $(__WXUNIV_DEFINE_p_1) $(__DEBUG_DEFINE_p_1) $(__NDEBUG_DEFINE_p_1) $(__EXCEPTIONS_DEFINE_p_1) $(__RTTI_DEFINE_p_1) $(__THREAD_DEFINE_p_1) $(__UNICODE_DEFINE_p_1) --include-dir $(SETUPHDIR) --include-dir $(wx_top_builddir)/../../include $(__CAIRO_INCLUDEDIR_p) --include-dir . $(__DLLFLAG_p_1) --define wxUSE_DPI_AWARE_MANIFEST=$(USE_DPI_AWARE_MANIFEST) --include-dir $(wx_top_builddir)/../../samples --define NOPCH
+
+FLAGS_CRC32     = -O3 -Wall -Wextra -pedantic -s
+
+$(OBJS)\Crc32.o : crc32/Crc32.cpp crc32/Crc32.h
+	g++ $(FLAGS_CRC32) -I./crc32 -c crc32/Crc32.cpp -o $@
 
 .PHONY: all clean
 
