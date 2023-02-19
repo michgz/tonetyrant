@@ -34,7 +34,7 @@ COMPILER_PREFIX = gcc
 OBJS = \
 	$(COMPILER_PREFIX)$(COMPILER_VERSION)_$(PORTNAME)$(WXUNIVNAME)$(WXUNICODEFLAG)$(WXDEBUGFLAG)$(WXDLLFLAG)$(CFG)
 LIBDIRNAME = \
-	$(wx_top_builddir)\lib\$(COMPILER_PREFIX)$(COMPILER_VERSION)_$(LIBTYPE_SUFFIX)$(CFG)
+	$(wx_top_builddir)\..\..\lib\$(COMPILER_PREFIX)$(COMPILER_VERSION)_$(LIBTYPE_SUFFIX)$(CFG)
 SETUPHDIR = \
 	$(LIBDIRNAME)\$(PORTNAME)$(WXUNIVNAME)$(WXUNICODEFLAG)$(WXDEBUGFLAG)
 TEXT_CXXFLAGS = $(__DEBUGINFO) $(__OPTIMIZEFLAG_2) $(__THREADSFLAG) \
@@ -247,16 +247,16 @@ $(OBJS)\tyrant$(EXEEXT): $(TONETYRANT_OBJECTS)
 	@-del $@.rsp
 
 $(OBJS)\tonetyrant_tyrant.o: $(srcdir)/tyrant.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
+	$(CXX) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $< -I${rtmidi_srcdir}
 
 $(OBJS)\tonetyrant_doc.o: $(srcdir)/doc.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXX) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)\tonetyrant_view.o: $(srcdir)/view.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXX) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)\tonetyrant_hintview.o: $(srcdir)/hintview.cpp
-	$(CXXC) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
+	$(CXX) -c -o $@ $(TEXT_CXXFLAGS) $(CPPDEPS) $<
 
 $(OBJS)\rtmidi.o: ${rtmidi_srcdir}/RtMidi.cpp
 	g++ -c -Wall -D__WINDOWS_MM__ -o $@ ${rtmidi_srcdir}/RtMidi.cpp -I${rtmidi_srcdir}
