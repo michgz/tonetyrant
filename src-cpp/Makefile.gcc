@@ -49,7 +49,7 @@ TONETYRANT_OBJECTS =  \
 	$(OBJS)\tonetyrant_doc.o \
 	$(OBJS)\tonetyrant_view.o \
 	$(OBJS)\tonetyrant_hintview.o \
-	$(OBJS)\rtmidi.o
+	$(OBJS)\rtmidi.o \
 	$(__docview_win32rc)
 
 
