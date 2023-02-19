@@ -60,6 +60,8 @@ jobs:
           dir .
           dir ..\..\include\wx\msw
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release clean
+          dir .
+          dir ..\..\include\wx\msw
           %MINGW_W64_MAKE% SHELL=CMD.exe -j4 -f makefile.gcc SHARED=0 UNICODE=1 BUILD=release setup_h
 
   release-all:
