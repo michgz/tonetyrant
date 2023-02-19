@@ -73,6 +73,11 @@ jobs:
           dir .
           dir "gcc_mswu"
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: sample-win32
+          path: wxWidgets\samples\docview\gcc_mswu
+
   release-all:
     runs-on: ubuntu-latest
     needs: [ build-windows ]
