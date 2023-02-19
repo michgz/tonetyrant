@@ -82,14 +82,12 @@ jobs:
           chdir "tonetyrant\src-cpp"
           dir "..\..\wxWidgets\build\msw"
           %MINGW_W64_MAKE% SHELL=CMD.exe -f Makefile.gcc BUILD=release wx_top_builddir=..\..\wxWidgets\build\msw rtmidi_srcdir=..\..\RtMidi-5.0.0 all    
-          dir /S "tonetyrant\src-cpp"
+          dir /S .
 
-      - name: Listing
-        id: list-tyrant-x64
-        if: always()
-        shell: cmd
-        run: |
-          dir /S "tonetyrant\src-cpp"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: win32-tyrant
+          path: tonetyrant/src-cpp/gcc_mswu/tyrant.exe
 
   release-all:
     runs-on: ubuntu-latest
