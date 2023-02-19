@@ -24,7 +24,7 @@ rtmidi_srcdir ?= $(HOME)/Downloads/rtmidi-5.0.0
 
 
 
-include ${wx_top_builddir}/config.gcc
+include $(wx_top_builddir)/config.gcc
 
 ### Variables: ###
 
