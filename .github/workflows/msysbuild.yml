@@ -93,7 +93,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: steps.cache-wx.outputs.cache-hit != 'true' && steps.build-sample.outcome == 'success'
         with:
-          name: docview-${{ runner.os }}-gtk2-executable-artifact
+          name: docview-${{ runner.os }}-qt-executable-artifact
           path: wx-build-3.2-qt/samples/docview/docview
 
 
@@ -106,21 +106,11 @@ jobs:
           echo "${{ github.ref_name }}"
       - uses: actions/download-artifact@v3
         with:
-          name: tyrant-Windows-32bit-executable-artifact
-          path: windows-all-versions-32bit-executable-${{ github.ref_name }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: tyrant-Windows-64bit-executable-artifact
-          path: windows-all-versions-64bit-executable-${{ github.ref_name }}
-      - uses: actions/download-artifact@v3
-        with:
-          name: tyrant-Linux-gtk2-executable-artifact
-          path: linux-gtk2-executable-${{ github.ref_name }}
+          name: tyrant-Linux-qt-executable-artifact
+          path: linux-qt-executable-${{ github.ref_name }}
       - run: |
           ls -lR
-          mv windows-all-versions-32bit-executable-${{ github.ref_name }}/tyrant*.* ./tyrant32.exe
-          mv windows-all-versions-64bit-executable-${{ github.ref_name }}/tyrant*.* ./tyrant.exe
-          mv linux-gtk2-executable-${{ github.ref_name }}/tyrant* ./tyrant
+          mv linux-qt-executable-${{ github.ref_name }}/tyrant* ./tyrant
           chmod +x ./tyrant
           ls -l
       - name: Release
